@@ -1,0 +1,103 @@
+body { background-color:#999999; 
+	font-family: Ubuntu;
+	font-size:14px;
+	color:#000000;
+}
+h1 {
+	font-size:22px;
+	color:#ff0000;
+	text-align:center;
+	margin: auto;
+}
+h2 {
+	font-size:18px;
+	color:#ff0000;
+	text-align:center;
+	margin: auto;
+}
+
+/*Definitionen <div>*/
+
+#page {
+  	width:950px;
+	margin:auto;
+	text-align:left;
+  	background-color:#ffffff;
+}
+
+#header{
+	width:950px;
+	height:100px;
+	font-size:40px;
+	color:#ff0000;
+	background-color:#55dd77;
+}
+
+#menu{
+	height:21px;
+	padding-bottom:03px;
+	padding-top:03px;
+	font-size:15px;
+	color:#00ff00;
+	background-color:#555555;
+	text-align:center;
+	clear: both;
+}
+
+#menu a:link { color: #22ff22; }
+#menu a:visited { color: #22ff22; }
+#menu a:hover { color: #22ff22; }
+
+#site {
+	width:950px;
+	height:auto;
+	min-height:250px;
+	
+}
+
+#menu-apps{
+	float:left;
+	width:200px;
+	height:auto;
+	min-height:200px;
+	margin:10px;
+	padding-top:10px;
+	padding-bottom:10px;
+	padding-right:05px;
+	padding-left:05px;
+	background-color:#cccccc;
+	border-radius: 15px;
+}
+
+#content-apps{
+	height:auto;
+	min-height:200px;
+	padding-top:10px;
+	padding-bottom:10px;
+	padding-right:05px;
+	padding-left:05px;
+	width:700px;
+	margin-left:230px;
+}
+
+#content{
+	height:auto;
+	min-height:250px;
+	padding-top:10px;
+	padding-bottom:10px;
+	padding-right:05px;
+	padding-left:05px;
+}
+
+#footer{
+	width:950px;
+	height:auto;
+	padding-top:10px;
+	padding-bottom:10px;
+	text-align:center;
+	font-size:12px;
+	color:#444444;
+	background-color:#55dd77;
+	clear:both;
+}
+
