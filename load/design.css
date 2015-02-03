@@ -1,16 +1,16 @@
 body { background-color:#999999; 
 	font-family: Ubuntu;
-	font-size:14px;
+	font-size:100%;
 	color:#000000;
 }
 h1 {
-	font-size:22px;
+	font-size:1.3em;
 	color:#ff0000;
 	text-align:center;
 	margin: auto;
 }
 h2 {
-	font-size:18px;
+	font-size:1.1em;
 	color:#ff0000;
 	text-align:center;
 	margin: auto;
@@ -19,45 +19,60 @@ h2 {
 /*Definitionen <div>*/
 
 #page {
-  	width:950px;
+  	max-width:1100px;
+	min-width:500px;
 	margin:auto;
 	text-align:left;
-  	background-color:#ffffff;
 }
 
 #header{
-	width:950px;
-	height:100px;
-	font-size:40px;
+	min-height:100px;
+	font-size:3em;
 	color:#ff0000;
 	background-color:#55dd77;
+	border-radius:15px;
+	border:solid 0.1em #22aa44;
+	position:relative;
 }
 
 #menu{
-	height:21px;
+	padding:0.5em 0;
 	padding-bottom:03px;
 	padding-top:03px;
-	font-size:15px;
+	font-size:1.1em;
 	color:#00ff00;
-	background-color:#555555;
+	background-color:#999999;
 	text-align:center;
 	clear: both;
 }
+#menueteil{
+	display:inline-block;
+	background-color:#555;
+	border-radius:15px;
+	padding:0.5em;
+	margin:0 1em;
+}
+#menueteil:hover{
+	color:#555;
+	background-color:#2f2;
+}
+
 
 #menu a:link { color: #22ff22; }
 #menu a:visited { color: #22ff22; }
-#menu a:hover { color: #22ff22; }
+#menu a:hover { color: #555; }
 
 #site {
-	width:950px;
 	height:auto;
 	min-height:250px;
-	
+	background-color:#ffffff;
+	border-radius:15px;
+	border:solid 0.4em #55dd77;	
 }
 
 #menu-apps{
 	float:left;
-	width:200px;
+	width:20%;
 	height:auto;
 	min-height:200px;
 	margin:10px;
@@ -76,8 +91,7 @@ h2 {
 	padding-bottom:10px;
 	padding-right:05px;
 	padding-left:05px;
-	width:700px;
-	margin-left:230px;
+	margin-left:25%;
 }
 
 #content{
@@ -90,14 +104,40 @@ h2 {
 }
 
 #footer{
-	width:950px;
 	height:auto;
 	padding-top:10px;
 	padding-bottom:10px;
 	text-align:center;
-	font-size:12px;
+	font-size:0.8em;
 	color:#444444;
 	background-color:#55dd77;
 	clear:both;
+	margin-top:1em;
+	border-radius:15px;
+	border:solid 0.4em #22aa44;
 }
+
+input{
+	font-size:1em;
+}
+
+@media (orientation: portrait), (max-width:500px){
+
+	body{
+		font-size:250%;
+	}
+	#header img{
+		display:none;
+	}
+}
+@media (orientation: landscape){
+	#header div {
+		position:absolute;
+		bottom:25%;
+		left:164px;
+	}
+}
+
+
+
 

@@ -46,7 +46,7 @@ $syntaxshow = array("text/php", "text/x-php", "text/x-csrc", "text/x-c", "applic
 
 if(is_dir($openpath)){
 
-	$addonbottomcontent .= ('<div style="padding-bottom:5px; font-size:15px;">');
+	$addonbottomcontent .= ('<div style="padding-bottom:5px; font-size:1em;">');
 	$addonbottomcontent .= ('<center>');
 	$addonbottomcontent .= ('<div style="float:left;"><a style="display:inline-block; background:#999; height:58px; margin-right:5px; border: 2px solid #000; border-radius: 2px;" href="explorer.php?action=hoch&amp;path='.urlencode($pathnow).'"><img src="'.$allgconfsiteurl.'/load/up.png" title="Back" alt="&lt;-Back"></a></div>');
 	$addonbottomcontent .= ('<div style="line-height: 58px; padding:2px; text-align:left; margin:2px; background:#cccccc; border-radius:2px;">files://'.$pathnow.'</div>');

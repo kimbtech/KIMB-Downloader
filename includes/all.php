@@ -41,15 +41,15 @@ echo($header);
 echo("\n\r");
 echo('</head><body><div id="page">');
 echo('<div id="header">');
-echo('<div style="float:left;"><a href="'.$allgconfsiteurl.'/index.php"><img src="'.$allgconfsiteurl.'/load/logo.png" style="border:none;"></a></div><div style="padding-left:146px; line-height: 100px;">'.$allgconfsitename.'</div>');
+echo('<a href="'.$allgconfsiteurl.'/index.php"><img src="'.$allgconfsiteurl.'/load/logo.png" style="border:none;"></a><div>'.$allgconfsitename.'</div>');
 echo('</div>');
 echo('<div id="menu">');
-echo('<a href="'.$allgconfsiteurl.'/index.php">Home</a>
-&nbsp;|&nbsp;&lt;-->&nbsp;|&nbsp;<a href="'.$allgconfsiteurl.'/explorer.php">Explorer</a>
-&nbsp;|&nbsp;&lt;-->&nbsp;|&nbsp;<a href="'.$allgconfsiteurl.'/info.php">Infomationen</a>');
+echo('<a id="menueteil" href="'.$allgconfsiteurl.'/index.php">Home</a>');
+echo('<a id="menueteil" href="'.$allgconfsiteurl.'/explorer.php">Explorer</a>');
+echo('<a id="menueteil" href="'.$allgconfsiteurl.'/info.php">Infomationen</a>');
 if($_SESSION["backendlogin"]== $allgconfloginokay){
-			echo('&nbsp;|&nbsp;&lt;-->&nbsp;|&nbsp;<i><a href="'.$allgconfsiteurl.'/login.php">Seiteninhalte ändern</a>
-			&nbsp;--&nbsp;<u><b><a href="'.$allgconfsiteurl.'/login.php?todo=logout">Logout</a></b></u></i>');
+			echo('<i><a id="menueteil" href="'.$allgconfsiteurl.'/login.php">Seiteninhalte ändern</a>
+			<u><b><a id="menueteil" href="'.$allgconfsiteurl.'/login.php?todo=logout">Logout</a></b></u></i>');
 		}
 echo('</div>');
 echo("\n\r");
@@ -75,5 +75,5 @@ echo('</div><div id="footer">'."\n\r");
 echo(''.$allgconfcopyrightname.'<br />');
 echo('<a href="'.$allgconfimpressumlink.'" target=blank>Impressum</a><br />');
 echo("\n\r");
-echo('</div> <a style="float:right;" href="login.php">Login</a> </body> </html>');
+echo('</div> <a style="float:right; font-size:0.8em;" href="login.php">Login</a> </body> </html>');
 ?>
