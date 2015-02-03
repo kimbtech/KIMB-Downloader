@@ -70,30 +70,6 @@ h2 {
 	border:solid 0.4em #55dd77;	
 }
 
-#menu-apps{
-	float:left;
-	width:20%;
-	height:auto;
-	min-height:200px;
-	margin:10px;
-	padding-top:10px;
-	padding-bottom:10px;
-	padding-right:05px;
-	padding-left:05px;
-	background-color:#cccccc;
-	border-radius: 15px;
-}
-
-#content-apps{
-	height:auto;
-	min-height:200px;
-	padding-top:10px;
-	padding-bottom:10px;
-	padding-right:05px;
-	padding-left:05px;
-	margin-left:25%;
-}
-
 #content{
 	height:auto;
 	min-height:250px;
@@ -129,12 +105,57 @@ input{
 	#header img{
 		display:none;
 	}
+
+	#menu-apps{
+		height:auto;
+		min-height:200px;
+		margin:10px;
+		padding-top:10px;
+		padding-bottom:10px;
+		padding-right:05px;
+		padding-left:05px;
+		background-color:#cccccc;
+		border-radius: 15px;
+	}
+
+	#content-apps{
+		height:auto;
+		min-height:200px;
+		padding-top:10px;
+		padding-bottom:10px;
+		padding-right:05px;
+		padding-left:05px;
+	}
 }
 @media (orientation: landscape){
 	#header div {
 		position:absolute;
 		bottom:25%;
 		left:164px;
+	}
+
+	#menu-apps{
+		float:left;
+		width:20%;
+		height:auto;
+		min-height:200px;
+		margin:10px;
+		padding-top:10px;
+		padding-bottom:10px;
+		padding-right:05px;
+		padding-left:05px;
+		background-color:#cccccc;
+		border-radius: 15px;
+	}
+
+	#content-apps{
+		height:auto;
+		min-height:200px;
+		padding-top:10px;
+		padding-bottom:10px;
+		padding-right:05px;
+		padding-left:05px;
+		margin-left:25%;
 	}
 }
 
