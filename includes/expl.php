@@ -72,7 +72,7 @@ if(is_dir($openpath)){
 				elseif(in_array($type, $syntaxshow)){
 					$addonbottomcontent .=  '<div style="background-image:url('.$allgconfsiteurl.'/load/code.png); padding-left:35px; display: table-cell; vertical-align:middle; height:32px; background-repeat:no-repeat; border-radius:5px;">
 						<a href="explorer.php?todo=down&amp;down='.urlencode($pathnow.'/'.$file).'&amp;dat='.urlencode($file).'" target="blank">'.$file.'</a>';
-					$addonbottomcontent .= '</div><br />'; 
+					$addonbottomcontent .= '<a style="background-image:url('.$allgconfsiteurl.'/load/raw.png); margin-left:5px; height:32px; width:24px; display:inline-block; background-repeat:no-repeat;" href="explorer.php?todo=down&amp;down='.urlencode($pathnow.'/'.$file).'&amp;dat='.urlencode($file).'&raw" target="blank" title="RAW File"></a></div><br />'; 
 				}
 				elseif($type == "application/zip"){
 					$addonbottomcontent .=  '<div style="background-image:url('.$allgconfsiteurl.'/load/zip.png); padding-left:35px; display: table-cell; vertical-align:middle; height:32px; background-repeat:no-repeat; border-radius:5px;">

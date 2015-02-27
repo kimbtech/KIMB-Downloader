@@ -58,7 +58,9 @@ if(is_file($filepath)){
 
 		$addonbottomcontent .= ('</div></div>');
 				}
-	elseif(in_array($type, $syntaxshow)){
+	elseif(in_array($type, $syntaxshow) && !isset( $_GET['raw'] ) ){
+
+		$header .= '<style>#page { max-width:1900px; }</style>';
 
 		$path_parts = pathinfo($filepath);
 
