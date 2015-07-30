@@ -1,0 +1,23 @@
+<[about:doc]>KIMB dbf V3.00B - KIMB-technologies<[about:doc]>
+<[001]>sitename==sitefavi==loginokay==siteurl==description==urlweitermeth==adminmail==robots==mailvon==cache==sitespr==systemversion==build==urlrewrite==cachelifetime==use_request_url==show_siteinfos==theme==cronkey==lang==coolifetime<[001]>
+<[001-urlweitermeth]>1<[001-urlweitermeth]>
+<[001-robots]>index, follow<[001-robots]>
+<[001-cache]>off<[001-cache]>
+<[001-sitespr]>auto<[001-sitespr]>
+<[001-systemversion]>2.00 Beta<[001-systemversion]>
+<[001-build]>V2.0B-p2<[001-build]>
+<[001-cachelifetime]>always<[001-cachelifetime]>
+<[001-use_request_url]>ok<[001-use_request_url]>
+<[001-show_siteinfos]>on<[001-show_siteinfos]>
+<[001-theme]>norm<[001-theme]>
+<[001-lang]>on<[001-lang]>
+<[001-coolifetime]>0<[001-coolifetime]>
+<[001-sitename]>KIMB CMS<[001-sitename]>
+<[001-sitefavi]>http://cms.dev:8000/load/system/KIMB.ico<[001-sitefavi]>
+<[001-loginokay]>3vtdJYQSarQBP5FiGF23tSL9PYwl0NiJryMV6otoCma51I3xP<[001-loginokay]>
+<[001-siteurl]>http://cms.dev:8000<[001-siteurl]>
+<[001-description]>CMS von KIMB-technologies<[001-description]>
+<[001-adminmail]>cmsadmin@example.com<[001-adminmail]>
+<[001-mailvon]>cms@cms.dev:8000<[001-mailvon]>
+<[001-urlrewrite]>on<[001-urlrewrite]>
+<[001-cronkey]>qaqNnQruZJluUsrdtGT2Irxp4p8x6<[001-cronkey]>

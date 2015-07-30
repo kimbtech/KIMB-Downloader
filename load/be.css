@@ -1,0 +1,128 @@
+body {
+	background-color:#494949;
+	font-family: Ubuntu;
+	font-size:14px;
+	color:#000000;
+}
+h1 {
+	font-size:22px;
+	color:#0000ff;
+	text-align:center;
+	margin: auto;
+}
+h2 {
+	font-size:18px;
+	color:#0000ff;
+	text-align:center;
+	margin: auto;
+}
+
+/*Definitionen <div>*/
+
+#header {
+	width:950px;
+	height:100px;
+	font-size:15px;
+	color:#ffffff;
+	margin-top:10px;
+	margin-bottom:10px;
+	text-align:center;
+	margin-left:100px;
+}
+
+#page {
+  	width:950px;
+	margin-left:100px;
+	text-align:left;
+	position: relative;
+}
+
+#userinfo{
+	position: absolute;
+	right:0px;
+	top:-57px;
+	height:34px;
+	width:230px;
+	padding:10px;
+	border-radius: 15px;
+	background-color:#ffffff;
+	border:solid 2px #EEC900;
+}
+
+#menue{
+	float:left;
+	padding:10px;
+	border:solid 2px #EEC900; 
+	border-radius:15px;
+	background-color:#ffffff;
+	width:200px;
+}
+
+#version{
+	clear:both;
+	float:left;
+	margin-top:10px;
+	padding:10px;
+	border:solid 2px #EEC900; 
+	border-radius:15px;
+	background-color:#ffffff;
+	width:200px;
+}
+
+#content{
+	height:auto;
+	min-height:250px;
+	padding:10px;
+	margin-left:240px;
+	border-radius: 15px;
+	background-color:#ffffff;
+	border:solid 2px #EEC900;
+}
+
+#errorbox{
+	background-color:#E68E8E;
+	border-radius:15px;
+	padding:20px;
+	border:3px solid #FFB90F;
+}
+
+#startbox{
+	display:block;
+	height:100px;
+	background-color:#cccccc;
+	border:2px solid #000000;
+	text-align:center;
+	border-radius:3px;
+	text-decoration:none;
+	color:#000000;
+	padding:5px;
+	margin:10px;
+}
+
+#startbox .ui-icon{
+	margin:auto;
+}
+
+#startbox-x{
+	display: inline-block;
+	width: 300px;
+}
+
+input[readonly=readonly]{
+	background-color:#ccc;
+}
+
+input, button{
+	font-family: Ubuntu;
+	font-size:14px;
+	color:#000000;
+}
+
+/* jQuery UI Styles */
+label {
+	display: inline-block;
+	width: 75px;
+}
+.ui-menu { 
+	width: 195px;
+}

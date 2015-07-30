@@ -25,46 +25,22 @@
 
 define("KIMB_Downloader", "Clean Request");
 
-//Klassen Autoload & Konfiguration & Funktionen laden
-require_once(__DIR__.'/core/conf/conf.php');
+//Hier wird das Autoload für alles Klassen registriert.
 
-//System initialisiert!
-
-//Konfigurator laufengelassen?
-if( empty( $allgsysconf['siteurl'] ) ){
-	open_url( 'configurator.php' );
+function autoload_classes( $class ){
+	//Alle autoloads in Array
+	//	Klassenname => Dateiname (ohne Endung, evtl. mit Pfad)
+	$classarray = array(
+		'KIMBdbf' => 'kimbdbf',
+		'system_output' => 'output',
+		'backend_output' => 'output_backend'
+	);
+	
+	//laden der gewünschten Klasse
+	require_once( __DIR__.'/'.$classarray[$class].'.php' );
 }
 
-//URL -> was zu tun?
-require_once(__DIR__.'/core/parse_url.php');
-
-//Module first
-require_once(__DIR__.'/core/module/include_fe_first.php');
-
-//richtiges machen
-if( $parsed == 'download' ){
-	require_once(__DIR__.'/core/parts/make_download.php');
-}
-elseif( $parsed == 'explorer' ){
-	require_once(__DIR__.'/core/parts/make_explorer.php');
-}
-elseif( $parsed == 'info' ){
-	require_once(__DIR__.'/core/parts/make_info.php');
-}
-elseif( $parsed == 'view' ){
-	require_once(__DIR__.'/core/parts/make_view.php');
-}
-else{
-	$sitecontent->echo_error( 'Fehlerhafter Zugriff' );
-}
-
-//Module first
-require_once(__DIR__.'/core/module/include_fe_second.php');
-
-//Seite erstellen
-require_once(__DIR__.'/core/make_site.php');
-
-//Seite ausgeben
-$sitecontent->output_complete_site();
+//Autoload Funktion registrieren
+spl_autoload_register('autoload_classes');
 
 ?>

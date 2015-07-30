@@ -1,0 +1,133 @@
+body {
+	background:white;
+	font-family: Ubuntu,Arial,sans-serif;
+	font-size:100%;
+	color:#000000;
+}
+h1 {
+	font-size:1.8em;
+	color:black;
+	text-align:center;
+	margin: auto;
+	font-weight: bold;
+}
+h2 {
+	font-size:1.3em;
+	color:black;
+	text-align:center;
+	margin: auto;
+	font-weight: bold;
+}
+input, textarea, button{
+	font-size:100%;
+	font-family:Ubuntu,Arial,sans-serif;
+}
+
+/*Definitionen <div>*/
+
+#page {
+	margin:auto;
+	text-align:left;
+	border-radius:20px;
+	background-color:white;
+}
+
+#header{
+	height:100px;
+	font-size:40px;
+	color:black;
+	background-color:gray;
+	border-radius: 20px;
+	border:solid 2px black;
+	padding:15px;
+}
+
+#header span{
+	border-bottom:solid 5px black;
+}
+
+#header a{
+	text-decoration: none;
+}
+#header a:hover{
+	color:black;
+}
+#header a:visited{
+	color:black;
+}
+#header a:link{
+	color:black;
+}
+
+#site{
+	padding-right:2px;
+	padding-left:2px;
+}
+
+#apps{
+	display: none;
+}
+
+#contentm, #contents{
+	height:auto;
+	min-height:250px;
+	padding:10px;
+	border-radius: 20px;
+	background-color:#ffffff;
+	border:solid 2px black;
+	position:relative;	
+}
+
+#footer{
+	height:auto;
+	padding:10px;
+	text-align:center;
+	font-size:0.8em;
+	color:#000;
+	background-color:white;
+	border-radius: 20px;
+	margin-top:20px;
+	border:solid 2px black;
+}
+
+#errorbox{
+	background:gray;
+	border-radius:20px;
+	padding:20px;
+	margin: 5px 0;
+
+}
+
+#usertime{
+	display: none;
+}
+
+#permalink{
+	position: absolute;
+	bottom:-2px;
+	left:-2px;
+	border:solid 2px black;
+	background-color:white;
+	border-radius:20px;
+	padding:5px;
+}
+
+#breadcrumb{
+	position: absolute;
+	top:-2px;
+	left:-2px;
+	border:solid 2px black;
+	background-color:white;
+	border-radius:20px;
+	padding:5px;
+	min-width:30%;
+	min-height:1.1em;
+}
+
+#nav {
+	display: none;
+}
+
+div#lang ul{
+	display: none;
+}
