@@ -33,7 +33,9 @@ function autoload_classes( $class ){
 	$classarray = array(
 		'KIMBdbf' => 'kimbdbf',
 		'system_output' => 'output',
-		'backend_output' => 'output_backend'
+		'backend_output' => 'output_backend',
+		'Markdown' => 'markdown/load',
+		'MarkdownExtra' => 'markdown/load'
 	);
 	
 	//laden der gewünschten Klasse

@@ -27,6 +27,7 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 //Seite erstellen
 //	Hauptinhalt schon da, aber Menüpunkte fehlen (Info [bei Datei, ihr Ordner], Explorer [bei Datei, ihr Ordner], Download [deaktiviert wenn in einem Ordner], View [deaktiviert wenn in einem Ordner])
+	$sitecontent->menue( $info, $explorer, $vorschau, $download );
 //	Footer
 //	Header
 

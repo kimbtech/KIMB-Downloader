@@ -35,9 +35,6 @@ if( empty( $allgsysconf['siteurl'] ) ){
 	open_url( 'configurator.php' );
 }
 
-//Liste mit allen Seiten des Backends (ToDos)
-require_once( __DIR__.'/core/backend/todos_list.php' );
-
 //ToDo gewählt?
 if( !empty( $_GET['todo'] ) ){
 	

@@ -40,8 +40,11 @@ SYS_INIT( 'none' );
 
 //wichtige Objekte
 
+//Liste mit allen Seiten des Backends (ToDos)
+require_once( __DIR__.'/core/backend/todos_list.php' );
+
 //Seitenausgabe BE
-$sitecontent = new backend_output($allgsysconf);
+$sitecontent = new backend_output($allgsysconf, $backend_todos);
 
 //Info über das CMS dem HTML-Code hinzufügen
 $kimbcmsinfo = '<!--

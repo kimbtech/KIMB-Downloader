@@ -70,7 +70,7 @@ function SYS_INIT( $robots, $cont = 'text/html' ){
 	ini_set('session.use_only_cookies', 1);
 	//Session Cookie vorbereiten
 	session_set_cookie_params ( $lifetime, $path, $domain, $secure, true );
-	session_name ("KIMBCMS");
+	session_name ("KIMBDownloader");
 	//Session Cookie setzen
 	session_start();
 	//Fehlermeldungen & HTTP Header
@@ -208,117 +208,6 @@ function get_requ_url(){
 		$urlg = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	}
 	return $urlg;
-}
-
-//backendlogin prüfen und error ausgeben
-//	$number => englische Zahl für BE Seiten
-//	$permiss => more,less,none
-//	$die => true,false (soll der Ablauf abgebrochen werden und Error 403 angezeigt werden wenn keine Rechte)
-function check_backend_login( $number , $permiss = 'less', $die = true ){
-	global $sitecontent, $allgsysconf;
-
-	//Allgemein eingeloggt?
-	if( $_SESSION['loginokay'] == $allgsysconf['loginokay'] && $_SESSION["ip"] == $_SERVER['REMOTE_ADDR'] && $_SESSION["useragent"] == $_SERVER['HTTP_USER_AGENT'] ){
-
-		//Hat User Permission more oder less und ist dies als Parameter gegeben?
-		if( ( $_SESSION['permission'] == 'more' || $_SESSION['permission'] == 'less' ) && ( $permiss == 'more' || $permiss == 'less' ) ){
-			//wenn more gegeben, aber User nicht more -> keine Rechte
-			if( $permiss == 'more' && $_SESSION['permission'] != 'more' ){
-				//die oder nur return false
-				if( $die ){
-					//Seiteninhalt per Klasse, dann nutzen, sonst ohne
-					if( is_object( $sitecontent ) ){
-						$sitecontent->echo_error( 'Sie haben keine Rechte diese Seite zu sehen!' , '403');
-						$sitecontent->output_complete_site();
-					}
-					else{
-						echo( '403 - Sie haben keine Rechte diese Seite zu sehen!' );
-					}
-					die;
-				}
-				else{
-					return false;
-				}
-			}
-			
-			//Permission less übergeben und User muss more oder less sein -> OK
-			return true;
-		}
-		//kein more oder less bei dem User oder nicht als Parameter gegeben
-		else{
-			//lese BE Leveldatei
-			$levellist = new KIMBdbf( 'backend/users/level.kimb' );
-			//lese die englischen Zahlen der Nutzergruppe des Users
-			$permissteile = $levellist->read_kimb_one( $_SESSION['permission'] );
-			//Nutzergruppe vorhanden?
-			if( !empty( $permissteile ) ){
-					//Zerteile den Sting mit den englischen Zahlen in einzelne, packe in eine Array
-					$permissteile = explode( ',' , $permissteile );
-					
-					//ist in der Nutzergruppe (Array $permissteile) die englische Zahl (Parameter) vorhanden?
-					if( !in_array( $number , $permissteile ) ){
-						//keine Rechte
-						
-						//die oder nur return false
-						if( $die ){
-							//Seiteninhalt per Klasse, dann nutzen, sonst ohne
-							if( is_object( $sitecontent ) ){
-								$sitecontent->echo_error( 'Sie haben keine Rechte diese Seite zu sehen!' , '403');
-								$sitecontent->output_complete_site();
-							}
-							else{
-								echo( '403 - Sie haben keine Rechte diese Seite zu sehen!' );
-							}
-							die;
-						}
-						else{
-							return false;
-						}
-					}
-					else{
-						//Nutzergruppe des Users hat Rechte für gegebene englische Zahl (Paramter $number)
-						return true;
-					}
-
-			}
-			//Nutzergruppe existiert nicht
-			else{
-				//die oder nur return false
-				if( $die ){
-					//Seiteninhalt per Klasse, dann nutzen, sonst ohne
-					if( is_object( $sitecontent ) ){
-						$sitecontent->echo_error( 'Sie haben keine Rechte diese Seite zu sehen!' , '403');
-						$sitecontent->output_complete_site();
-					}
-					else{
-						echo( '403 - Sie haben keine Rechte diese Seite zu sehen!' );
-					}
-					die;
-				}
-				else{
-					return false;
-				}
-			}
-		}
-	}
-	//gar nicht eingeloggt -> keine Rechte
-	else{
-		//die oder nur return false
-		if( $die ){
-			//Seiteninhalt per Klasse, dann nutzen, sonst ohne
-			if( is_object( $sitecontent ) ){
-					$sitecontent->echo_error( 'Sie haben keine Rechte diese Seite zu sehen!' , '403');
-					$sitecontent->output_complete_site();
-			}
-			else{
-				echo( '403 - Sie haben keine Rechte diese Seite zu sehen!' );
-			}
-			die;
-		}
-		else{
-			return false;
-		}
-	}
 }
 
 //KIMB-Datei umbenennen/verschieben
@@ -468,176 +357,6 @@ function makepassw( $laenge , $chars = '!"#%&()*+,-./:;?[\]_0123456789ABCDEFGHIJ
 	}
 	//Ausgeben
 	return $output;
-}
-
-//Verzeichnis rekursiv auf Fotos duchsuchen und als JSON String ausgeben (für Foto Auswahl von TinyMCE)
-//Achtung: Komma am Ende des JSON Strings!! (mit listdirrec(); entfernt)
-//	$dir => zu durchsuchendes Verzeichnis auf dem Server
-//	$grdir => grundlegende URL zum zu durchsuchenden Verzeichnis auf dem Server
-function listdirrec_f( $dir, $grdir ){
-	global $allgsysconf;
-	
-	//Verezichnis lesen
-	$files = scandir( $dir );
-
-	//alle Dateien duchgehen
-	foreach( $files as $file ){
-
-		if( $file == '..' || $file == '.' ){
-
-		}
-		elseif( is_file( $dir.'/'.$file ) ){
-
-			//wenn Datei, dann MIME Type bestimmen
-			$mime = mime_content_type ( $dir.'/'.$file );
-
-			//MIME String zuschneiden (nur image bleibt)
-			$mime = substr( $mime, 0, 5 ); 
-
-			//wenn MIME image, dann zu JSON Sting hinzufügen
-			if( $mime == 'image' ){
-				$out .= '{title: "'.$grdir.'/'.$file.'", value: "'.$allgsysconf['siteurl'].$grdir.'/'.$file.'"},';
-			}
-		}
-		elseif( is_dir( $dir.'/'.$file ) ){
-			//wenn Verzeichnis, dann dieses durchsuchen
-			$out .= listdirrec_f( $dir.'/'.$file , $grdir.'/'.$file );
-		}
-	}
-	//JSON Sting ausgeben
-	return $out;
-}
-
-//wie listdirrec_f(); nur ohne Komma am Ende und bei mehrfachem Aufruf Speicherung der Strings
-function listdirrec( $dir, $grdir ){
-	global $listdirrecold;
-
-	if( !isset( $listdirrecold[$dir] ) ){
-		$out = listdirrec_f( $dir, $grdir );
-		$out = substr( $out, 0, strlen( $out ) - 1 );
-		return $listdirrecold[$dir] = $out;
-	}
-	else{
-		return $listdirrecold[$dir];
-	}
-}
-
-//einfaches Hinzufügen von TinyMCE in eine Textarea
-//Die benötigten JavaScript Dateien werden im Backend automatisch geladen, im Frontend ist das Hinzufügen des HTML-Headers '<!-- TinyMCE -->' nötig!
-//	$big => großes Feld aktivieren (mit TinyMCE Menü) [boolean]
-//	$small => kleines Feld aktivieren (ohne TinyMCE menü) [boolean]
-//	$ids => Array ()'big' => ' HTML ID des Textarea für großes Feld ', 'small' => ' HTML ID des Textarea für kleines Feld ' ) 
-function add_tiny( $big = false, $small = false, $ids = array( 'big' => '#inhalt', 'small' => '#footer' ) ){
-	global $sitecontent, $allgsysconf, $tinyoo;
-
-	//$tinyoo => gibt an, ob JS Funktion tinychange(); schon in der Ausagabe 
-
-	//JavaScript Ausgabe beginnen
-	$sitecontent->add_html_header('<script>');
-
-	//Funktion tinychange(); schon da?
-	if( !$tinyoo ){
-		//wenn nicht, dann hinzufügen
-		//	Die Funktion tinychange(); verändert den Status des TinyMCE Editoren. Bei einem Aufruf von tinychange( <<HTML ID der Textarea>> ); wird deren TinyMCE Status verändert.
-		//	TinyMCE wird entweder ausgeblendet oder eingeblendet.
-		$sitecontent->add_html_header('
-		var tiny = [];
-
-		function tinychange( id ){
-			if( !tiny[id] ){
-				tinymce.EditorManager.execCommand( "mceAddEditor", true, id);
-				tiny[id] = true;
-			}
-			else{
-				tinymce.EditorManager.execCommand( "mceRemoveEditor", true, id)
-				tiny[id] = false;
-			}
-		}
-		
-		function disabletooltips(){ 
-			$( "iframe" ).tooltip({ disabled: true });
-		}
-		');
-		$tinyoo = true;
-	}
-
-	//großer TinyMCE gewünscht?
-	if( $big ){
-		//Initialisierung von TinyMCE
-		//	http://www.tinymce.com
-		//	Angabe der Textarea ID aus $ids
-		$sitecontent->add_html_header('
-		tinymce.init({
-			selector: "'.$ids['big'].'",
-			theme: "modern",
-			plugins: [
-				"advlist autosave autolink lists link image charmap preview hr anchor pagebreak",
-				"searchreplace wordcount visualblocks visualchars fullscreen",
-				"insertdatetime media nonbreaking save table contextmenu directionality",
-				"emoticons paste textcolor colorpicker textpattern codemagic"
-			],
-			toolbar1: "styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent hr",
-			toolbar2: "fontselect | undo redo | forecolor backcolor | link image emoticons | preview fullscreen | codemagic searchreplace",
-			image_advtab: true,
-			language : "de",
-			width : 680,
-			height : 300,
-			resize: "horizontal",
-			content_css : "'.$allgsysconf['siteurl'].'/load/system/theme/design_for_tiny.css",
-			browser_spellcheck : true,
-			image_list: function( success ) {
-				success( [ '.listdirrec( __DIR__.'/../../load/userdata', '/load/userdata' ).' ] );
-			},
-			autosave_interval: "20s",
-			autosave_restore_when_empty: true,
-			autosave_retention: "60m",
-			menubar: "file edit insert view format table",
-			convert_urls: false,
-			init_instance_callback : "disabletooltips"
-		});
-		tiny[\''.substr( $ids['big'], 1 ).'\'] = true;
-		');
-
-	}
-	//kleiner TinyMCE gewünscht?
-	if( $small ){
-		//Initialisierung von TinyMCE
-		//	http://www.tinymce.com
-		//	Angabe der Textarea ID aus $ids
-		$sitecontent->add_html_header('
-		tinymce.init({
-			selector: "'.$ids['small'].'",
-			theme: "modern",
-			plugins: [
-				"advlist autosave autolink lists link image charmap preview hr anchor pagebreak",
-				"searchreplace wordcount visualblocks visualchars fullscreen",
-				"insertdatetime media nonbreaking save table contextmenu directionality",
-				"emoticons paste textcolor colorpicker textpattern codemagic"
-			],
-			toolbar1: "styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent hr",
-			toolbar2: "fontselect | undo redo | forecolor backcolor | link image emoticons | preview fullscreen | codemagic searchreplace",
-			image_advtab: true,
-			language : "de",
-			width : 680,
-			height : 100,
-			resize: "horizontal",
-			content_css : "'.$allgsysconf['siteurl'].'/load/system/theme/design_for_tiny.css",
-			browser_spellcheck : true,
-			menubar : false,
-			autosave_interval: "20s",
-			autosave_restore_when_empty: true,
-			autosave_retention: "60m",
-			image_list: function( success ) {
-				success( [ '.listdirrec( __DIR__.'/../../load/userdata', '/load/userdata' ).' ] );
-			},
-			convert_urls: false,
-			init_instance_callback : "disabletooltips"
-		});
-		tiny[\''.substr( $ids['small'], 1 ).'\'] = true;
-		');
-	}
-	//Script beenden
-	$sitecontent->add_html_header('</script>');
 }
 
 //CMS und KIMB-Software Versionsstings vergleichen
@@ -799,6 +518,32 @@ function get_req_url(){
 	}
 
 	return $req;
+}
+
+function add_codemirror( $id, $mode = 'text/x-markdown' ){
+	global $sitecontent, $allgsysconf;
+	
+	//JavaScript Code um Codeeditor anzuzeigen
+	//	URL zu den Dateien
+	$mirrorpath = $allgsysconf['siteurl'].'/load/codemirror';
+	//	JS
+	$sitecontent->add_html_header('
+	<link rel="stylesheet" href="'.$mirrorpath.'/lib/codemirror.css">
+	<style>.CodeMirror { height: auto; }</style>
+	<script src="'.$mirrorpath.'/lib/codemirror.js"></script>
+	<script src="'.$mirrorpath.'/addon/edit/matchbrackets.js"></script>
+	<script src="'.$mirrorpath.'/addon/edit/continuelist.js"></script>
+	<script src="'.$mirrorpath.'/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="'.$mirrorpath.'/mode/xml/xml.js"></script>
+	<script src="'.$mirrorpath.'/mode/javascript/javascript.js"></script>
+	<script src="'.$mirrorpath.'/mode/css/css.js"></script>
+	<script src="'.$mirrorpath.'/mode/clike/clike.js"></script>
+	<script src="'.$mirrorpath.'/mode/php/php.js"></script>
+	<script src="'.$mirrorpath.'/mode/markdown/markdown.js"></script>
+	<script>$(function() { CodeMirror.fromTextArea(document.getElementById("'.$id.'"), { lineNumbers: true, matchBrackets: true, mode: "'.$mode.'" }); });</script>
+	');
+	
+	return;	
 }
 
 // Funktionen von Modulen hinzufügen
