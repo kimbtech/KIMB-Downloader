@@ -1,6 +1,6 @@
 #Error Document
 ErrorDocument 404 /explorer/err404
-ErrorDocument 403 /explorer/err403
+ErrorDocument 403 /explorer/err404
 
 #keine Verzeichnislisting
 Options -Indexes

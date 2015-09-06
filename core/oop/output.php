@@ -23,7 +23,10 @@
 //https://www.gnu.org/licenses/gpl-3.0.txt
 /*************************************************/
 
-define("KIMB_Downloader", "Clean Request");
+defined('KIMB_Downloader') or die('No clean Request');
+
+//Für Themes!!
+define("KIMB_CMS", "Clean Request");
 
 //an den Downloader anpassen
 //Add-on Area behalten
@@ -47,13 +50,14 @@ class system_output{
 		
 		$this->sonderfile = new KIMBdbf('sonder.kimb');
 		$this->footer = $this->sonderfile->read_kimb_one('footer')."\r\n";
-		$this->description = $this->sonderfile->read_kimb_one('description')."\r\n";
-		$this->keywords = $this->sonderfile->read_kimb_one('keywords')."\r\n";
+		$this->allgsysconf['description'] = $this->sonderfile->read_kimb_one('description');
+		$this->allgsysconf['lang'] = 'off';
+		$this->header = '<meta name="keywords" content="'.$this->sonderfile->read_kimb_one('keywords').'">'."\r\n";
 	}
 
 	//Menüeinträge hinzufügen
 	//	Für jeden dauerhaften Menüpunkt ein Array (Keys Link & Click [yes/no])
-	public function menue( $info, $explorer, $vorschau, $download ){
+	public function menue( $info, $explorer, $vorschau = false , $download = false ){
 		
 		//Daten in einem Array aufbereiten (für CMS Theme)
 		$menues[] = array(
@@ -70,19 +74,23 @@ class system_output{
 			'clicked' => $explorer['click']
 		);
 		
-		$menues[] = array(
-			'name' => 'Vorschau',
-			'link' => $vorschau['link'],
-			'niveau' => 1,
-			'clicked' => $vorschau['click']
-		);
+		if( $vorschau != false ){
+			$menues[] = array(
+				'name' => 'Vorschau',
+				'link' => $vorschau['link'],
+				'niveau' => 1,
+				'clicked' => $vorschau['click']
+			);
+		}
 		
-		$menues[] = array(
-			'name' => 'Download',
-			'link' => $download['link'],
-			'niveau' => 1,
-			'clicked' => $download['click']
-		);
+		if( $download != false ){
+			$menues[] = array(
+				'name' => 'Download',
+				'link' => $download['link'],
+				'niveau' => 1,
+				'clicked' => $download['click']
+			);
+		}
 		
 		foreach( $menues as $menu ){
 			//Die Menüerstellung erfolgt durch eine Datei des Themes

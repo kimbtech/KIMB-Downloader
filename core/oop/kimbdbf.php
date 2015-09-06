@@ -23,7 +23,7 @@
 //https://www.gnu.org/licenses/gpl-3.0.txt
 /*************************************************/
 
-define("KIMB_Downloader", "Clean Request");
+defined('KIMB_Downloader') or die('No clean Request');
 
 //Die KIMBdbf ist die zentrale Klasse für alle Datenbankaufgaben.
 //Alle Daten werden hiermit gespeichert.

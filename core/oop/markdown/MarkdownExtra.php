@@ -1,4 +1,5 @@
 <?php
+defined('KIMB_Downloader') or die('No clean Request');
 #
 # Markdown Extra  -  A text-to-HTML conversion tool for web writers
 #

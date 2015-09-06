@@ -28,6 +28,9 @@ define("KIMB_Downloader", "Clean Request");
 //Klassen Autoload & Konfiguration & Funktionen laden
 require_once(__DIR__.'/core/conf/conf.php');
 
+//Pfad zum Datei-/Codeverzeichnis
+$codefolder = __DIR__.'/files';
+
 //System initialisiert!
 
 //Konfigurator laufengelassen?
@@ -55,10 +58,13 @@ elseif( $parsed == 'view' ){
 	require_once(__DIR__.'/core/parts/make_view.php');
 }
 else{
-	$sitecontent->echo_error( 'Fehlerhafter Zugriff' );
+	if( !$errormessset ){
+		$sitecontent->echo_error( 'Fehlerhafter Zugriff' );
+		$errormessset = true;
+	}
 }
 
-//Module first
+//Module second
 require_once(__DIR__.'/core/module/include_fe_second.php');
 
 //Seite erstellen
