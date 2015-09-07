@@ -31,4 +31,41 @@ defined('KIMB_Downloader') or die('No clean Request');
 //Hoch
 //Ordner [öffnen,(Beschreibung aus readme)] & Dateien [view, download, (Beschreibung)]
 
+//aktuellen Ordner auslesen
+$files = scandir( $folder );
+//nach ABC sortieren
+sort( $files );
+
+//Liste beginnen
+$sitecontent->add_site_content( '<div class="explorer list explorer_list"><ul>' );
+
+foreach( $files as $file ){
+	
+	if( $file != '.' && $file != '..' ){
+	
+		$sitecontent->add_site_content( '<li>' );
+		
+		if( is_dir( $folder.'/'.$file ) ){
+			$sitecontent->add_site_content( '<a href="'.$allgsysconf['siteurl'].'/explorer"'.$urlfrag.'></a>' );
+			$sitecontent->add_site_content( '<a href="'.$allgsysconf['siteurl'].'/info"'.$urlfrag.'></a>' );
+		}
+		elseif( is_file( $folder.'/'.$file ) ){
+			
+			$urlfraghier = dirname( $urlfrag );
+			
+			$sitecontent->add_site_content( '<a href="'.$allgsysconf['siteurl'].'/explorer"'.$urlfraghier.'></a>' );
+			$sitecontent->add_site_content( '<a href="'.$allgsysconf['siteurl'].'/info"'.$urlfraghier.'></a>' );
+			$sitecontent->add_site_content( '<a href="'.$allgsysconf['siteurl'].'/view"'.$urlfrag.'></a>' );
+			$sitecontent->add_site_content( '<a href="'.$allgsysconf['siteurl'].'/download"'.$urlfrag.'></a>' );
+		}
+		
+		$sitecontent->add_site_content( '<li>' );
+		
+	}
+	
+}
+
+$sitecontent->add_site_content( '</ul></div>' );
+
+
 ?>
