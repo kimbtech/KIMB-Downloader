@@ -1,17 +1,34 @@
+/********************************************************/
+/* CSS fuer File Icons					*/
+/* Copyright (c) 2015 by KIMB-technologies		*/
+/************************************************************************/
+/* This program is free software: you can redistribute it and/or modify	*/
+/* it under the terms of the GNU General Public License version 3	*/
+/* published by the Free Software Foundation.				*/
+/*									*/
+/* This program is distributed in the hope that it will be useful,	*/
+/* but WITHOUT ANY WARRANTY; without even the implied warranty of	*/
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	*/
+/* GNU General Public License for more details.				*/
+/*									*/
+/* You should have received a copy of the GNU General Public License	*/
+/* along with this program.						*/
+/************************************************************************/
+/* www.KIMB-technologies.eu				*/
+/* www.bitbucket.org/kimbtech				*/
+/* http://www.gnu.org/licenses/gpl-3.0 			*/
+/* http://www.gnu.org/licenses/gpl-3.0.txt 		*/
+/********************************************************/
 /*
-	CSS fuer File Icons
-
-	Icons by https://github.com/teambox/Free-file-icons
+	File Icons by https://github.com/teambox/Free-file-icons
 		The MIT License
 
-	CSS by https://www.kimb	-technologies.eu/
+	Folder Icon by https://github.com/numixproject/numix-folders
 		GPLv3
-
-	copyright 2015 KIMB-technologies
 */
 
 /* Style */
-.fileicon{ background-image: url( "fileicons.png" ); height: 51px; width: 40px; display: inline-block; overflow: hidden; background-repeat: no-repeat; }
+.fileicon, .foldericon{ background-image: url( "fileicons.png" ); height: 51px; width: 40px; display: inline-block; overflow: hidden; background-repeat: no-repeat; }
 
 /* Archive */
 .fileicon_dmg { background-position: 0px 0px; }
@@ -43,6 +60,7 @@
 .fileicon_less { background-position: -406px -67px; }
 .fileicon_scss { background-position: -450px -67px; }
 .fileicon_sass { background-position: -496px -67px; }
+.fileicon_kimb { background-position: -541px -67px; }
 
 /* Praesentationen */
 .fileicon_ppt { background-position: 0px -131px; }
@@ -78,3 +96,24 @@
 .fileicon_dwg { background-position: -406px -258px; }
 .fileicon_dfx { background-position: -450px -258px; }
 .fileicon_pdf { background-position: -496px -258px; }
+
+/* Videodateien */
+.fileicon_mp4 { background-position: 0px -321px; }
+.fileicon_avi { background-position: -44px -321px; }
+.fileicon_mov { background-position: -88px -321px; }
+.fileicon_mpg { background-position: -136px -321px; }
+.fileicon_qt { background-position: -178px -321px; }
+.fileicon_flv { background-position: -226px -321px; }
+.fileicon_m4v { background-position: -271px -321px; }
+
+/* Tondateien */
+.fileicon_mp3 { background-position: 0px -379px; }
+.fileicon_wav { background-position: -44px -379px; }
+.fileicon_aiff { background-position: -88px -379px; }
+.fileicon_aac { background-position: -135px -379px; }
+.fileicon_mid { background-position: -178px -379px; }
+
+/* Sonstige */
+.fileicon_mixed { background-position: -445px -379px; }
+.fileicon_blank, .fileicon_ { background-position: -496px -379px; }
+.fileicon_folder, .foldericon { height: 48px; width: 48px; background-position: -382px -383px; }
