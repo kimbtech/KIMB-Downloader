@@ -102,7 +102,7 @@ input, textarea, button{
 }
 
 #footer{
-	float:right;
+	/*float:right;*/
 	height:auto;
 	padding-top:10px;
 	padding-bottom:10px;

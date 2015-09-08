@@ -25,6 +25,9 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
+//Fileicons
+require_once( __DIR__.'/fileicons.php' );
+
 //Hier wird das Autoload für alles Klassen registriert.
 
 function autoload_classes( $class ){

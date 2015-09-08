@@ -83,7 +83,4 @@ function get_fileicon( $file, $path = true ){
 }
 
 
-//Beispiele:
-print_r( make_html( 'DOCX' ) );
-
 ?>

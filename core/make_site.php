@@ -96,5 +96,8 @@ $sitecontent->menue( $info, $explorer, $vorschau, $download );
 
 //	Footer
 //	Header
+//	Titel
+//	aktueller Pfad, mit links zu allen anderen (immer auf Explorer)
+$sitecontent->add_html_header( ' <link rel="stylesheet" type="text/css" href="'.$allgsysconf['siteurl'].'/load/icons/fileicons.css" media="all">' );
 
 ?>

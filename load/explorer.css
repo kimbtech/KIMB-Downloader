@@ -1,0 +1,75 @@
+.explorer_list ul{
+	list-style-type:none;
+	margin-left: -40px;
+}
+
+.fileicon{
+	margin-right:8px;
+}
+
+.explorer_list ul li{
+	background-color:#aaa;
+	border-radius:15px;
+	padding:10px;
+	margin:10px;
+	position:relative;
+}
+
+.explorer_list ul li a{
+	text-decoration:none;
+	color:#000;
+}
+
+.explorer_list ul li span.icon, .explorer_list ul li span.dummy{
+	border-radius:2px;
+	padding:4px;
+	margin:0 10px;
+	width: 60px;
+	display:inline-block;
+	text-align:center;
+}
+
+.explorer_list ul li span.name{
+	border-radius:2px;
+	padding:4px;
+	margin:0 10px;
+	width: calc( 100% - 252px);
+	display:inline-block;
+	text-align:center;
+	max-width:500px;
+}
+
+.explorer_list ul li span.icon, .explorer_list ul li span.name{
+	background-color:#fff;
+}
+
+.explorer_list ul li span.icon:hover, .explorer_list ul li span.name:hover{
+	background-color:orange;
+}
+
+.explorer_list ul li span.titel{
+	margin-top: 5px;
+	border:#ccc solid 1px;
+	border-radius:2px;
+	padding:2px;
+	display:block;
+}
+
+.view_icon, .download_icon, .info_icon{
+	background-image: url( "icons/explorer.png" );
+	height: 45px;
+	width: 45px;
+	display: inline-block;
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+
+.view_icon{
+	background-position: 0px 0px;
+}
+.download_icon{
+	background-position: -51px 0px;
+}
+.info_icon{
+	background-position: -103px 3px;
+}
