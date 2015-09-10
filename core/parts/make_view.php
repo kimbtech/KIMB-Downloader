@@ -28,4 +28,6 @@ defined('KIMB_Downloader') or die('No clean Request');
 //Quelltexte, Bilder, PDF Vorschau anzeigen
 //Binaries => Download Button
 
+$sitecontent->add_site_content( make_breadcrumb() );
+
 ?>

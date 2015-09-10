@@ -7,15 +7,14 @@
 	margin-right:8px;
 }
 
-.explorer_list ul li{
+.explorer_list ul li, .explorer_hoch{
 	background-color:#aaa;
 	border-radius:15px;
 	padding:10px;
 	margin:10px;
-	position:relative;
 }
 
-.explorer_list ul li a{
+.explorer_list ul li a, .explorer_hoch a{
 	text-decoration:none;
 	color:#000;
 }
@@ -72,4 +71,14 @@
 }
 .info_icon{
 	background-position: -103px 3px;
+}
+
+.explorer_hoch {
+	display:inline;
+	font-size:48px;
+	margin-left:10px;
+}
+
+.explorer_hoch:hover {
+	background-color:orange;
 }

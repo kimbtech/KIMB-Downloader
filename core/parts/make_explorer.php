@@ -29,11 +29,11 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 /**********************/
 //ToDo
-//	Hoch
 //	Titel aus KIMBdbf
 /**********************/
 
 
+$sitecontent->add_site_content( make_breadcrumb( true ) );
 
 //Ordner [öffnen,(Beschreibung aus readme)] & Dateien [view, download, (Beschreibung)]
 
@@ -44,6 +44,14 @@ $sitecontent->add_html_header( ' <link rel="stylesheet" type="text/css" href="'.
 $files = scandir( $folder );
 //nach ABC sortieren
 sort( $files );
+
+//Title lesen
+$folderfile = new KIMBdbf( 'title/folderlist.kimb' );
+$fileid = $folderfile->search_kimb_xxxid( $urlfrag, 'path' );
+
+if( $fileid != false ){
+	$titlefile = new KIMBdbf( 'title/folder_'.$fileid.'.kimb' );
+}
 
 //Liste beginnen
 $sitecontent->add_site_content( '<div class="explorer list explorer_list"><ul>' );
@@ -66,11 +74,30 @@ foreach( $files as $file ){
 			$urlfraghier = $urlfrag.$file;
 		}
 		
-		//$titel = 'dfdsf sdf sdf sd fsdfsdf sdf sdf sdf sd fsdfdsfsd fsd fsd fsr werwerwerwe rwe rrtewr ';
+		if( isset( $titlefile) ){
+			$search = $titlefile->search_kimb_xxxid( $file, 'name' );
+			if( $search != false ){
+				$titel = $titlefile->read_kimb_id( $search, 'title' );
+			}
+			else{
+				$titel = '';
+			}
+		}
+		else{
+			$titel = '';
+		}
+		
+		if( $allgsysconf['urlrewrite'] == 'on' ){
+			$grundurl = $allgsysconf['siteurl'].'/';
+		}
+		else{
+			$grundurl = $allgsysconf['siteurl'].'/?pfad=explorer';
+			$urlfraghier = urlencode( $urlfraghier );
+		}
 		
 		if( is_dir( $folder.'/'.$file ) ){
-			$list_element .= '<a href="'.$allgsysconf['siteurl'].'/explorer'.$urlfraghier.'"><span class="name" title="Ordner öffnen">'.$file.'</span></a>' ;
-			$list_element .= '<a href="'.$allgsysconf['siteurl'].'/info'.$urlfraghier.'"><span class="icon"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>' ;
+			$list_element .= '<a href="'.$grundurl.'explorer'.$urlfraghier.'"><span class="name" title="Ordner öffnen">'.$file.'</span></a>' ;
+			$list_element .= '<a href="'.$grundurl.'info'.$urlfraghier.'"><span class="icon"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>' ;
 			$list_element .= '<span class="dummy"></span>' ;
 			if( !empty( $titel ) ){
 				$list_element .= '<span class="titel">'.$titel.'</span>' ;
@@ -79,9 +106,9 @@ foreach( $files as $file ){
 			$is_dir = true;
 		}
 		elseif( is_file( $folder.'/'.$file ) ){
-			$list_element .= '<a href="'.$allgsysconf['siteurl'].'/view'.$urlfraghier.'"><span class="name" title="Datei ansehen">'.$file.'</span></a>' ;
-			$list_element .= '<a href="'.$allgsysconf['siteurl'].'/view'.$urlfraghier.'"><span class="icon"><span class="view_icon" title="Datei ansehen" ></span></span></a>' ;
-			$list_element .= '<a href="'.$allgsysconf['siteurl'].'/download'.$urlfraghier.'"><span class="icon"><span class="download_icon" title="Datei herunterladen"></span></span></a>' ;
+			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'"><span class="name" title="Datei ansehen">'.$file.'</span></a>' ;
+			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'"><span class="icon"><span class="view_icon" title="Datei ansehen" ></span></span></a>' ;
+			$list_element .= '<a href="'.$grundurl.'download'.$urlfraghier.'"><span class="icon"><span class="download_icon" title="Datei herunterladen"></span></span></a>' ;
 			if( !empty( $titel ) ){
 				$list_element .= '<span class="titel">'.$titel.'</span>' ;
 			}

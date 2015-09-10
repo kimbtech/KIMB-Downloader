@@ -1,0 +1,16 @@
+<[about:doc]>KIMB dbf V3.00B - KIMB-technologies<[about:doc]>
+<[1]>name==title<[1]>
+<[1-name]>test<[1-name]>
+<[1-title]>Dies ist der Ordner Test aus /<[1-title]>
+
+<[2]>name==title<[2]>
+<[2-name]>file.mp3<[2-name]>
+<[2-title]>Dies ist die Datei file.mp3 aus /<[2-title]>
+
+<[3]>name==title<[3]>
+<[3-name]>file2<[3-name]>
+<[3-title]>Dies ist die Datei file2 aus /<[3-title]>
+
+<[4]>name==title<[4]>
+<[4-name]>.htaccess<[4-name]>
+<[4-title]>Dies ist die Datei .htaccess aus /<[4-title]>

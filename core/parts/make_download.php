@@ -29,4 +29,6 @@ defined('KIMB_Downloader') or die('No clean Request');
 //force attatchment
 //readfile();
 
+$sitecontent->add_site_content( make_breadcrumb() );
+
 ?>

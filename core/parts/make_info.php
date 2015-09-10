@@ -30,4 +30,6 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 //$sitecontent->add_site_content( MarkdownExtra::defaultTransform($md) );
 
+$sitecontent->add_site_content( make_breadcrumb() );
+
 ?>

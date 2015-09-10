@@ -1,0 +1,40 @@
+.downloader_urlleiste{
+	border-bottom:#ccc solid 1px;
+}
+
+.downloader_hoch{
+	background-color:#aaa;
+	border-radius:15px;
+	padding:10px;
+	margin:10px;
+	display:inline-block;
+	font-size:48px;
+	width:100px;
+}
+.downloader_hoch a{
+	text-decoration:none;
+	color:#000;
+
+}
+.downloader_hoch:hover {
+	background-color:orange;
+}
+
+.downloader_breadcrumb{
+	background-color:#aaa;
+	border-radius:15px;
+	padding:10px;
+	margin:10px;
+	display:inline-block;	
+}
+.downloader_breadcrumb a{
+	text-decoration:none;
+	color:#000;
+	background-color:#fff;
+	border-radius:2px;
+	padding:4px;
+	text-align:center;
+}
+.downloader_breadcrumb a:hover {
+	background-color:orange;
+}

@@ -94,10 +94,12 @@ if( $errormenue ){
 $sitecontent->menue( $info, $explorer, $vorschau, $download );
 
 
-//	Footer
-//	Header
+
 //	Titel
-//	aktueller Pfad, mit links zu allen anderen (immer auf Explorer)
+$parttitles = array( 'info' => 'Info', 'explorer' => 'Explorer', 'view' => 'Vorschau', 'download' => 'Download' );
+$sitecontent->set_title( $parttitles[$parsed].' - '.$urlfrag );
+//	Header
 $sitecontent->add_html_header( ' <link rel="stylesheet" type="text/css" href="'.$allgsysconf['siteurl'].'/load/icons/fileicons.css" media="all">' );
+$sitecontent->add_html_header( ' <link rel="stylesheet" type="text/css" href="'.$allgsysconf['siteurl'].'/load/downloader.css" media="all">' );
 
 ?>

@@ -546,6 +546,75 @@ function add_codemirror( $id, $mode = 'text/x-markdown' ){
 	return;	
 }
 
+function make_breadcrumb( $explorer = false ){
+	global $allgsysconf,$urlfrag,$parsed;
+	
+	$html = '<div class="downloader_urlleiste">';
+	
+	if( $explorer ){
+		
+		if( $allgsysconf['urlrewrite'] == 'on' ){
+			$hochurl = $allgsysconf['siteurl'].'/explorer'.substr($urlfrag, '0', strlen($urlfrag) - strlen(strrchr($urlfrag, '/')));
+		}
+		else{
+			$hochurl = $allgsysconf['siteurl'].'/?pfad=explorer'.urlencode( substr($urlfrag, '0', strlen($urlfrag) - strlen(strrchr($urlfrag, '/'))) );
+		}
+
+		$html .= '<div class="downloader_hoch">';
+		$html .= '<a href="'.$hochurl.'" title="&lArr; Zurück">';
+		$html .= '<span class="hochpfeil">&lArr;</span>';
+		$html .= KIMBtechnologies_Fileicons\make_html( NULL, true);
+		$html .= '</a>';
+		$html .= '</div>';
+	}
+	
+	$frags = explode( '/', $urlfrag );
+	
+	if( $allgsysconf['urlrewrite'] == 'on' ){
+		$url = $allgsysconf['siteurl'].'/explorer';
+	}
+	else{
+		$url = $allgsysconf['siteurl'].'/?pfad=explorer';
+	}
+
+	$html  .= '<div class="downloader_breadcrumb">' ;
+	$html .= ' <a href="'.$url.'" title="Home">Home</a>';
+	
+	if( $parsed == 'view' || $parsed == 'download' ){
+		$is = count( $frags );	
+	}
+	else{
+		$is = count( $frags ) + 2;
+	}
+	
+	$i = 1;
+	
+	foreach ( $frags as $frag ){
+		
+		if( $i == $is ){
+			break;
+		}
+		elseif( !empty( $frag ) ){
+			if( $allgsysconf['urlrewrite'] == 'on' ){
+				$fragstr .= '/'.$frag;
+			}
+			else{
+				$fragstr .= urlencode( '/'.$frag );
+			}
+			
+			$html .= ' / <a href="'.$url.$fragstr.'" title="'.$frag.'">'.$frag.'</a>';
+		}
+		
+		$i++;		
+	}
+	
+	$html .= '</div>';
+	
+	$html .= '</div>';
+	
+	return $html;	
+}
+
 // Funktionen von Modulen hinzufügen
 require_once( __DIR__.'/../module/include_funcclass.php' );
 ?>
