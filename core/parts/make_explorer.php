@@ -61,7 +61,7 @@ foreach( $files as $file ){
 	$is_file = false;
 	$is_dir = false;
 	
-	if( $file != '.' && $file != '..' ){
+	if( $file != '.' && $file != '..' && $folder.'/'.$file != $codefolder .'/.htaccess'){
 	
 		$list_element =  '<li>' ;
 		

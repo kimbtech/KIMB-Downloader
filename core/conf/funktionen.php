@@ -546,7 +546,7 @@ function add_codemirror( $id, $mode = 'text/x-markdown' ){
 	return;	
 }
 
-function make_breadcrumb( $explorer = false ){
+function make_breadcrumb( $explorer = false, $info = false ){
 	global $allgsysconf,$urlfrag,$parsed;
 	
 	$html = '<div class="downloader_urlleiste">';
@@ -571,10 +571,20 @@ function make_breadcrumb( $explorer = false ){
 	$frags = explode( '/', $urlfrag );
 	
 	if( $allgsysconf['urlrewrite'] == 'on' ){
-		$url = $allgsysconf['siteurl'].'/explorer';
+		if( $info ){
+			$url = $allgsysconf['siteurl'].'/info';
+		}
+		else{
+			$url = $allgsysconf['siteurl'].'/explorer';
+		}
 	}
 	else{
-		$url = $allgsysconf['siteurl'].'/?pfad=explorer';
+		if( $info ){
+			$url = $allgsysconf['siteurl'].'/?pfad=info';
+		}
+		else{
+			$url = $allgsysconf['siteurl'].'/?pfad=explorer';
+		}
 	}
 
 	$html  .= '<div class="downloader_breadcrumb">' ;

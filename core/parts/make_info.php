@@ -25,11 +25,43 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
+//URL Leiste
+$sitecontent->add_site_content( make_breadcrumb( false, true) );
+
 //Readme des Verzeichnisses anzeigen
+$folderfile = new KIMBdbf( 'readme/folderlist.kimb' );
+$fileid = $folderfile->search_kimb_xxxid( $urlfrag, 'path' );
+$urlfraghier = $urlfrag;
+while( $fileid == false ){
+	$urlfraghier = substr($urlfraghier, '0', strlen($urlfraghier) - strlen(strrchr($urlfraghier, '/')));
+	if( empty( $urlfraghier ) ){
+		break;
+	}
+	$fileid = $folderfile->search_kimb_xxxid( $urlfraghier, 'path' );
+}
 
+if( $fileid != false ){
+	$readmefile = new KIMBdbf( 'readme/folder_'.$fileid.'.kimb' );
+	
+	$readme = $readmefile->read_kimb_one('markdown' );
 
-//$sitecontent->add_site_content( MarkdownExtra::defaultTransform($md) );
+	if( !empty( $readme ) ){
+		$sitecontent->add_site_content( MarkdownExtra::defaultTransform($readme) );
+	}
+	else{
+		$noinf = true;
+	}
+}
+else{
+	$noinf = true;
+}
 
-$sitecontent->add_site_content( make_breadcrumb() );
+if( $noinf ){
+	$sitecontent->echo_error( 'Es konnten keine Infos gefunden werden!', true );
+	$errormessset = true;
+	$urlerror = true;
+	$parsed = '';
+	$folder = $codefolder;
+}
 
 ?>

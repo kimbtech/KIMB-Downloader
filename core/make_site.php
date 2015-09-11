@@ -85,14 +85,21 @@ else{
 }
 
 if( $errormenue ){
-	$info = array( 'clicked' => 'no', 'link' => $allgsysconf['siteurl'] );
-	$explorer = array( 'clicked' => 'no', 'link' => $allgsysconf['siteurl'] );
+	if( $allgsysconf['urlrewrite'] == 'on' ){
+		$explorerurl = $allgsysconf['siteurl'].'/explorer';
+		$infourl = $allgsysconf['siteurl'].'/info';
+	}
+	else{
+		$explorerurl = $allgsysconf['siteurl'].'/?pfad=explorer';
+		$infourl = $allgsysconf['siteurl'].'/?pfad=info';
+	}
+	$info = array( 'clicked' => 'no', 'link' => $infourl );
+	$explorer = array( 'clicked' => 'no', 'link' => $explorerurl );
 	$vorschau = false;
 	$download = false;
 }
 	
 $sitecontent->menue( $info, $explorer, $vorschau, $download );
-
 
 
 //	Titel
