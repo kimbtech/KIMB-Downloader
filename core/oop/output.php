@@ -118,7 +118,7 @@ class system_output{
 
 	//Seiteninhalt hinzufügen
 	public function add_site_content($content){
-		$this->sitecontent .= $content;
+		$this->sitecontent .= $content."\r\n";
 	}
 
 	//Add-on Area hinzufügen

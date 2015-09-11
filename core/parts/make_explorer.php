@@ -63,9 +63,9 @@ foreach( $files as $file ){
 	
 	if( $file != '.' && $file != '..' && $folder.'/'.$file != $codefolder .'/.htaccess'){
 	
-		$list_element =  '<li>' ;
+		$list_element =  '<li>'."\r\n";
 		
-		$list_element .= KIMBtechnologies_Fileicons\get_fileicon( $folder.'/'.$file );
+		$list_element .= KIMBtechnologies_Fileicons\get_fileicon( $folder.'/'.$file )."\r\n";
 		
 		if( $urlfrag != '/' ){
 			$urlfraghier = $urlfrag.'/'.$file;
@@ -91,32 +91,32 @@ foreach( $files as $file ){
 			$grundurl = $allgsysconf['siteurl'].'/';
 		}
 		else{
-			$grundurl = $allgsysconf['siteurl'].'/?pfad=explorer';
+			$grundurl = $allgsysconf['siteurl'].'/?pfad=';
 			$urlfraghier = urlencode( $urlfraghier );
 		}
 		
 		if( is_dir( $folder.'/'.$file ) ){
-			$list_element .= '<a href="'.$grundurl.'explorer'.$urlfraghier.'"><span class="name" title="Ordner öffnen">'.$file.'</span></a>' ;
-			$list_element .= '<a href="'.$grundurl.'info'.$urlfraghier.'"><span class="icon"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>' ;
-			$list_element .= '<span class="dummy"></span>' ;
+			$list_element .= '<a href="'.$grundurl.'explorer'.$urlfraghier.'"><span class="name" title="Ordner öffnen">'.$file.'</span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'info'.$urlfraghier.'"><span class="icon"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>'."\r\n";
+			$list_element .= '<span class="dummy"></span>'."\r\n";
 			if( !empty( $titel ) ){
-				$list_element .= '<span class="titel">'.$titel.'</span>' ;
+				$list_element .= '<span class="titel">'.$titel.'</span>'."\r\n";
 			}
 			
 			$is_dir = true;
 		}
 		elseif( is_file( $folder.'/'.$file ) ){
-			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'"><span class="name" title="Datei ansehen">'.$file.'</span></a>' ;
-			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'"><span class="icon"><span class="view_icon" title="Datei ansehen" ></span></span></a>' ;
-			$list_element .= '<a href="'.$grundurl.'download'.$urlfraghier.'"><span class="icon"><span class="download_icon" title="Datei herunterladen"></span></span></a>' ;
+			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'"><span class="name" title="Datei ansehen">'.$file.'</span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'"><span class="icon"><span class="view_icon" title="Datei ansehen" ></span></span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'download'.$urlfraghier.'"><span class="icon"><span class="download_icon" title="Datei herunterladen"></span></span></a>'."\r\n";
 			if( !empty( $titel ) ){
-				$list_element .= '<span class="titel">'.$titel.'</span>' ;
+				$list_element .= '<span class="titel">'.$titel.'</span>'."\r\n";
 			}
 			
 			$is_file = true;
 		}
 		
-		$list_element .= '</li>' ;
+		$list_element .= '</li>'."\r\n";
 		
 		if( $is_file ){
 			$list_files .= $list_element;

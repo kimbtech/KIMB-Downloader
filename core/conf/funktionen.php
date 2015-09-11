@@ -546,10 +546,10 @@ function add_codemirror( $id, $mode = 'text/x-markdown' ){
 	return;	
 }
 
-function make_breadcrumb( $explorer = false, $info = false ){
+function make_breadcrumb( $explorer = false, $info = false, $viewfile = false ){
 	global $allgsysconf,$urlfrag,$parsed;
 	
-	$html = '<div class="downloader_urlleiste">';
+	$html = '<div class="downloader_urlleiste">'."\r\n";
 	
 	if( $explorer ){
 		
@@ -560,12 +560,12 @@ function make_breadcrumb( $explorer = false, $info = false ){
 			$hochurl = $allgsysconf['siteurl'].'/?pfad=explorer'.urlencode( substr($urlfrag, '0', strlen($urlfrag) - strlen(strrchr($urlfrag, '/'))) );
 		}
 
-		$html .= '<div class="downloader_hoch">';
-		$html .= '<a href="'.$hochurl.'" title="&lArr; Zurück">';
-		$html .= '<span class="hochpfeil">&lArr;</span>';
+		$html .= '<div class="downloader_hoch">'."\r\n";
+		$html .= '<a href="'.$hochurl.'" title="&lArr; Zurück">'."\r\n";
+		$html .= '<span class="hochpfeil">&lArr;</span>'."\r\n";
 		$html .= KIMBtechnologies_Fileicons\make_html( NULL, true);
-		$html .= '</a>';
-		$html .= '</div>';
+		$html .= '</a>'."\r\n";
+		$html .= '</div>'."\r\n";
 	}
 	
 	$frags = explode( '/', $urlfrag );
@@ -587,8 +587,8 @@ function make_breadcrumb( $explorer = false, $info = false ){
 		}
 	}
 
-	$html  .= '<div class="downloader_breadcrumb">' ;
-	$html .= ' <a href="'.$url.'" title="Home">Home</a>';
+	$html  .= '<div class="downloader_breadcrumb">' ."\r\n";
+	$html .= ' <a href="'.$url.'" title="Home">Home</a>'."\r\n";
 	
 	if( $parsed == 'view' || $parsed == 'download' ){
 		$is = count( $frags );	
@@ -612,15 +612,19 @@ function make_breadcrumb( $explorer = false, $info = false ){
 				$fragstr .= urlencode( '/'.$frag );
 			}
 			
-			$html .= ' / <a href="'.$url.$fragstr.'" title="'.$frag.'">'.$frag.'</a>';
+			$html .= ' / <a href="'.$url.$fragstr.'" title="'.$frag.'">'.$frag.'</a>'."\r\n";
 		}
 		
 		$i++;		
 	}
 	
-	$html .= '</div>';
+	if( $viewfile != false ){
+		$html .= ' / '.$viewfile."\r\n";
+	}
 	
-	$html .= '</div>';
+	$html .= '</div>'."\r\n";
+	
+	$html .= '</div>'."\r\n";
 	
 	return $html;	
 }

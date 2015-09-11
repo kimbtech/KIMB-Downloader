@@ -1,0 +1,32 @@
+.view_icon, .download_icon{
+	background-image: url( "icons/explorer.png" );
+	height: 45px;
+	width: 45px;
+	display: inline-block;
+	overflow: hidden;
+	background-repeat: no-repeat;
+}
+
+.view_icon{
+	background-position: 0px 0px;
+}
+.download_icon{
+	background-position: -51px 0px;
+}
+
+.downbutt, .viewimgs{
+	background-color:#aaa;
+	border-radius:15px;
+	padding:10px;
+	margin:10px;
+	display:block;
+	text-decoration:none;
+	color:#000;
+}
+.downbutt:hover {
+	background-color:orange;
+}
+
+.viewimgs{
+	margin-top: 30px;	
+}
