@@ -40,28 +40,20 @@ while( $fileid == false ){
 	$fileid = $folderfile->search_kimb_xxxid( $urlfraghier, 'path' );
 }
 
-if( $fileid != false ){
-	$readmefile = new KIMBdbf( 'readme/folder_'.$fileid.'.kimb' );
-	
-	$readme = $readmefile->read_kimb_one('markdown' );
+if( $fileid == false ){
+	$fileid = $folderfile->search_kimb_xxxid( '/', 'path' );
+}
 
-	if( !empty( $readme ) ){
-		$sitecontent->add_site_content( MarkdownExtra::defaultTransform($readme) );
-	}
-	else{
-		$noinf = true;
-	}
+$readmefile = new KIMBdbf( 'readme/folder_'.$fileid.'.kimb' );
+	
+$readme = $readmefile->read_kimb_one('markdown' );
+
+if( !empty( $readme ) ){
+	$sitecontent->add_site_content( MarkdownExtra::defaultTransform($readme) );
 }
 else{
-	$noinf = true;
-}
-
-if( $noinf ){
 	$sitecontent->echo_error( 'Es konnten keine Infos gefunden werden!', true );
 	$errormessset = true;
-	$urlerror = true;
-	$parsed = '';
-	$folder = $codefolder;
 }
 
 ?>

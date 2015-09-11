@@ -52,14 +52,14 @@ else{
 
 if( $art == 'code'){
 	$sitecontent->add_html_header( '<link rel="stylesheet" type="text/css" href="'.$allgsysconf['siteurl'].'/load/prism/prism.css" media="all">' );
-	$sitecontent->add_site_content( '<pre data-src="'.$allgsysconf['siteurl'].'/getfile.php?file='.urlencode($urlfrag).'"></pre>');
+	$sitecontent->add_site_content( '<pre data-src="'.$allgsysconf['siteurl'].'/getfile.php?inline&amp;file='.urlencode($urlfrag).'"></pre>');
 	$sitecontent->add_site_content( '<script language="javascript" src="'.$allgsysconf['siteurl'].'/load/prism/prism.js"></script>');
 }
 elseif( $art == 'image' ){
-	$sitecontent->add_site_content( '<center><img class="viewimgs" src="'.$allgsysconf['siteurl'].'/getfile.php?file='.urlencode($urlfrag).'" title="Bild" alt="Bild"><center>');
+	$sitecontent->add_site_content( '<center><img class="viewimgs" src="'.$allgsysconf['siteurl'].'/getfile.php?file='.urlencode($urlfrag).'&amp;inline" title="Bild" alt="Bild"><center>');
 }
 elseif( $art == 'pdf' ){
-	$sitecontent->add_site_content( '<iframe style="width:100%; height:100%; min-height:500px;"  frameborder="0" scrolling="yes" src="'.$allgsysconf['siteurl'].'/getfile.php?file='.urlencode($urlfrag).'"></iframe>');
+	$sitecontent->add_site_content( '<iframe style="width:100%; height:100%; min-height:500px;"  frameborder="0" scrolling="yes" src="'.$allgsysconf['siteurl'].'/getfile.php?file='.urlencode($urlfrag).'&amp;inline"></iframe>');
 }
 else{
 	if( $allgsysconf['urlrewrite'] == 'on' ){

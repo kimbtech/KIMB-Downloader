@@ -26,9 +26,17 @@
 defined('KIMB_Downloader') or die('No clean Request');
 
 //Datei download
-//force attatchment
-//readfile();
 
-$sitecontent->add_site_content( make_breadcrumb() );
+$sitecontent->add_site_content( make_breadcrumb( false, false, basename( $urlfrag ) ) );
+
+//CSS
+$sitecontent->add_html_header( ' <link rel="stylesheet" type="text/css" href="'.$allgsysconf['siteurl'].'/load/view.css" media="all">' );
+
+$downloadurl = $allgsysconf['siteurl'].'/getfile.php?file='.urlencode($urlfrag);
+
+$sitecontent->add_site_content( '<iframe style="width:0; height:0;"  frameborder="0" scrolling="no" src="'.$downloadurl.'"></iframe>');
+
+$sitecontent->add_site_content( '<div class="download"><center><i><b>Der Download startet in Kürze!!</b></i><br /><br />');
+$sitecontent->add_site_content( '<small>Sollte der Download nicht starten klicken Sie <a href="'.$downloadurl.'">hier</a>.</small></center></div>');
 
 ?>

@@ -70,8 +70,13 @@ finfo_close($finfo);
 require_once(__DIR__.'/core/module/include_fe_first.php');
 
 if( is_file( $folder ) ){
-	header('Content-type: '.$mimetype);
-	header('Content-Disposition: filename="'.$filename.'"');
+	header('Content-type: '.$mimetype.'; charset=utf-8');
+	if( isset( $_GET['inline'] ) ){
+		header('Content-Disposition: inline; filename="'.$filename.'"');
+	}
+	else{
+		header('Content-Disposition: attachment; filename="'.$filename.'"');
+	}
 	header( 'Content-Length: '.$filesize);
 	readfile( $folder );
 	die;
