@@ -629,6 +629,16 @@ function make_breadcrumb( $explorer = false, $info = false, $viewfile = false ){
 	return $html;	
 }
 
+//Diese Funktion prüft ob ein User eine bestimmte Datei sehen darf.
+//	Da der Downloader ohne Module kein Rechtemanagement erlaub, gibt diese Funktion immer true zurück.
+//	Zur richtigen Nutzung muss diese Funktion von einem Modul in funcclass überschrieben werden.
+//		$path => Pfad zur Datei
+//		Return => true/false
+function check_rights( $path ){
+
+	return true;
+}
+
 // Funktionen von Modulen hinzufügen
 require_once( __DIR__.'/../module/include_funcclass.php' );
 ?>

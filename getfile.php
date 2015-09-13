@@ -55,39 +55,47 @@ if( strpos($_GET['file'], "..") !== false ){
 }
 
 //Umgebung nach Request erstellen
+//	Pfad zur Datei relativ zu /files/
 $urlfrag = $_GET['file'];
+//	parsed setzen
 $parsed = 'getfile';
+//	absoluter Pfad zur Datei
 $folder = $codefolder.'/'.$urlfrag;
+//	Dateiname
 $filename = basename( $urlfrag );
 
+//	Größe der Datei
 $filesize = filesize( $folder );
 
+//	MIME Type der Datei
 $finfo = finfo_open(FILEINFO_MIME_TYPE);
 $mimetype = finfo_file($finfo, $folder);
 finfo_close($finfo);
 
-//Module first
-require_once(__DIR__.'/core/module/include_fe_first.php');
-
-if( is_file( $folder ) ){
+//Ist eine Datei gefordert?
+//Darf der User die Datei sehen?
+if( is_file( $folder ) && check_rights( $folder ) ){
+	//Header MIME & Encoding
 	header('Content-type: '.$mimetype.'; charset=utf-8');
+	//Inline (Vorschau) oder Download?
 	if( isset( $_GET['inline'] ) ){
+		//Vorschau
 		header('Content-Disposition: inline; filename="'.$filename.'"');
 	}
 	else{
+		//Download
 		header('Content-Disposition: attachment; filename="'.$filename.'"');
 	}
+	//Dateigröße
 	header( 'Content-Length: '.$filesize);
+	//Datei ausgeben
 	readfile( $folder );
+	//beenden
 	die;
 }
 else{
-	//$sitecontent->echo_error( 'Fehlerhafter Zugriff' );
+	//Fehler, keine Rechte oder keine Datei!
 	echo( 'Fehlerhafter Zugriff' );
-	$errormessset = true;
 }
 
-
-//Module second
-require_once(__DIR__.'/core/module/include_fe_second.php');
-?>
+?> 

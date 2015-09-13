@@ -151,6 +151,10 @@ if( !empty( $parsed ) ){
 		$err = is_file( $folder );
 	}
 	
+	//Rechte prüfen, ob User Ordner/Datei sehen darf
+	if( !check_rights( $folder ) ){
+		$err = false;
+	}
 	
 	if( $err == false ){
 		$sitecontent->echo_error( 'Der Ordner/ die Datei wurde nicht gefunden.', true );

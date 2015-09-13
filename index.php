@@ -46,20 +46,29 @@ require_once(__DIR__.'/core/module/include_fe_first.php');
 
 //richtiges machen
 if( $parsed == 'download' ){
+	//Downloadseite
 	require_once(__DIR__.'/core/parts/make_download.php');
 }
 elseif( $parsed == 'explorer' ){
+	//Explorer um Ordner zu durchstöbern
 	require_once(__DIR__.'/core/parts/make_explorer.php');
 }
 elseif( $parsed == 'info' ){
+	//Readme zu einem Ordner
 	require_once(__DIR__.'/core/parts/make_info.php');
 }
 elseif( $parsed == 'view' ){
+	//Datei Vorschau
 	require_once(__DIR__.'/core/parts/make_view.php');
 }
 else{
+	//Fehler
+	
+	//Schon eine Fehlermeldung ausgegeben?
 	if( !$errormessset ){
+		//wenn nichtm dann Fehlermeldung
 		$sitecontent->echo_error( 'Fehlerhafter Zugriff' );
+		//jetzt ausgegeben
 		$errormessset = true;
 	}
 }
@@ -67,10 +76,9 @@ else{
 //Module second
 require_once(__DIR__.'/core/module/include_fe_second.php');
 
-//Seite erstellen
+//Seite Weiters dazu
 require_once(__DIR__.'/core/make_site.php');
 
 //Seite ausgeben
 $sitecontent->output_complete_site();
-
 ?>
