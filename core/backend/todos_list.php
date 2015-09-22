@@ -26,7 +26,13 @@
 defined('KIMB_Downloader') or die('No clean Request');
 
 //Liste aller ToDos
-$backend_todos[] = array( 'name' => 'Login', 'todo' => 'login' );
+$backend_todos[] = array( 'name' => 'Home', 'todo' => 'login', 'icon' => 'home' );
+$backend_todos[] = array( 'name' => 'Explorer', 'todo' => 'explorer', 'icon' => 'folder-open');
+$backend_todos[] = array( 'name' => 'Infos', 'todo' => 'infos', 'icon' => 'info' );
+$backend_todos[] = array( 'name' => 'Konfiguration', 'todo' => 'konfig', 'icon' => 'gear' );
+$backend_todos[] = array( 'name' => 'User', 'todo' => 'user', 'icon' => 'person' );
+$backend_todos[] = array( 'name' => 'Module', 'todo' => 'module', 'icon' => 'plusthick' );
+$backend_todos[] = array( 'name' => 'Themes', 'todo' => 'themes', 'icon' => 'contact' );
 
 //nur die ToDos in Array
 $todos_list = array_column($backend_todos, 'todo');

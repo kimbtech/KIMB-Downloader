@@ -37,12 +37,13 @@ defined('KIMB_Downloader') or die('No clean Request');
 class backend_output{
 
 	//Klasse init
-	protected $header, $allgsysconf, $sitecontent, $sonderfile, $backend_todos;
+	protected $header, $allgsysconf, $sitecontent, $sonderfile, $backend_todos, $downloader_modules;
 
-	public function __construct($allgsysconf, $backend_todos){
+	public function __construct($allgsysconf, $backend_todos, $downloader_modules){
 		$this->allgsysconf = $allgsysconf;
 		$this->sonderfile = new KIMBdbf('sonder.kimb');
-		$this->$backend_todos = $backend_todos;
+		$this->backend_todos = $backend_todos;
+		$this->downloader_modules = $downloader_modules;
 	}
 
 	//Seiteninhalte hinzufügen
@@ -77,8 +78,7 @@ class backend_output{
 
 		}
 		elseif( $art == '403' ){
-			$errmsg = $this->sonderfile->read_kimb_one('error-403');
-			$this->sitecontent .= '<h1>Error - 403</h1>'.$errmsg.'<br /><br /><i>'.$message.'</i>'."\r\n";
+			$this->sitecontent .= '<h1>Error - 403</h1>'.$message."\r\n";
 			header('HTTP/1.0 403 Forbidden');
 		}
 		else{
@@ -110,6 +110,8 @@ class backend_output{
 			echo ('<script language="javascript" src="'.$this->allgsysconf['siteurl'].'/load/prism/prism.js"></script>'."\r\n");
 			
 			//Tooltips und Menü starten
+			echo ('<script>'."\r\n");
+			echo (' $( function () {'."\r\n");
 			echo ('	$( document ).tooltip();'."\r\n");
 			echo ('	$( "#menu" ).menu();'."\r\n");
 			echo ('});'."\r\n");
@@ -122,32 +124,23 @@ class backend_output{
 		echo('</head><body>'."\r\n");
 				echo('<div id="header">'."\r\n");
 					//KIMB-Downloader Backend Schriftzug
-					echo("<pre>\r\n _  _____ __  __ ____         ____ __  __ ____  \r\n| |/ /_ _|  \/  | __ )       / ___|  \/  / ___| \r\n| ' / | || |\/| |  _ \ _____| |   | |\/| \___ \ \r\n| . \ | || |  | | |_) |_____| |___| |  | |___) |\r\n|_|\_\___|_|  |_|____/       \____|_|  |_|____/ \r\n</pre>"."\r\n");
+					echo("<pre>\r\n _  _____ __  __ ____        ____                      _                 _           \r\n| |/ /_ _|  \/  | __ )      |  _ \  _____      ___ __ | | ___   __ _  __| | ___ _ __ \r\n| ' / | || |\/| |  _ \ _____| | | |/ _ \ \ /\ / / '_ \| |/ _ \ / _` |/ _` |/ _ \ '__|\r\n| . \ | || |  | | |_) |_____| |_| | (_) \ V  V /| | | | | (_) | (_| | (_| |  __/ |   \r\n|_|\_\___|_|  |_|____/      |____/ \___/ \_/\_/ |_| |_|_|\___/ \__,_|\__,_|\___|_|   \r\n</pre>"."\r\n");
 				echo('</div>'."\r\n");
 				echo('<div id="page">'."\r\n");
-				echo('<div id="userinfo">'."\r\n");
-				//kleiner Kasten rechts oben mit Infos
-				if( $_SESSION['loginokay'] == $this->allgsysconf['loginokay'] ){
-					//bei Login
-					
-					//Begrüßung
-					echo ('Hallo User <i><u>'.$_SESSION['name'].'</u></i>'."\r\n");
-					//Logout
-					echo ('<br />'); 
-					echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login&amp;logout" title="Abmelden und die Sitzung beenden!"><span class="ui-icon ui-icon-power"></span></a>'."\r\n");
-					echo ('<br />'); 
-				}
-				else{
-					//ohne Login nichts zu sehen
-					echo('Nicht eingeloggt!<br /><span class="ui-icon ui-icon-cancel"></span>'."\r\n");
-				}
-				echo('</div>'."\r\n");
 				//jQuery UI Menue
 				//	ul li aller Todos
 				echo('<div id="menue">'."\r\n");
 				echo('<ul id="menu">'."\r\n");
-				foreach( $this->$backend_todos as $todo ){
-					echo( '<li><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo='.$todo['todo'].'" title="'.$todo['name'].'">'.$todo['name'].'</a></li>'."\r\n");
+				foreach( $this->backend_todos as $todo ){
+					echo( '<li><span class="ui-icon ui-icon-'.$todo['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo='.$todo['todo'].'" title="'.$todo['name'].'">'.$todo['name'].'</a>' );
+					if( $todo['todo'] == 'module' ){
+						echo ( "\r\n".'<ul>' );
+						foreach( $this->downloader_modules as $modul ){
+							echo( '<li><span class="ui-icon ui-icon-'.$modul['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=module&amp;module='.$modul['todo'].'" title="Module">'.$modul['name'].'</a>'."\r\n" );
+						}
+						echo ( '</ul>' );
+					}
+					echo( '</li>'."\r\n");
 				}
 				echo( '</ul>'."\r\n");
 				echo ('</div>'."\r\n");
@@ -155,9 +148,14 @@ class backend_output{
 				echo ('<div id="version">'."\r\n");
 					//CMS Infos & Links für nicht-Backend-Nutzer				
 					echo ('<b>KIMB-technologies Downloader<br />V. '.$this->allgsysconf['systemversion'].'</b><br />'."\r\n");
-					echo ('<i>Diese Seite ist nur für Administratoren!</i><br />'."\r\n");
-					echo ('<a href="'.$this->allgsysconf['siteurl'].'/">Zurück</a><br />'."\r\n");
-					echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login">Backend Login</a>'."\r\n");
+					if( check_backend_login( false ) ){
+							echo ('Hallo '.$_SESSION['name'].'!<br />'."\r\n");
+							echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login&amp;logout">Logout</a>'."\r\n");
+					}
+					else{
+						echo ('<i>Diese Seite ist nur für Administratoren!</i><br />'."\r\n");
+						echo ('<a href="'.$this->allgsysconf['siteurl'].'/">Zurück</a><br />'."\r\n");
+					}
 				echo ('</div>'."\r\n");
 					
 				//Seiteninhalt

@@ -27,4 +27,6 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 //Backend Konfiguration & Infos
 
+echo 'Module Test BE'
+
 ?>

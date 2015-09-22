@@ -51,7 +51,14 @@ function make_html( $filetype, $folder = false ){
 			return '<span class="fileicon fileicon_'.$filetype.'"></span>';
 		}
 		else{
-			return '<span class="fileicon fileicon_blank"></span>';
+			$customic = custom_filetypes_check( $filetype );
+			
+			if( $customic != false ){
+				return $customic;
+			}
+			else{
+				return '<span class="fileicon fileicon_blank"></span>';
+			}
 		}
 	}
 

@@ -45,7 +45,8 @@ if( !empty( $_GET['todo'] ) ){
 	}
 	else{
 		//ToDo nicht gefunden -> Meldung
-		$sitecontent->echo_error( 'ToDo not found!' );
+		$sitecontent->echo_error( 'ToDo not found!', 404 );
+		$errorset = true;
 	}
 	
 }
@@ -62,14 +63,10 @@ if( !empty( $todorequ ) && is_file( __DIR__.'/core/backend/todo_'.$todorequ.'.ph
 		//man muss eingeloggt sein!
 		
 		//Login prüfen
-		if( $_SESSION['loginokay'] == $allgsysconf['loginokay'] && $_SESSION["ip"] == $_SERVER['REMOTE_ADDR'] && $_SESSION["useragent"] == $_SERVER['HTTP_USER_AGENT'] ){
-			//ToDo laden
-			require_once( __DIR__.'/core/backend/todo_'.$todorequ.'.php' );
-		}
-		else{
-			//sonst kein Zugriff -> Meldung
-			$sitecontent->echo_error( 'Kein Zugriff auf ToDo!' );
-		}
+		check_backend_login();
+		
+		//ToDo laden
+		require_once( __DIR__.'/core/backend/todo_'.$todorequ.'.php' );
 	}
 	else{
 		//nicht eingeloggt und Login gewählt?
@@ -78,8 +75,10 @@ if( !empty( $todorequ ) && is_file( __DIR__.'/core/backend/todo_'.$todorequ.'.ph
 	}
 }
 else{
-	//Fehler im ToDo 
-	$sitecontent->echo_error( 'ToDo Error!' );
+	if( !$errorset ){
+		//Fehler im ToDo 
+		$sitecontent->echo_error( 'ToDo Error!', 404 );
+	}
 }
 
 //Seite ausgeben

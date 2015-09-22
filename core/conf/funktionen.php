@@ -232,6 +232,36 @@ function rename_kimbdbf( $datei1 , $datei2 ){
 	return rename( __DIR__.'/../oop/kimb-data/'.$datei1 , __DIR__.'/../oop/kimb-data/'.$datei2 );
 }
 
+//Backend Login testen
+//	$die => Soll false ausgegeben werden oder das Programm beenden werden, wenn User nicht eingeloggt
+//	Return => false/true/die [Programm beenden]
+function check_backend_login( $die = true ){
+	global $sitecontent, $allgsysconf;
+	if( $_SESSION['loginokay'] == $allgsysconf['loginokay'] && $_SESSION["ip"] == $_SERVER['REMOTE_ADDR'] && $_SESSION["useragent"] == $_SERVER['HTTP_USER_AGENT'] ){
+		return true;
+		
+		/*
+		Die Session der User enthält:
+			name => Name des Users
+			user => Username des Users
+			loginokay => Loginokay des Systems
+			way => Login am Downloader [dow]/ via API_Login von einem CMS [api]
+			ip => IP des Users
+			useragent => Useragent des Users		
+		*/
+	}
+	else{
+		if( $die ){
+			$sitecontent->echo_error( 'Sie haben keine Rechte diese Seite zu sehen, bitte loggen Sie sich ein!', 403 );
+			$sitecontent->output_complete_site();
+			die;
+		}
+		else{
+			return false;
+		}
+	}
+}
+
 //rekursiv leoschen
 //	$dir => Verzeichnis
 function rm_r($dir){
@@ -629,14 +659,25 @@ function make_breadcrumb( $explorer = false, $info = false, $viewfile = false ){
 	return $html;	
 }
 
+//Funktionen die von Modulen ersetzt werden sollen, um bestimmte Zusatzfunktionen hinzuzufügen.
+
 //Diese Funktion prüft ob ein User eine bestimmte Datei sehen darf.
-//	Da der Downloader ohne Module kein Rechtemanagement erlaub, gibt diese Funktion immer true zurück.
+//	Da der Downloader ohne Module kein Rechtemanagement erlaubt, gibt diese Funktion immer true zurück.
 //	Zur richtigen Nutzung muss diese Funktion von einem Modul in funcclass überschrieben werden.
 //		$path => Pfad zur Datei
 //		Return => true/false
 function check_rights( $path ){
 
 	return true;
+}
+
+//Diese Funktion wird aufgerufen, bevor eine Datei das Icon für blank (unbenkannt) bekommt.
+//	Module müssen die Funktion überschreiben und entweder false (für das blank Icon) oder HTML-Code zurückgeben.
+//		$endung => Endung der Datei für die der Downloader kein Icon kennt
+//		Return => false/ HTML Code 
+function custom_filetypes_check( $endung ){
+	
+	return false;
 }
 
 // Funktionen von Modulen hinzufügen

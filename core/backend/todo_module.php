@@ -25,9 +25,34 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
-//Liste der Module laden
-require_once( __DIR__.'/modules_list.php' );
+if( !empty( $_GET['module'] ) ){
+	
+	$modulenotfound = false;
+	
+	if( in_array( $_GET['module'], $modules_todos_list ) ){
+		if( is_file( __DIR__.'/../module/'.$_GET['module'].'/be_conf.php' ) ){
+			require_once( __DIR__.'/../module/'.$_GET['module'].'/be_conf.php' );
+		}
+		else{
+			$modulenotfound = true;
+		}
+	}
+	else{
+		$modulenotfound = true;
+	}
+	
+	if( $modulenotfound ){
+		$sitecontent->echo_error( 'Das von Ihnen gewünscht Modul wurde nicht gefunden!' );
+		$sitecontent->add_site_content( '<br /><a href="'.$allgsysconf['siteurl'].'/backend.php?todo=module">&larr; Zurück</a>' );
+	}
+}
+else{
+	$sitecontent->add_site_content( '<h1>Module</h1>' );
+	$sitecontent->add_site_content( '<br />');
+	$sitecontent->echo_message( 'Um die Einstellungen eines Moduls zu ändern, wählen Sie es bitte im Menü aus.', 'Einstellungen' );
+	$sitecontent->add_site_content( '<br />');
+	$sitecontent->add_site_content( '<h2>Module installieren</h2>' );
+}
 
-//Funcclass Module laden (Werte aus Liste)
 
 ?>

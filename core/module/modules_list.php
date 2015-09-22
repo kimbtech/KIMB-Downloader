@@ -28,6 +28,9 @@ defined('KIMB_Downloader') or die('No clean Request');
 //Array mit Liste der Module (sowas wie Add-ons)
 //	hier manuell einzutragen
 
-$downloader_modules[] = array( 'name' => 'test', 'parts' => array( 'fe_fi', 'fe_se', 'fccl' ) );
+$downloader_modules[] = array( 'name' => 'Test', 'todo' => 'test', 'icon' => 'bullet', 'parts' => array( 'fe_fi', 'fe_se', 'fccl' ) );
 
+
+//nur die ToDos in Array
+$modules_todos_list = array_column($downloader_modules, 'todo');
 ?>

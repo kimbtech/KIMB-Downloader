@@ -44,7 +44,7 @@ SYS_INIT( 'none' );
 require_once( __DIR__.'/../backend/todos_list.php' );
 
 //Seitenausgabe BE
-$sitecontent = new backend_output($allgsysconf, $backend_todos);
+$sitecontent = new backend_output($allgsysconf, $backend_todos, $downloader_modules);
 
 //Info über das CMS dem HTML-Code hinzufügen
 $kimbcmsinfo = '<!--

@@ -25,9 +25,7 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
-//Liste der Module laden
-require_once( __DIR__.'/modules_list.php' );
+$sitecontent->add_site_content( '<h1>Explorer</h1>' );
 
-//Funcclass Module laden (Werte aus Liste)
 
 ?>
