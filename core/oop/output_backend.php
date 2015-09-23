@@ -112,6 +112,11 @@ class backend_output{
 			//Tooltips und Menü starten
 			echo ('<script>'."\r\n");
 			echo (' $( function () {'."\r\n");
+			
+			if( !check_backend_login( false ) ){
+				echo ('	$( "#menu li" ).addClass("ui-state-disabled");'."\r\n");
+			}
+			
 			echo ('	$( document ).tooltip();'."\r\n");
 			echo ('	$( "#menu" ).menu();'."\r\n");
 			echo ('});'."\r\n");
@@ -147,14 +152,15 @@ class backend_output{
 				//kleiner Kasten links unten 
 				echo ('<div id="version">'."\r\n");
 					//CMS Infos & Links für nicht-Backend-Nutzer				
-					echo ('<b>KIMB-technologies Downloader<br />V. '.$this->allgsysconf['systemversion'].'</b><br />'."\r\n");
+					echo ('<b>KIMB-technologies Downloader<br />V. '.$this->allgsysconf['systemversion'].'</b><hr />'."\r\n");
 					if( check_backend_login( false ) ){
 							echo ('Hallo '.$_SESSION['name'].'!<br />'."\r\n");
-							echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login&amp;logout">Logout</a>'."\r\n");
+							echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login&amp;logout" style="float:right;" title="Loggen Sie sich aus."><span style="display:inline-block;" class="ui-icon ui-icon-power"></span> Logout</a>'."\r\n");
 					}
 					else{
 						echo ('<i>Diese Seite ist nur für Administratoren!</i><br />'."\r\n");
-						echo ('<a href="'.$this->allgsysconf['siteurl'].'/">Zurück</a><br />'."\r\n");
+						echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login">Backend Login</a><br />'."\r\n");
+						echo ('<a href="'.$this->allgsysconf['siteurl'].'/">Downloader Haupseite</a><br />'."\r\n");
 					}
 				echo ('</div>'."\r\n");
 					

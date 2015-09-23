@@ -1,13 +1,10 @@
 <[about:doc]>KIMB dbf V3.00B - KIMB-technologies<[about:doc]>
-
-<[waydow]>off<[waydow]>
-
+<[waydow]>on<[waydow]>
 <[name]>Administrator<[name]>
 <[username]>admin<[username]>
-<[passhash]>sdfsdfsdfsd<[passhash]>
-
+<[passhash]>2541f2a9510afe36352510046b7031167caead4f<[passhash]>
 <[systemsalt]>QIHEEWpFEIGJKflrIxozTchFSAQcgJHPKKqjEuzNxyYD<[systemsalt]>
-
+<[api_auth]>jSp7LgICWJnl4n8HHHjpMk2NFrcAYDruzrxbuIDjp1p2HXuvHAkw9t34A6qyT0G7c8meAdwm8pLp8vNQsz8lGzk1Tbx5DXnu1vTA<[api_auth]>
+<[api_sysurl]>http://cms.dev:8000/index.php?id=3<[api_sysurl]>
+<[api_gruppe]>down<[api_gruppe]>
 <[api_jsons]>null<[api_jsons]>
-<[api_auth]>XXXX<[api_auth]>
-<[api_sysurl]>XXXX.XX<[api_sysurl]>
