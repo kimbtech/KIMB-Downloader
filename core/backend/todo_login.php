@@ -27,6 +27,9 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 $sitecontent->add_site_content( '<h1>Login</h1>' );
 
+$sitecontent->add_html_header( '<script> $( function () { $( "div#jsinfo" ).css( "display", "none" ); }); </script>');
+$sitecontent->add_site_content( '<div id="jsinfo" style="text-align:center; font-size:1.8em; color:#f00;"><hr />Das Backend benötigt JavaScript!<br />Bitte aktivieren Sie dieses!<hr /></div>');
+
 //Userdaten (Downloader interner Nutzer und Daten für externes Login )
 $beuserfile = new KIMBdbf( 'beuser.kimb' );
 
@@ -195,8 +198,13 @@ elseif( $beuserfile->read_kimb_one( 'waydow' ) == 'on' ){
 		
 		$_SESSION['randcode'] = makepassw( 75, '', 'numaz' );
 		
+		$formhtml = '	<input type="text" name="login_user" id="login_user" placeholder="Username" autofocus="autofocus"><br />' ;
+		$formhtml .='	<input type="password" name="login_pass"  id="login_pass" placeholder="Passwort"><br />' ;
+		$formhtml .='	<input type="submit" value="Login"><br />' ;
+		
 		$sitecontent->add_html_header( '<script>' );
 		$sitecontent->add_html_header( '	var randcode = "'.$_SESSION['randcode'].'";
+	$( function () { $( "form#loginform_down_be" ).html( '.json_encode( $formhtml ).' ); });
 	var salt = "'.$beuserfile->read_kimb_one( 'systemsalt' ).'";
 	function makeloginhash () {
 		var login_pass = $( "input#login_pass" ).val(), passhash;
@@ -207,10 +215,9 @@ elseif( $beuserfile->read_kimb_one( 'waydow' ) == 'on' ){
 	}');
 		$sitecontent->add_html_header( '</script>' );
 		
-		$sitecontent->add_site_content( '<form action="'.$allgsysconf['siteurl'].'/backend.php?todo=login" method="post" onsubmit="return makeloginhash();">' );
-		$sitecontent->add_site_content( '	<input type="text" name="login_user" id="login_user" placeholder="Username" autofocus="autofocus"><br />' );
-		$sitecontent->add_site_content( '	<input type="password" name="login_pass"  id="login_pass" placeholder="Passwort"><br />' );
-		$sitecontent->add_site_content( '	<input type="submit" value="Login"><br />' );
+		$sitecontent->add_site_content( '<h2>Formular</h2>' );
+		$sitecontent->add_site_content( '<form action="'.$allgsysconf['siteurl'].'/backend.php?todo=login" method="post" id="loginform_down_be" onsubmit="return makeloginhash();">' );
+		$sitecontent->add_site_content( '	<h3>Sie benötigen JavaScript für das Login!</h3>' );
 		$sitecontent->add_site_content( '</form>' );
 	}
 }
