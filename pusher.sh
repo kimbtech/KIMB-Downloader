@@ -1,3 +1,3 @@
-git push DATEIEN
-git push BITBUCKET
-git push GITHUB
+git push DATEIEN --all
+git push BITBUCKET --all
+git push GITHUB --all
