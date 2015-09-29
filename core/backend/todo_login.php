@@ -69,13 +69,20 @@ if( isset( $_GET['id'] ) || isset( $_POST['auth'] ) ){
 				
 				$cmsgr = $beuserfile->read_kimb_one( 'api_gruppe' );
 				
-				if( $cmsgr == $user['gr'] ){
+				if( $cmsgr.'xxadmin' == $user['gr'] || $cmsgr.'xxuser' == $user['gr'] ){
 					$_SESSION['loginokay'] = $allgsysconf['loginokay'];
 					$_SESSION["ip"] = $_SERVER['REMOTE_ADDR'];
 					$_SESSION["useragent"] = $_SERVER['HTTP_USER_AGENT'];
 					$_SESSION["name"] = $user['na'];
 					$_SESSION["user"] = $user['us'];
 					$_SESSION["way"] = 'api';
+					
+					if( $cmsgr.'xxadmin' == $user['gr'] ){
+						$_SESSION["usergroup"] = $cmsgr.'_admin';
+					}
+					else{
+						$_SESSION["usergroup"] = $cmsgr.'_user';
+					}
 					
 					$sitecontent->echo_message( 'Sie haben sich erfolgreich von einem externen System eingeloggt!!', 'Wilkommen' );
 				}
@@ -137,7 +144,7 @@ if( !isset( $_SESSION['loginfehler']) ){
 }
 
 //Login direkt am Downloader
-if( check_backend_login( false ) ){
+if( check_backend_login( false, false ) ){
 	$sitecontent->add_site_content( $htmlcode_drin );
 }
 elseif( $beuserfile->read_kimb_one( 'waydow' ) == 'on' ){
@@ -156,12 +163,16 @@ elseif( $beuserfile->read_kimb_one( 'waydow' ) == 'on' ){
 			unset( $_SESSION['randcode'] );
 			
 			if( $password == $passhash ){
+				
+				$cmsgr = $beuserfile->read_kimb_one( 'api_gruppe' );
+				
 				$_SESSION['loginokay'] = $allgsysconf['loginokay'];
 				$_SESSION["ip"] = $_SERVER['REMOTE_ADDR'];
 				$_SESSION["useragent"] = $_SERVER['HTTP_USER_AGENT'];
 				$_SESSION["name"] = $beuserfile->read_kimb_one( 'name' );
 				$_SESSION["user"] = $beuserfile->read_kimb_one( 'username' );
 				$_SESSION["way"] = 'dow';
+				$_SESSION["usergroup"] = $cmsgr.'_admin';
 				
 				$sitecontent->add_site_content( $htmlcode_drin );
 			}

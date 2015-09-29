@@ -27,5 +27,7 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 $sitecontent->add_site_content( '<h1>Explorer</h1>' );
 
+//Login prüfen
+check_backend_login( true, false );
 
 ?>

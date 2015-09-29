@@ -43,7 +43,7 @@ class system_output{
 	//Systemvars
 	protected $sonderfile, $allgsysconf, $sitecontent;
 	//Inhaltvars
-	protected $title, $footer, $description, $keywords, $hidden_menu, $header, $addon;
+	protected $title, $footer, $description, $keywords, $hidden_menu, $header, $addon, $htmlheader;
 
 	public function __construct($allgsysconf){
 		$this->allgsysconf = $allgsysconf;
@@ -53,6 +53,7 @@ class system_output{
 		$this->allgsysconf['description'] = $this->sonderfile->read_kimb_one('description');
 		$this->allgsysconf['lang'] = 'off';
 		$this->header = '<meta name="keywords" content="'.$this->sonderfile->read_kimb_one('keywords').'">'."\r\n";
+		$this->htmlheader = $this->sonderfile->read_kimb_one('htmlheader')."\r\n";
 	}
 
 	//Menüeinträge hinzufügen
@@ -164,6 +165,9 @@ class system_output{
 
 	//abschließende Ausgabe der Seite
 	public function output_complete_site( $allgsys_trans ){
+		
+		//allgemeinen Header hinzufügen
+		$this->header = $this->htmlheader.$this->header;
 
 		//einfügen von JavaScript Code für Platzhalter
 		$jsapicodes = array(

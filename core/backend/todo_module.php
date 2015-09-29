@@ -25,6 +25,9 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
+//Login prüfen
+check_backend_login( true, true );
+
 if( !empty( $_GET['module'] ) ){
 	
 	$modulenotfound = false;

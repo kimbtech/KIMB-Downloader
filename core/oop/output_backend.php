@@ -112,8 +112,14 @@ class backend_output{
 			//Tooltips und Menü starten
 			echo ('<script>'."\r\n");
 			echo (' $( function () {'."\r\n");
-			
-			if( !check_backend_login( false ) ){
+
+			if( check_backend_login( false, true ) ){
+				
+			}
+			elseif( check_backend_login( false, false ) ){
+				echo ('	$( "#menu li.admin-only" ).addClass("ui-state-disabled");'."\r\n");
+			}
+			else{
 				echo ('	$( "#menu li" ).addClass("ui-state-disabled");'."\r\n");
 			}
 			
@@ -137,11 +143,19 @@ class backend_output{
 				echo('<div id="menue">'."\r\n");
 				echo('<ul id="menu">'."\r\n");
 				foreach( $this->backend_todos as $todo ){
-					echo( '<li><span class="ui-icon ui-icon-'.$todo['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo='.$todo['todo'].'" title="'.$todo['name'].'">'.$todo['name'].'</a>' );
+					
+					if( $todo['todo'] != 'infos' && $todo['todo'] != 'explorer' && $todo['todo'] != 'login' ){
+						$class = 'admin-only';
+					}
+					else{
+						$class = '';
+					}
+					
+					echo( '<li class="'.$class.'"><span class="ui-icon ui-icon-'.$todo['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo='.$todo['todo'].'" title="'.$todo['name'].'">'.$todo['name'].'</a>' );
 					if( $todo['todo'] == 'module' ){
 						echo ( "\r\n".'<ul>' );
 						foreach( $this->downloader_modules as $modul ){
-							echo( '<li><span class="ui-icon ui-icon-'.$modul['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=module&amp;module='.$modul['todo'].'" title="Module">'.$modul['name'].'</a>'."\r\n" );
+							echo( '<li class="admin-only"><span class="ui-icon ui-icon-'.$modul['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=module&amp;module='.$modul['todo'].'" title="Module">'.$modul['name'].'</a>'."\r\n" );
 						}
 						echo ( '</ul>' );
 					}
@@ -153,15 +167,23 @@ class backend_output{
 				echo ('<div id="version">'."\r\n");
 					//CMS Infos & Links für nicht-Backend-Nutzer				
 					echo ('<b>KIMB-technologies Downloader<br />V. '.$this->allgsysconf['systemversion'].'</b><hr />'."\r\n");
-					if( check_backend_login( false ) ){
+					if( check_backend_login( false, false ) ){
 							echo ('Hallo '.$_SESSION['name'].'!<br />'."\r\n");
-							echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login&amp;logout" style="float:right;" title="Loggen Sie sich aus."><span style="display:inline-block;" class="ui-icon ui-icon-power"></span> Logout</a>'."\r\n");
+							echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login&amp;logout" style="float:right;" title="Loggen Sie sich aus."><span style="display:inline-block;" class="ui-icon ui-icon-power"></span> Logout</a><br />'."\r\n");
 					}
 					else{
 						echo ('<i>Diese Seite ist nur für Administratoren!</i><br />'."\r\n");
 						echo ('<a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=login">Backend Login</a><br />'."\r\n");
 						echo ('<a href="'.$this->allgsysconf['siteurl'].'/">Downloader Haupseite</a><br />'."\r\n");
 					}
+					
+					if( check_backend_login( false, true ) ){
+						echo ('<u title="Sie haben Rechte als Backend-Administrator!">Administrator</u><br />'."\r\n");
+					}
+					elseif( check_backend_login( false, false ) ){
+						echo ('<u title="Sie haben Rechte als Backend-User!">User</u><br />'."\r\n");
+					}
+					
 				echo ('</div>'."\r\n");
 					
 				//Seiteninhalt

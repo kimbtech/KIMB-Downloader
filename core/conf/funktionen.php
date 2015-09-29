@@ -235,10 +235,34 @@ function rename_kimbdbf( $datei1 , $datei2 ){
 //Backend Login testen
 //	$die => Soll false ausgegeben werden oder das Programm beenden werden, wenn User nicht eingeloggt
 //	Return => false/true/die [Programm beenden]
-function check_backend_login( $die = true ){
+function check_backend_login( $die = true, $admin = true ){
 	global $sitecontent, $allgsysconf;
 	if( $_SESSION['loginokay'] == $allgsysconf['loginokay'] && $_SESSION["ip"] == $_SERVER['REMOTE_ADDR'] && $_SESSION["useragent"] == $_SERVER['HTTP_USER_AGENT'] ){
-		return true;
+		
+		if( $admin ){
+			
+			//Userdaten (Downloader interner Nutzer und Daten für externes Login )
+			$beuserfile = new KIMBdbf( 'beuser.kimb' );
+			//Name der Gruppe für API lesen
+			$cmsgr = $beuserfile->read_kimb_one( 'api_gruppe' );
+			
+			if( $_SESSION["usergroup"] == $cmsgr.'_admin' ){
+				return true;
+			}
+			else{
+				if( $die ){
+					$sitecontent->echo_error( 'Sie haben keine Rechte diese Seite zu sehen, bitte loggen Sie sich ein!', 403 );
+					$sitecontent->output_complete_site();
+					die;
+				}
+				else{
+					return false;
+				}
+			}
+		}
+		else{
+			return true;
+		}
 		
 		/*
 		Die Session der User enthält:
@@ -247,7 +271,8 @@ function check_backend_login( $die = true ){
 			loginokay => Loginokay des Systems
 			way => Login am Downloader [dow]/ via API_Login von einem CMS [api]
 			ip => IP des Users
-			useragent => Useragent des Users		
+			useragent => Useragent des Users
+			usergeroup => Usergruppe (Admin [down_admin]/ User [down_user])	
 		*/
 	}
 	else{
@@ -550,6 +575,16 @@ function get_req_url(){
 	return $req;
 }
 
+//Textarea mit CodeMirror vershen
+//	für eine Textarea
+//		$id => ID der Textarea
+//		$mode => Hervorhebungsmodus (MIME Type nach CodeMirror)
+//	für mehrere Textareas
+//		$id => array(
+//				array( "id" => "header_eins", "mode" => "text/x-markdown" ),
+//				array( "id" => "header_zwei", "mode" => "text/x-markdown" )
+//			);
+
 function add_codemirror( $id, $mode = 'text/x-markdown' ){
 	global $sitecontent, $allgsysconf;
 	
@@ -570,8 +605,23 @@ function add_codemirror( $id, $mode = 'text/x-markdown' ){
 	<script src="'.$mirrorpath.'/mode/clike/clike.js"></script>
 	<script src="'.$mirrorpath.'/mode/php/php.js"></script>
 	<script src="'.$mirrorpath.'/mode/markdown/markdown.js"></script>
-	<script>$(function() { CodeMirror.fromTextArea(document.getElementById("'.$id.'"), { lineNumbers: true, matchBrackets: true, mode: "'.$mode.'" }); });</script>
 	');
+	
+	if( is_array( $id ) ){
+		$sitecontent->add_html_header('	<script>');
+		foreach( $id as $i ){
+			$sitecontent->add_html_header( "\t\t\t".'var mirrorid_'.$i['id'].';');
+		}
+		$sitecontent->add_html_header('		$(function() {');
+		foreach( $id as $i ){
+			$sitecontent->add_html_header( "\t\t\t".'mirrorid_'.$i['id'].' = CodeMirror.fromTextArea(document.getElementById("'.$i['id'].'"), { lineNumbers: true, matchBrackets: true, mode: "'.$i['mode'].'" });');
+		}
+		$sitecontent->add_html_header('		});');
+		$sitecontent->add_html_header('	</script>');
+	}
+	else{
+		$sitecontent->add_html_header('	<script>$(function() { var mirrorid_'.$id.' = CodeMirror.fromTextArea(document.getElementById("'.$id.'"), { lineNumbers: true, matchBrackets: true, mode: "'.$mode.'" }); });</script>');	
+	}
 	
 	return;	
 }

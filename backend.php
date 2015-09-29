@@ -63,7 +63,7 @@ if( !empty( $todorequ ) && is_file( __DIR__.'/core/backend/todo_'.$todorequ.'.ph
 		//man muss eingeloggt sein!
 		
 		//Login prüfen
-		check_backend_login();
+		check_backend_login( true, false );
 		
 		//ToDo laden
 		require_once( __DIR__.'/core/backend/todo_'.$todorequ.'.php' );
