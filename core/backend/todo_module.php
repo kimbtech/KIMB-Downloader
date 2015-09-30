@@ -55,6 +55,10 @@ else{
 	$sitecontent->echo_message( 'Um die Einstellungen eines Moduls zu ändern, wählen Sie es bitte im Menü aus.', 'Einstellungen' );
 	$sitecontent->add_site_content( '<br />');
 	$sitecontent->add_site_content( '<h2>Module installieren</h2>' );
+	
+	$sitecontent->add_site_content( '<br />');
+	$sitecontent->add_site_content( '<br />');
+	$sitecontent->add_site_content( 'Aktuell ist keine automatische Installation möglich. Bitte schauen Sie im Wiki/ in der Dokumentation!' );
 }
 
 

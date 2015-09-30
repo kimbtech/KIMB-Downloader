@@ -61,7 +61,7 @@ if( isset( $_GET['konf'] ) ){
 	);
 	
 	if( !is_object( $conffile ) ){
-		$conffile = new KIMBdbf('sonder.kimb');
+		$conffile = new KIMBdbf('config.kimb');
 	}
 	
 	//Teil löschen?
