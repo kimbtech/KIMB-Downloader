@@ -25,10 +25,10 @@
 //Some componets of this programm are licensed under
 //other Licenses:
 /*************************************************/
-//MIT-License: jQuery (http://jquery.com), jQueryUI (http://jqueryui.com), PrismJS (http://prismjs.com)
-//LGPL: TinyMCE (http://tinymce.com)
+//MIT-License: jQuery (http://jquery.com), jQueryUI (http://jqueryui.com), PrismJS (http://prismjs.com), File Icons (https://github.com/teambox/Free-file-icons), CodeMirror (https://github.com/codemirror/codemirror)
+//GPLv3: Folder Icons (https://github.com/numixproject/numix-folders)
 //Ubuntu Font License: Ubuntu Font Family (http://font.ubuntu.com)
-//3-Clause BSD License: CryptoJS (https://code.google.com/p/crypto-js/)
+//3-Clause BSD License: CryptoJS (https://code.google.com/p/crypto-js/), PHP Markdown (https://michelf.ca/projects/php-markdown/)
 /*************************************************/
 
 
