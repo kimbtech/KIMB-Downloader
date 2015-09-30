@@ -104,10 +104,12 @@ class backend_output{
 			echo ('<link rel="stylesheet" type="text/css" href="'.$this->allgsysconf['siteurl'].'/load/be.css" >'."\r\n");
 			echo ('<link rel="stylesheet" type="text/css" href="'.$this->allgsysconf['siteurl'].'/load/jquery/jquery-ui.min.css" >'."\r\n");
 			echo ('<link rel="stylesheet" type="text/css" href="'.$this->allgsysconf['siteurl'].'/load/prism/prism.css" >'."\r\n");
+			echo ('<link rel="stylesheet" type="text/css" href="'.$this->allgsysconf['siteurl'].'/load/dropzone/dropzone.min.css" >'."\r\n");
 			echo ('<script language="javascript" src="'.$this->allgsysconf['siteurl'].'/load/jquery/jquery.min.js"></script>'."\r\n");
 			echo ('<script language="javascript" src="'.$this->allgsysconf['siteurl'].'/load/jquery/jquery-ui.min.js"></script>'."\r\n");
 			echo ('<script language="javascript" src="'.$this->allgsysconf['siteurl'].'/load/hash.js"></script>'."\r\n");
 			echo ('<script language="javascript" src="'.$this->allgsysconf['siteurl'].'/load/prism/prism.js"></script>'."\r\n");
+			echo ('<script language="javascript" src="'.$this->allgsysconf['siteurl'].'//load/dropzone/dropzone.min.js"></script>'."\r\n");
 			
 			//Tooltips und Menü starten
 			echo ('<script>'."\r\n");
