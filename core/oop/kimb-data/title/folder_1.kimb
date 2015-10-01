@@ -1,8 +1,15 @@
 <[about:doc]>KIMB dbf V3.00B - KIMB-technologies<[about:doc]>
+<[allidslist1]>1<[allidslist1]>
 <[1]>name==title<[1]>
 <[1-name]>Dokumentation.pdf<[1-name]>
-<[1-title]>Dokumentation im pdf Format zur KIMBdbf<[1-title]>
+<[1-title]>Dokumentation im *.pdf Format zur KIMBdbf<[1-title]>
 
+<[allidslist2]>2<[allidslist2]>
 <[2]>name==title<[2]>
 <[2-name]>readme.html<[2-name]>
-<[2-title]>Die alte readme<[2-title]>
+<[2-title]>Die alte "readme"-Datei<[2-title]>
+
+<[allidslist3]>3<[allidslist3]>
+<[3]>name==title<[3]>
+<[3-name]>kimbdbf_V4.00.php<[3-name]>
+<[3-title]>Die eigentliche PHP Klasse!<[3-title]>

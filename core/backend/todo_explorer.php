@@ -136,13 +136,14 @@ if ( !empty( $_FILES['file']['name'] ) ){
 	//versuchen die Datei an ihren neuen Platz zu kopieren
 	if(move_uploaded_file($_FILES["file"]["tmp_name"] , $finame)){
 		//wenn okay Meldung
-		$sitecontent->echo_message( 'Upload erfolgreich' );
+		echo 'Upload erfolgreich';
 	}
 	else{
 		//wenn fehlerhaft aber auch Meldung
-		$sitecontent->echo_error( 'Upload fehlerhaft!' , 'unknown' );
+		echo 'Upload fehlerhaft!';
 	}
-
+	
+	die;
 }
 
 //Variablen zum Lesen des Verzeichnisses feststellen
@@ -155,19 +156,25 @@ $hochpath = substr($_GET['path'], '0', strlen($_GET['path']) - strlen(strrchr($_
 
 //JavaScript Code für den Löschen Dialog
 $sitecontent->add_html_header('<script>
-var del = function( art , del , path ) {
-	$( "#filemanagerdel" ).show( "fast" );
+function delfile( art , del , path, name ) {
+	if( art == "folder" ){
+			$( "#filemanagerdel" ).html( "<p><span class=\'ui-icon ui-icon-alert\' style=\'float:left; margin:0 7px 20px 0;\'></span>Möchten Sie den Ordner &apos;" + name + "&apos; wirklich löschen?</p>" );
+	}
+	else{
+		$( "#filemanagerdel" ).html( "<p><span class=\'ui-icon ui-icon-alert\' style=\'float:left; margin:0 7px 20px 0;\'></span>Möchten Sie die Datei &apos;" + name + "&apos; wirklich löschen?</p>" );
+	}
+	$( "#filemanagerdel" ).css( "display", "block" );
 	$( "#filemanagerdel" ).dialog({
 	resizable: false,
 	height:200,
 	modal: true,
 	buttons: {
-		"Delete": function() {
+		"Löschen": function() {
 			$( this ).dialog( "close" );
 			window.location = "'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&del=" + del + "&art=" + art + "&path=" + path ;
 			return true;
 		},
-		Cancel: function() {
+		"Abbrechen": function() {
 			$( this ).dialog( "close" );
 			return false;
 		}
@@ -179,10 +186,13 @@ var del = function( art , del , path ) {
 //Der zu öffnenden Pfad sollte vorhanden sein!
 if( is_dir( $openpath ) ){
 	//Text des Löschen Dialoges
-	$sitecontent->add_site_content('<div style="display:none;"><div id="filemanagerdel" title="Löschen?"><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Möchten Sie wirklich löschen?</p></div></div>');
+	$sitecontent->add_site_content('<div style="display:none;"><div id="filemanagerdel" title="Löschen?">Löschen?</div></div>');
 
 	//Zurück/ Hoch Button
-	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($hochpath).'"><button title="<= Hoch" ><span class="ui-icon ui-icon-arrowthick-1-w" style="display:inline-block;" ></span></button></a><br />');
+	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($hochpath).'"><button title="<= In den darunter liegenden Ordner wechseln." ><span class="ui-icon ui-icon-arrowthick-1-w" style="display:inline-block;" ></span></button></a>');
+	
+	//Edit Readme
+	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=infos&amp;readme&amp;path='.urlencode( $pathnow ).'"><button title="Infoseite des aktuellen Ordners bearbeiten." ><span style="display:inline-block;" class="ui-icon ui-icon-pencil"></span> Infoseite</button></a><br />');
 
 	//Erstellung der Leiste oben
 	//	erstmal noch alles da
@@ -224,34 +234,79 @@ if( is_dir( $openpath ) ){
 	}
 
 	//Die Leiste in rot ausgeben
-	$sitecontent->add_site_content ('<div style="margin: 5px 0; padding: 5px; border-radius:5px; background-color:red;" title="Aktueller Pfad: Klicken Sie auf einen Ordner um dort hin zu gehen!" >'.$vorneprot.$seepath.'</div>');
+	$sitecontent->add_site_content ('<div style="margin: 5px 0; padding: 5px; border-radius:5px; background-color:red;" title="Aktueller Pfad: Klicken Sie auf einen Ordner um dorthin zu gehen!" >'.$vorneprot.$seepath.'</div>');
 
 	//eine Tabelle mit für die Ordner und Dateien des Verzeichnissen beginnen
 	$sitecontent->add_site_content('<table width="100%">');
 
+	//Verzeichnis Dateien lesen
+	$allfiles = scandir( $openpath );
+
+	//nach ABC sortieren
+	sort( $allfiles );
+	
+	//Texte zu den Dateien lesen
+	$folderfile = new KIMBdbf( 'title/folderlist.kimb' );
+	if( !empty($pathnow) ){
+		$pathnowlooktitle = $pathnow;
+	}
+	else{
+		$pathnowlooktitle = '/';
+	}
+	$fileid = $folderfile->search_kimb_xxxid( $pathnowlooktitle, 'path' );
+	
+	if( $fileid != false ){
+		$titlefile = new KIMBdbf( 'title/folder_'.$fileid.'.kimb' );
+	}
+
 	//Verzeichnis auslesen und durchgehen
-	foreach( scandir( $openpath ) as $file ){
+	foreach( $allfiles as $file ){
 		//keine Punkte
 		if ($file != "." && $file != ".." ) {
+			
+			//Titel bestimmen
+			
+			//	Link zum Anpassen
+			$filetitle = '<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=infos&amp;title&amp;path='.urlencode( $pathnow ).'"><span style="display:inline-block;" class="ui-icon ui-icon-pencil"></span></a>';
+			
+			//	Titel der Datei
+			if( isset( $titlefile) ){
+				$search = $titlefile->search_kimb_xxxid( $file, 'name' );
+				if( $search != false ){
+					$title = htmlentities( $titlefile->read_kimb_id( $search, 'title' ), ENT_COMPAT | ENT_HTML401,'UTF-8' );
+					$filetitle .= substr( $title, 0, 100 );
+				}
+				else{
+					$filetitle .= '<i>Kein Titel</i>';
+				}
+			}
+			else{
+				$filetitle .= '<i>Kein Titel</i>';
+			}
+			
 			//ist es bei diesem Durchgang ein Ordner?
 			if(is_dir($openpath.$file)){
 				//Tabellenzeile für Ordnern erstellen
 				//	Icon und Orange
-				$sitecontent->add_site_content( '<tr style="padding:10px; background-color: orange; height: 40px;"><td><span class="ui-icon ui-icon-folder-collapsed"></span></td>');
+				$table_dirs .= '<tr style="padding:10px; background-color: orange; height: 40px;"><td width="38px"><span class="ui-icon ui-icon-folder-collapsed"></span></td>'."\r\n";
 				//	Löschen Button
-				$sitecontent->add_site_content( '<td><span onclick="var delet = del( \'folder\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\' ); delet();" class="ui-icon ui-icon-trash" title="Diesen Ordner löschen. ( Achtung, es werden alle Dateien im Ordner gelöscht! )" style="display:inline-block;" ></span></td>');
+				$table_dirs .= '<td width="93px"><span onclick="delfile( \'folder\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\', \''.$file.'\' );" class="ui-icon ui-icon-trash" title="Diesen Ordner löschen. (Achtung, es werden alle Dateien im Ordner gelöscht!)" style="display:inline-block;" ></span></td>'."\r\n";
+				
 				//	Link um Ordner zu öffnen
-				$sitecontent->add_site_content( '<td></td><td><a href="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($pathnow.'/'.$file).'">'.$file.'</a></td>');
-				$sitecontent->add_site_content( '</tr>');
+				$table_dirs .= '<td width="150px"><a href="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($pathnow.'/'.$file).'">'.$file.'</a></td>'."\r\n";
+				
+				//	Text zum Ordner
+				$table_dirs .= '<td>'.$filetitle.'</td>'."\r\n";
+				
+				$table_dirs .= '</tr>'."\r\n";
 			}
 			//oder eine Datei
 			else{ 
 				//Tabellenzeile für Datei erstellen
 				//	Icon und Grau
-				$sitecontent->add_site_content( '<tr style="background-color: grey; padding:10px; height: 40px;"><td><span class="ui-icon ui-icon-document"></span></td>');
-				//	Löschen Button
-				$sitecontent->add_site_content( '<td><span onclick="var delet = del( \'\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\' ); delet();" class="ui-icon ui-icon-trash" title="Diese Datei löschen." style="display:inline-block;" ></span></td>');
+				$table_dats .= '<tr style="background-color: grey; padding:10px; height: 40px;"><td width="38px"><span class="ui-icon ui-icon-document"></span></td>'."\r\n";
 				
+				//Link zur Datei erstellen
 				if( $allgsysconf['urlrewrite'] == 'on' ){
 					$fileviewdurl = $allgsysconf['siteurl'].'/view'.$pathnow.'/'.$file;
 				}
@@ -259,14 +314,25 @@ if( is_dir( $openpath ) ){
 					$fileviewurl = $allgsysconf['siteurl'].'/?pfad='.urlencode( 'view'.$pathnow.'/'.$file  );
 				}
 				
-				//Link zur Datei anzeigen (Popup)
-				$sitecontent->add_site_content( '<td><a href="'.$fileviewurl.'" target="_blank"><span class="ui-icon ui-icon-extlink" title="Öffnet die Datei in einem Popup, die URL können Sie oben aus der Adressleiste kopieren und für Ihre Seiten verwenden." style="display:inline-block;" ></span></a></td>' );
+				//	Löschen Button
+				//	Link zur Datei anzeigen
+				$table_dats .= '<td width="93px"><span onclick="delfile( \'\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\', \''.$file.'\' ); " class="ui-icon ui-icon-trash" title="Diese Datei löschen." style="display:inline-block;" ></span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.$fileviewurl.'" target="_blank"><span style="display:inline-block;" class="ui-icon ui-icon-extlink" title="Öffnet die Datei im Frontend des Downloaders." style="display:inline-block;" ></span></a></td>'."\r\n";
 				
 				//Dateiname
-				$sitecontent->add_site_content( '<td>'.$file.'</td></tr>'); 
+				$table_dats .= '<td width="150px">'.$file.'</td>'."\r\n";
+				
+				//	Text zur Datei anzeigen
+				$table_dats .= '<td>'.$filetitle.'</td>'."\r\n";
+				
+				$table_dats .= '</tr>'."\r\n";
 			}
 		}
 	}
+	
+	//Ordner anfügen (sollen immer oben sein)
+	$sitecontent->add_site_content( $table_dirs );
+	//Dateien anfügen
+	$sitecontent->add_site_content( $table_dats );
 	//Tabelle beenden
 	$sitecontent->add_site_content('</table>');
 

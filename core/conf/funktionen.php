@@ -614,13 +614,13 @@ function add_codemirror( $id, $mode = 'text/x-markdown' ){
 		}
 		$sitecontent->add_html_header('		$(function() {');
 		foreach( $id as $i ){
-			$sitecontent->add_html_header( "\t\t\t".'mirrorid_'.$i['id'].' = CodeMirror.fromTextArea(document.getElementById("'.$i['id'].'"), { lineNumbers: true, matchBrackets: true, mode: "'.$i['mode'].'" });');
+			$sitecontent->add_html_header( "\t\t\t".'mirrorid_'.$i['id'].' = CodeMirror.fromTextArea(document.getElementById("'.$i['id'].'"), { lineNumbers: true, matchBrackets: true, lineWrapping: true, mode: "'.$i['mode'].'" });');
 		}
 		$sitecontent->add_html_header('		});');
 		$sitecontent->add_html_header('	</script>');
 	}
 	else{
-		$sitecontent->add_html_header('	<script>$(function() { var mirrorid_'.$id.' = CodeMirror.fromTextArea(document.getElementById("'.$id.'"), { lineNumbers: true, matchBrackets: true, mode: "'.$mode.'" }); });</script>');	
+		$sitecontent->add_html_header('	<script>$(function() { var mirrorid_'.$id.' = CodeMirror.fromTextArea(document.getElementById("'.$id.'"), { lineNumbers: true, matchBrackets: true, lineWrapping: true, mode: "'.$mode.'" }); });</script>');	
 	}
 	
 	return;	
