@@ -289,7 +289,9 @@ function check_backend_login( $die = true, $admin = true ){
 
 //rekursiv leoschen
 //	$dir => Verzeichnis
-function rm_r($dir){
+//	$titleandreadme => Soll auch der Titel und die Readme des Ordners im Explorer gelöscht werden? (true/ false)
+//	$titleandreadfolder => Ordner, ab dem der Title und die Readme gelöscht werden sollen. (/xxx/xxx/xxx)
+function rm_r($dir, $titleandreadme = false, $titleandreadfolder = '' ){
 	//lese Verzeichnis
 	$files = scandir($dir);
 	//gehe Dateien und Ordner durch
@@ -301,8 +303,8 @@ function rm_r($dir){
 			//Datei oder Ordner?
 			if(is_dir($dir.'/'.$file)){
 				//lösche den Ordner
-				//	Verschachtelung der Funktion
-				rm_r($dir.'/'.$file);
+				//	Verschachtelung der Funktion			
+				rm_r($dir.'/'.$file, $titleandreadme, $titleandreadfolder.'/'.$file );
 			}
 			else{
 				//lösche Datei direkt
@@ -310,6 +312,13 @@ function rm_r($dir){
 			}
 		}
 	}
+	
+	//Löschen der Readme und des Titels wenn gewünscht
+	if( $titleandreadme ){
+		delete_title( $titleandreadfolder, 'folder' );
+		delete_readme( $titleandreadfolder );
+	}
+	
 	//verlasse und lösche Ordner
 	return rmdir($dir);
 }
@@ -707,6 +716,91 @@ function make_breadcrumb( $explorer = false, $info = false, $viewfile = false ){
 	$html .= '</div>'."\r\n";
 	
 	return $html;	
+}
+
+//Titel eines Ordners löschen
+//	$path => Pfad des Ordners (/xxx/xxx/xxx)
+//	$art => folder (alle Titel des Ordners)/ file (nur den Titel für eine Datei)
+//	$file => wenn $art auf file, dann hier den Dateinamen
+function delete_title( $path, $art, $file = false ){
+	
+	//dbf mit Zuordnung Ordner -> Titeldatei
+	$list = new KIMBdbf( 'title/folderlist.kimb' );
+	//ID der Titeldatei suchen
+	$fileid = $list->search_kimb_xxxid( $path, 'path' );
+
+	//Fehler, wenn Titeldatei nicht gefunden
+	if( !$fileid ){
+		return false;
+	}
+	
+	//Titeldatei des Ordners laden
+	$folder = new KIMBdbf( 'title/folder_'.$fileid.'.kimb' );
+	
+	//Ordner löschen??
+	if( $art == 'folder' ){
+		
+		//Titeldatei des Ordners löschen
+		$folder->delete_kimb_file();
+		//ID Titeldatei aus der Liste der Ordnerzuordnungen löschen 
+		$list->write_kimb_id( $fileid , 'del' );
+		
+		//okay, return unten
+		
+	}
+	elseif( $art == 'file' && $file != false ){
+		
+		//ID der Datei in Titeldatei suchen
+		$datid = $folder->search_kimb_xxxid( $file, 'name' );
+		
+		//Fehler, wenn Datei nicht gefunden
+		if( !$datid ){
+			return false;
+		}
+		
+		//ID mit Infos zum Titel der Datei aus Titeldatei löschen
+		$folder->write_kimb_id( $datid , 'del' );
+		
+		//okay, return unten
+	}
+	else{
+		return false;
+	}
+	
+	//dbf's unload
+	unset( $list, $folder );
+	
+	//wenn hier angekommen -> okay!!
+	return true;
+}
+
+//Reame eines Ordners löschen
+//	$path => Pfad des Ordners (/xxx/xxx/xxx)
+function delete_readme( $path ){
+	
+	//dbf mit Zuordnung Ordner -> Infodatei
+	$list = new KIMBdbf( 'readme/folderlist.kimb' );
+	//ID der Infodatei suchen
+	$fileid = $list->search_kimb_xxxid( $path, 'path' );
+
+	//Fehler, wenn Infodatei nicht gefunden
+	if( !$fileid ){
+		return false;
+	}
+	
+	//Infodatei des Ordners laden
+	$folder = new KIMBdbf( 'readme/folder_'.$fileid.'.kimb' );
+		
+	//Infodatei des Ordners löschen
+	$folder->delete_kimb_file();
+	//ID Infoldatei aus der Liste der Ordnerzuordnungen löschen 
+	$list->write_kimb_id( $fileid , 'del' );
+	
+	//dbf's unload
+	unset( $list, $folder );
+	
+	//wenn hier angekommen -> okay!!
+	return true;
 }
 
 //Funktionen die von Modulen ersetzt werden sollen, um bestimmte Zusatzfunktionen hinzuzufügen.

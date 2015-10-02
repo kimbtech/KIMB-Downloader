@@ -1,13 +1,10 @@
 <[about:doc]>KIMB dbf V3.00B - KIMB-technologies<[about:doc]>
-<[allidslist1]>1<[allidslist1]>
 <[1]>path<[1]>
 <[1-path]>/KIMBdbf<[1-path]>
-<[allidslist2]>2<[allidslist2]>
 <[2]>path<[2]>
 <[2-path]>/KIMB-CMS<[2-path]>
-<[allidslist3]>4<[allidslist3]>
-<[4]>path<[4]>
 <[4-path]>/<[4-path]>
-<[allidslist4]>3<[allidslist4]>
-<[3-path]>/KIMB-CMS/KIMB-CMS_V2.0F/kimb-cms-backend<[3-path]>
-<[3]>path<[3]>
+<[4]>path<[4]>
+<[allidslist1]>1<[allidslist1]>
+<[allidslist2]>2<[allidslist2]>
+<[allidslist3]>4<[allidslist3]>

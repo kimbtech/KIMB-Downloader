@@ -32,19 +32,6 @@ check_backend_login( true, false );
 
 $sitecontent->add_site_content('<div id="explorerarea">');
 
-/*
-
-TODO!!
-
-Ordner Infos erstellen Link!!
-
-Ordner und Dateien Beschreibung!!
-
-=> jeweils über Infos erstellbar
-=> jeweils hier löschen!!
-
-*/
-
 //Einstellungen dafür laden
 //	gesichert
 $secured = 'off';
@@ -76,7 +63,8 @@ if( !empty( $_GET['del'] ) ){
 	//einen Ordner?
 	if($_GET['art'] == 'folder'){
 		//Alles in dem Ordner, und ihn auch, löschen
-		rm_r( $grpath.$_GET['del'].'/' );
+		rm_r( $grpath.$_GET['del'].'/', true, $_GET['del'] );
+		
 		//Meldung
 		$sitecontent->echo_message( 'Ordner gelöscht' );
 	}	
@@ -316,7 +304,7 @@ if( is_dir( $openpath ) ){
 				
 				//	Löschen Button
 				//	Link zur Datei anzeigen
-				$table_dats .= '<td width="93px"><span onclick="delfile( \'\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\', \''.$file.'\' ); " class="ui-icon ui-icon-trash" title="Diese Datei löschen." style="display:inline-block;" ></span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.$fileviewurl.'" target="_blank"><span style="display:inline-block;" class="ui-icon ui-icon-extlink" title="Öffnet die Datei im Frontend des Downloaders." style="display:inline-block;" ></span></a></td>'."\r\n";
+				$table_dats .= '<td width="93px"><span onclick="delfile( \'\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\', \''.$file.'\' ); " class="ui-icon ui-icon-trash" title="Diese Datei löschen." style="display:inline-block;" ></span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.$fileviewurl.'" target="_blank"><span class="ui-icon ui-icon-extlink" title="Öffnet die Datei im Frontend des Downloaders." style="display:inline-block;" ></span></a></td>'."\r\n";
 				
 				//Dateiname
 				$table_dats .= '<td width="150px">'.$file.'</td>'."\r\n";

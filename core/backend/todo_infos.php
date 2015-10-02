@@ -77,6 +77,11 @@ elseif( isset( $_GET['readme'] ) ){
 	
 	$sitecontent->add_site_content( '<h2>Infoseite anpassen</h2>' );
 
+	//Löschen
+	if( isset( $_GET['del'] ) ){
+		delete_readme( $pathnow );
+	}
+
 	//Readmes Liste lesen
 	$folderfile = new KIMBdbf( 'readme/folderlist.kimb' );
 	$pathinfo = $pathnow;
@@ -86,7 +91,6 @@ elseif( isset( $_GET['readme'] ) ){
 		$newid = $folderfile->next_kimb_id();
 		$folderfile->write_kimb_id( $newid, 'add', 'path', $pathnow );
 	}
-
 	
 	//Pfad suchen
 	$fileid = $folderfile->search_kimb_xxxid( $pathinfo, 'path' );
@@ -158,8 +162,37 @@ elseif( isset( $_GET['readme'] ) ){
 		}
 		
 		$sitecontent->add_site_content('<a href="'.$infosite.'" target="_blank"><span style="display:inline-block;" class="ui-icon ui-icon-extlink" title="Öffnet die Infoseite im Frontend des Downloaders." style="display:inline-block;" ></span></a>');
-		
-		$sitecontent->add_site_content('</form>');
+
+		//Readme löschen
+		$sitecontent->add_site_content('<span style="display:inline-block;" onclick="delreadme();" class="ui-icon ui-icon-trash" title="Readme löschen" ></span>');
+
+		 //Formular beenden
+		 $sitecontent->add_site_content('</form>');
+		 
+		 //JavaScript Code für den Löschen Dialog
+		$sitecontent->add_html_header('<script>
+		function delreadme() {
+			$( "#readmedel" ).css( "display", "block" );
+			$( "#readmedel" ).dialog({
+			resizable: false,
+			height:200,
+			modal: true,
+			buttons: {
+				"Ja": function() {
+					$( this ).dialog( "close" );
+					window.location = "'.$allgsysconf['siteurl'].'/backend.php?todo=infos&readme&path='.urlencode( $pathinfo ).'&del";
+					return true;
+				},
+				"Abbrechen": function() {
+					$( this ).dialog( "close" );
+					return false;
+				}
+			}
+			});
+		}
+		</script>');
+		//HTML-Code
+		$sitecontent->add_site_content('<div style="display:none;"><div id="readmedel" title="Wirklich löschen?">Möchten Sie wirklich die Readme des Ordners "'.$pathinfo.'" löschen?</div></div>');
 
 	}
 	else{
@@ -169,7 +202,17 @@ elseif( isset( $_GET['readme'] ) ){
 }
 elseif( isset( $_GET['title'] ) ){
 	
-	$sitecontent->add_site_content( '<h2>Ordner und Dateitexte anpassen</h2>' );
+	$sitecontent->add_site_content( '<h2>Ordner und Dateititel anpassen</h2>' );
+	
+	//Löschen
+	if( !empty( $_GET['del'] ) ){
+		if( $_GET['del'] == 'folder'){
+			delete_title( $pathnow, 'folder' );
+		}
+		else{
+			delete_title( $pathnow, 'file', $_GET['del'] );
+		}
+	}
 	
 	//Texte zu den Dateien lesen
 	$folderfile = new KIMBdbf( 'title/folderlist.kimb' );
@@ -191,21 +234,48 @@ elseif( isset( $_GET['title'] ) ){
 		$sitecontent->echo_error( 'Für den von Ihnen gewählten Ordner existieren keine Titel!<br /><a href="'.$allgsysconf['siteurl'].'/backend.php?todo=infos&amp;title&amp;path='.urlencode( $pathnow ).'&amp;new"><button>Für den Ordner hinzufügen</button></a>', 'unknown', 'Keine Infoseite' );
 	}
 	else{
-		 $allids = $titlefile->read_kimb_all_teilpl(  'allidslist' );
-		 
 		 $sitecontent->add_site_content('<form action="'.$allgsysconf['siteurl'].'/backend.php?todo=infos&amp;title&amp;path='.urlencode( $pathnow ).'" method="post">');
-		 
+
 		 $sitecontent->add_site_content( '<h3>Dateien und Ordner mit Titel</h3>' );
 		 
 		if( !empty( $_POST['send'] ) ){
-			//
-			//
-			//
-			//Änderungen speichern!!
-			//
-			//
-			//
+			
+			//Werte für existierende Dateien anpassen
+			foreach( $_POST['old'] as $id => $val ){
+				
+				$read = $titlefile->read_kimb_id( $id );
+				
+				if( $read['title'] != $val ){
+					$titlefile->write_kimb_id( $id, 'add', 'title', $val );
+					
+					$message .= 'Der Titel der Datei "'.$read['name'].'" wurde angepasst.<br />';
+				}
+				
+			}
+			
+			//Werte für neue Dateien hinzufügen 
+			foreach( $_POST['new'] as $file => $val ){
+				
+				if( !empty( $val ) ){
+				
+					$newid = $titlefile->next_kimb_id();
+					
+					$titlefile->write_kimb_id( $newid, 'add', 'name', $file );
+					$titlefile->write_kimb_id( $newid, 'add', 'title', $val );
+					
+					$message .= 'Die Datei "'.$file.'" hat einen Titel erhalten!<br />';
+				}
+				
+			}
+			
+			if( !empty( $message ) ){
+				$sitecontent->echo_message( $message, 'Änderungen' );
+			}
+
 		}
+		
+		//aktuelle IDs lesen
+		$allids = $titlefile->read_kimb_all_teilpl(  'allidslist' );
 		 
 		 //Dateien mit Titel
 		 foreach( $allids as $id ){
@@ -213,7 +283,8 @@ elseif( isset( $_GET['title'] ) ){
 			 $cont = $titlefile->read_kimb_id( $id );
 			 
 			 $sitecontent->add_site_content( '<h4>'.$cont['name'].'</h4>' );
-			 $sitecontent->add_site_content( '<textarea name="'.$id.'" style="width:100%;">'.htmlspecialchars( $cont['title'] , ENT_COMPAT | ENT_HTML401,'UTF-8' ).'</textarea><br />' );
+			 $sitecontent->add_site_content( '<textarea name="old['.$id.']" style="width:100%;">'.htmlspecialchars( $cont['title'] , ENT_COMPAT | ENT_HTML401,'UTF-8' ).'</textarea><br />' );
+			 $sitecontent->add_site_content('<span style="display:inline-block;" onclick="delfolder( \'Möchten Sie wirklich den Titel für '.$cont['name'].' löschen?\', \''.urlencode( $cont['name'] ).'\' );" class="ui-icon ui-icon-trash" title="Titel dieser Datei löschen." ></span><br />');
 			 
 			 $donefiles[] = $cont['name'];
 			 
@@ -249,11 +320,51 @@ elseif( isset( $_GET['title'] ) ){
 			 $sitecontent->add_site_content( '<i>Alle Dateien/ Ordner in diesem Ordner haben einen Titel!</i><br />' );
 		 }
 		 
-		 //Formular beenden
+		 //Button senden
 		 $sitecontent->add_site_content('<br /><input type="hidden" value="yes" name="send">');
 		 $sitecontent->add_site_content('<input type="submit" value="Änderungen speichern">');
+		 
+		 //Link zur Frontend-Explorer erstellen
+		if( $allgsysconf['urlrewrite'] == 'on' ){
+			$exturl = $allgsysconf['siteurl'].'/explorer'.$pathnow;
+		}
+		else{
+			$exturl = $allgsysconf['siteurl'].'/?pfad='.urlencode( 'explorer'.$pathnow  );
+		}
+		$sitecontent->add_site_content('<a href="'.$exturl.'" target="_blank"><span style="display:inline-block;" class="ui-icon ui-icon-extlink" title="Ordner in Frontend des Downloaders öffnen." style="display:inline-block;" ></span></a>');
+		
+		//Alle Titel löschen
+		$sitecontent->add_site_content('<span style="display:inline-block;" onclick="delfolder( \'Möchten Sie wirklich alle Titel dieses Ordners löschen?\', \'folder\' );" class="ui-icon ui-icon-trash" title="Alle Titel dieses Ordners löschen.." ></span>');
+			 
+		 //Formular beenden
 		 $sitecontent->add_site_content('</form>');
-	}	
+		 
+		 //JavaScript Code für den Löschen Dialog
+		$sitecontent->add_html_header('<script>
+		function delfolder( text, delpar ) {
+			$( "#titledel" ).html( text );
+			$( "#titledel" ).css( "display", "block" );
+			$( "#titledel" ).dialog({
+			resizable: false,
+			height:200,
+			modal: true,
+			buttons: {
+				"Ja": function() {
+					$( this ).dialog( "close" );
+					window.location = "'.$allgsysconf['siteurl'].'/backend.php?todo=infos&title&path='.urlencode( $pathnow ).'&del=" + delpar;
+					return true;
+				},
+				"Abbrechen": function() {
+					$( this ).dialog( "close" );
+					return false;
+				}
+			}
+			});
+		}
+		</script>');
+		//HTML-Code
+		$sitecontent->add_site_content('<div style="display:none;"><div id="titledel" title="Wirklich löschen?">Löschen??</div></div>');
+	}
 }
 
 ?>
