@@ -37,13 +37,12 @@ defined('KIMB_Downloader') or die('No clean Request');
 class backend_output{
 
 	//Klasse init
-	protected $header, $allgsysconf, $sitecontent, $sonderfile, $backend_todos, $downloader_modules;
+	protected $header, $allgsysconf, $sitecontent, $sonderfile, $backend_todos;
 
-	public function __construct($allgsysconf, $backend_todos, $downloader_modules){
+	public function __construct($allgsysconf, $backend_todos ){
 		$this->allgsysconf = $allgsysconf;
 		$this->sonderfile = new KIMBdbf('sonder.kimb');
 		$this->backend_todos = $backend_todos;
-		$this->downloader_modules = $downloader_modules;
 	}
 
 	//Seiteninhalte hinzufügen
@@ -88,7 +87,7 @@ class backend_output{
 	}
 
 	//gesamte Seite ausgeben
-	public function output_complete_site(){
+	public function output_complete_site( $downloader_modules ){
 		
 		//HTML Code
 		echo('<!DOCTYPE html> <html> <head>'."\r\n");
@@ -156,8 +155,13 @@ class backend_output{
 					echo( '<li class="'.$class.'"><span class="ui-icon ui-icon-'.$todo['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo='.$todo['todo'].'" title="'.$todo['name'].'">'.$todo['name'].'</a>' );
 					if( $todo['todo'] == 'module' ){
 						echo ( "\r\n".'<ul>' );
-						foreach( $this->downloader_modules as $modul ){
-							echo( '<li class="admin-only"><span class="ui-icon ui-icon-'.$modul['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=module&amp;module='.$modul['todo'].'" title="Module">'.$modul['name'].'</a>'."\r\n" );
+						if( $downloader_modules != NULL ){
+							foreach( $downloader_modules as $modul ){
+								echo( '<li class="admin-only"><span class="ui-icon ui-icon-'.$modul['icon'].'"></span><a href="'.$this->allgsysconf['siteurl'].'/backend.php?todo=module&amp;module='.$modul['todo'].'" title="Module">'.$modul['name'].'</a>'."\r\n" );
+							}
+						}
+						else{
+							echo( '<li class="admin-only"><span class="ui-icon ui-icon-help"></span>Keine Module aktiviert!'."\r\n" );
 						}
 						echo ( '</ul>' );
 					}

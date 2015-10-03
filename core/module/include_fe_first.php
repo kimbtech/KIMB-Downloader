@@ -27,4 +27,18 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 //FE First Module laden (Werte aus Liste)
 
+//alle Module durchgehen
+foreach( $downloader_modules as $mod ){
+	
+	//benötigt Module funcclass?
+	if( in_array( 'fe_fi', $mod['parts'] ) ){
+		
+		//funcclass Datei vorhanden?
+		if( is_file( __DIR__.'/'.$mod['todo'].'/fe_fi.php' ) ){
+			
+			//Datei laden
+			require_once( __DIR__.'/'.$mod['todo'].'/fe_fi.php' );
+		}
+	}
+}
 ?>

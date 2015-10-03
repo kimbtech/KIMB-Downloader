@@ -25,8 +25,10 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
-//FE Second
-
-echo 'Module Test FE Second';
+$module_info_name = 'Test';
+$module_info_todo = 'test';
+$module_info_icon = 'bullet';
+$module_info_parts = array( 'fccl', 'fe_se', 'fe_fi' );
+$module_info_version = 'V1.0B';
 
 ?>

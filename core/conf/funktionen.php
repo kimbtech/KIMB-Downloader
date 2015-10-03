@@ -803,6 +803,99 @@ function delete_readme( $path ){
 	return true;
 }
 
+//Modul installieren
+//	$file => Modul Datei
+function install_module( $file ){
+	global $sitecontent, $allgsysconf;
+	
+	//das Temp Verzeichnis erstellen
+	if( !mkdir( __DIR__.'/../module/temp/' ) ){
+		$sitecontent->echo_error( 'Konnte Ordner nicht erstellen.', 'unknown', 'Modulinstallation' );
+		rm_r( __DIR__.'/../module/temp/' );
+		return false;
+	}
+	//Rechte des Temp Verzeichnisses anpassen
+	if( !chmod( __DIR__.'/../module/temp/' , ( fileperms( __DIR__.'/../module' ) & 0777) ) ){
+		rm_r( __DIR__.'/../module/temp/' );
+		$sitecontent->echo_error( 'Konnte Ordner keine Rechte geben.', 'unknown', 'Modulinstallation' );
+		return false;
+	}
+	
+	//Eine *.kimbmod Datei ist eine ZIP Datei mit dem PHP Dateien
+	//	be_conf.php => Backend Konfigurationsseite
+	//	fccl.php => Aufgaben für Funcclass
+	//	fe_fi.php => Aufgaben für Frontend First
+	//	fe_se.php => Aufgaben für Frontend Second
+	//	info_about.php => Infos zum Add-on (name, todo, version, parts, icon)
+	//	install.php => wird bei der Installation ausgeführt
+		
+	//Entpacken der Datei in den Temp Ordner 
+	$zip = new ZipArchive;
+	if ($zip->open( $file ) === TRUE) {
+		$zip->extractTo( __DIR__.'/../module/temp/' );
+		$zip->close();
+	}
+	else{
+		$sitecontent->echo_error( 'Konnte Datei nicht entpacken.', 'unknown', 'Modulinstallation' );
+		rm_r( __DIR__.'/../module/temp/' );
+		return false;
+	}
+	
+	//Infos zu Add-on lesen
+	require( __DIR__.'/../module/temp/info_about.php' );
+	//	$module_info_todo, $module_info_version geladen
+	
+
+	//Todo überprüfen
+	if( $module_info_todo == 'temp' ){
+		$sitecontent->echo_error( 'Module düfen nicht "temp" heißen.', 'unknown', 'Modulinstallation' );
+		rm_r( __DIR__.'/../module/temp/' );
+		return false;
+	}
+	
+	//Ist das Add-on schon installiert?
+	if( is_dir( __DIR__.'/../module/'.$module_info_todo.'/' ) ){
+		
+		//Version des neuen Add-ons sichern
+		$new__module_info_version = $module_info_version;
+			
+		//Info Datei des installatierten Moduls lesen
+		require( __DIR__.'/../module/'.$module_info_todo.'/info_about.php' );
+	
+		//neues und altes Add-on anhand der Versionen prüfen
+		//	Update?
+		if( compare_cms_vers( $module_info_version, $new__module_info_version ) == 'older' ){
+			//Update -> also okay
+			$sitecontent->echo_message( '<p><b>Modul wurde geupdatet.</b></p>Sie müssen das Modul evtl. einmal deaktivieren und danach wieder aktivieren, damit die Änderungen geladen werden!', 'Modulinstallation' );
+		}
+		else{
+			$sitecontent->echo_error( 'Modul gleicher Version schon installiert.', 'unknown', 'Modulinstallation' );
+			rm_r( __DIR__.'/../module/temp/' );
+			return false;
+		}
+	}
+	
+	//Add-on installieren
+		
+	//Die PHP Dateien an den richigen Ort verschieben
+	copy_r( __DIR__.'/../module/temp/' , __DIR__.'/../module/'.$module_info_todo.'/' );
+	
+	//einige Add-ons haben noch eine install.php, wenn vorhanden ausführen
+	if( file_exists( __DIR__.'/../module/'.$module_info_todo.'/install.php' ) ){
+		require( __DIR__.'/../module/'.$module_info_todo.'/install.php' );
+	}
+	
+	//Temp Ordner löschen
+	if( !rm_r( __DIR__.'/../module/temp/' ) ){
+		$sitecontent->echo_error( 'Temp Ordner konnte nicht gelöscht werden.', 'unknown', 'Modulinstallation' );
+		rm_r( __DIR__.'/../module/temp/' );
+		return false;
+	}
+	
+	//alles okay :-)
+	return true;
+}
+
 //Funktionen die von Modulen ersetzt werden sollen, um bestimmte Zusatzfunktionen hinzuzufügen.
 
 //Diese Funktion prüft ob ein User eine bestimmte Datei sehen darf.

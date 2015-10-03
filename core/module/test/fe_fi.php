@@ -27,4 +27,6 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 //FE First
 
+echo 'Module Test FE First';
+
 ?>

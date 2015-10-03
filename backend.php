@@ -82,6 +82,6 @@ else{
 }
 
 //Seite ausgeben
-$sitecontent->output_complete_site();
+$sitecontent->output_complete_site( $downloader_modules );
 
 ?>

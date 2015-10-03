@@ -30,4 +30,19 @@ require_once( __DIR__.'/modules_list.php' );
 
 //Funcclass Module laden (Werte aus Liste)
 
+//alle Module durchgehen
+foreach( $downloader_modules as $mod ){
+	
+	//benötigt Module funcclass?
+	if( in_array( 'fccl', $mod['parts'] ) ){
+		
+		//funcclass Datei vorhanden?
+		if( is_file( __DIR__.'/'.$mod['todo'].'/fccl.php' ) ){
+			
+			//Datei laden
+			require_once( __DIR__.'/'.$mod['todo'].'/fccl.php' );
+		}
+	}
+}
+
 ?>

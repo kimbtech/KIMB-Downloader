@@ -25,8 +25,6 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
-//FE Second
-
-echo 'Module Test FE Second';
+echo 'Installed!!';
 
 ?>
