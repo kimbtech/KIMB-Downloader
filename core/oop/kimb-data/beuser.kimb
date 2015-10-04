@@ -1,11 +1,6 @@
 <[about:doc]>KIMB dbf V3.00B - KIMB-technologies<[about:doc]>
 <[api_gruppe]>down<[api_gruppe]>
-<[api_sysurl]>http://cms.dev:8000/index.php?id=3<[api_sysurl]>
+<[api_sysurl]><[api_sysurl]>
 <[api_jsons]>null<[api_jsons]>
 <[waydow]>on<[waydow]>
-<[api_auth]>jSp7LgICWJnl4n8HHHjpMk2NFrcAYDruzrxbuIDjp1p2HXuvHAkw9t34A6qyT0G7c8meAdwm8pLp8vNQsz8lGzk1Tbx5DXnu1vTA<[api_auth]>
-
-<[name]>Rootie<[name]>
-<[username]>root<[username]>
-<[passhash]>d1f12c8d374e84ff6d4a2e9834c96bc977febbf4<[passhash]>
-<[systemsalt]>R2I6DvAIN3Std80<[systemsalt]>
+<[api_auth]><[api_auth]>

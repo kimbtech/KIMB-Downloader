@@ -1,10 +1,5 @@
 <[about:doc]>KIMB dbf V3.00B - KIMB-technologies<[about:doc]>
 <[1]>path<[1]>
-<[1-path]>/KIMBdbf<[1-path]>
-<[2]>path<[2]>
-<[2-path]>/KIMB-CMS<[2-path]>
-<[4-path]>/<[4-path]>
-<[4]>path<[4]>
+<[1-path]>/<[1-path]>
 <[allidslist1]>1<[allidslist1]>
-<[allidslist2]>2<[allidslist2]>
-<[allidslist3]>4<[allidslist3]>
+
