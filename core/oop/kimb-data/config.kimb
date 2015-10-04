@@ -8,10 +8,11 @@
 <[001-use_request_url]>ok<[001-use_request_url]>
 <[001-theme]>norm<[001-theme]>
 <[001-coolifetime]>0<[001-coolifetime]>
+
 <[001-sitename]>KIMB Downloader<[001-sitename]>
 <[001-sitefavi]>http://cms.dev:8888/load/KIMB.ico<[001-sitefavi]>
-<[001-loginokay]>3vtdJYQSarQBP5FiGF23tSL9PYwl0NiJryMV6otoCma51I3xP<[001-loginokay]>
+<[001-loginokay]>kFGVxYdphRmLvsNuwGO72fyriWsrlBG125HhWqEkmbGi6w9RW<[001-loginokay]>
 <[001-siteurl]>http://cms.dev:8888<[001-siteurl]>
-<[001-adminmail]>cmsadmin@example.com<[001-adminmail]>
-<[001-mailvon]>cms@cms.dev:8000<[001-mailvon]>
+<[001-adminmail]>downloaderadmin@example.com<[001-adminmail]>
+<[001-mailvon]>downloader@cms.dev:8888<[001-mailvon]>
 <[001-urlrewrite]>off<[001-urlrewrite]>

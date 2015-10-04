@@ -3,8 +3,9 @@
 <[api_sysurl]>http://cms.dev:8000/index.php?id=3<[api_sysurl]>
 <[api_jsons]>null<[api_jsons]>
 <[waydow]>on<[waydow]>
-<[name]>Max Mustermann<[name]>
 <[api_auth]>jSp7LgICWJnl4n8HHHjpMk2NFrcAYDruzrxbuIDjp1p2HXuvHAkw9t34A6qyT0G7c8meAdwm8pLp8vNQsz8lGzk1Tbx5DXnu1vTA<[api_auth]>
-<[username]>admin<[username]>
-<[passhash]>60b082bbf0a29e6c7484785453d7aa694bdf1bbb<[passhash]>
-<[systemsalt]>Fr84UGk9uRdE25W<[systemsalt]>
+
+<[name]>Rootie<[name]>
+<[username]>root<[username]>
+<[passhash]>d1f12c8d374e84ff6d4a2e9834c96bc977febbf4<[passhash]>
+<[systemsalt]>R2I6DvAIN3Std80<[systemsalt]>

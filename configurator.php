@@ -120,38 +120,32 @@ echo('
 	</head>
 	<body>
 
-	<div id="main">
-		<h1 style="border-bottom:5px solid #55dd77;" >KIMB CMS - Installation</h1>
-		<div style="display:none;" id="wichtig" >
-			<b>Achtung:</b>
+		<div id="main">
+			<h1 style="border-bottom:5px solid #55dd77;" >KIMB CMS - Installation</h1>
+			<div style="display:none;" id="wichtig" >
+				<b>Achtung:</b>
+				<br />
+				Das Verzeichnis /core/ und seine Unterverzeichnisse sind nicht gesch&uuml;tzt!
+				<br />
+				Bitte sperren Sie diese Verzeichnisse f&uuml;r jegliche Browseraufrufe!
+			</div>
+			<div style="display:none;" id="wichtig_ex" >
+				<b>Achtung:</b>
+				<br />
+				Das Verzeichnis /files/ und seine Unterverzeichnisse sind nicht gesch&uuml;tzt!
+				<br />
+				Bitte sperren Sie diese Verzeichnisse f&uuml;r jegliche Browseraufrufe!
+			</div>
 			<br />
-			Das Verzeichnis /core/ und seine Unterverzeichnisse sind nicht gesch&uuml;tzt!
-			<br />
-			Bitte sperren Sie diese Verzeichnisse f&uuml;r jegliche Browseraufrufe!
-		</div>
-		<div style="display:none;" id="wichtig_ex" >
-			<b>Achtung:</b>
-			<br />
-			Das Verzeichnis /files/ und seine Unterverzeichnisse sind nicht gesch&uuml;tzt!
-			<br />
-			Bitte sperren Sie diese Verzeichnisse f&uuml;r jegliche Browseraufrufe!
-		</div>
-		<br />
 ');
 
 //Ganz unten bei else{} gehts los!
 
 if($_GET['step'] == '2'){
 
-	//
-	//
-	//todo
-	//
-	//
-
 	//Zufallsgenerator Passwortsalt
 	$alles = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-	$laenge = '10';
+	$laenge = '15';
 	$anzahl = strlen($alles);
 	$i = '1';
 	$output = '';
@@ -162,36 +156,49 @@ if($_GET['step'] == '2'){
 	}
 
 	//Formular für die Konfiguration
-	echo '<h2>Allgemeine Systemeinstellungen</h2>';
-	echo '<form method="post" action="configurator.php?step=3" onsubmit=" if( document.getElementById(\'passw\').value != \'\' ){ document.getElementById(\'passw\').value = SHA1( \''.$output.'\' + document.getElementById(\'passw\').value );} else{ alert( \'Bitte geben Sie ein Passwort für den Administrator an!\' ); return false; } " >';
-	echo '<input type="text" name="sitename" value="KIMB CMS" size="60"><br />(Name der Seite)<br /><br />';
-	echo '<input type="text" name="metades" value="CMS von KIMB-technologies" size="60"><br />(Meta Seitenbeschreibung)<br /><br />';
-	echo '<input type="text" name="sysadminmail" value="cmsadmin@example.com" size="60"><br />(E-Mail Adresse des Systemadministrators)<br /><br />';
-	echo '<input type="radio" name="urlrew" value="off">OFF <input type="radio" name="urlrew" value="on" checked="checked">ON (Aktivieren Sie URL-Rewriting f&uuml;r das System (Dazu muss Ihr Server die .htaccess im Rootverzeichnis verwenden k&ouml;nnen oder die Variable $SERVER[REQUEST_URI] setzen.))<br /><br />';
+	echo "\r\n\t\t\t".'<h2>Allgemeine Systemeinstellungen</h2>';
+	echo "\r\n\t\t\t".'<form method="post" action="configurator.php?step=3" onsubmit="
+				if( document.getElementById(\'passw\').value != \'\' && document.getElementById(\'passw\').value == document.getElementById(\'passw_two\').value ){
+					document.getElementById(\'passw\').value = SHA1( document.getElementById(\'passw\').value + \''.$output.'\' );
+					document.getElementById(\'passw_two\').value == \'\';
+					return true;
+				}
+				else if( document.getElementById(\'passw\').value != document.getElementById(\'passw_two\').value ){
+					alert( \'Die Passwörter stimmen nicht überein!\' );
+					return false;
+				}
+				else{
+					alert( \'Bitte geben Sie ein Passwort für den Administrator an!\' );
+					return false;
+				}
+			" >';
+	echo "\r\n\t\t\t\t".'<input type="text" name="sitename" value="KIMB Downloader" size="60"><br />(Name der Seite)<br /><br />';
+	echo "\r\n\t\t\t\t".'<input type="text" name="adminmail" value="downloaderadmin@example.com" size="60"><br />(E-Mail Adresse des Systemadministrators)<br /><br />';
+	echo "\r\n\t\t\t\t".'<input type="radio" name="urlrew" value="off">OFF <input type="radio" name="urlrew" value="on" checked="checked">ON (Aktivieren Sie URL-Rewriting f&uuml;r das System [Dazu muss Ihr Server die .htaccess im Rootverzeichnis verwenden k&ouml;nnen oder die Variable $SERVER[REQUEST_URI] setzen.])<br /><br />';
 
-	echo '<h2>Ersten Administrator einrichten</h2>';
-	echo '<input type="text" name="user" value="admin" readonly="readonly" size="60"><br />(Username des Administrators)<br /><br />';
-	echo '<input type="password" name="passhash" placeholder="123456" id="passw" size="60"><input type="hidden" name="salt" value="'.$output.'"><br />(Passwort des Administrators)<br /><br />';
-	echo '<input type="text" name="name" value="Max Muster" size="60"><br />(Name des Administrators)<br /><br />';
-	echo '<input type="text" name="usermail" value="max.muster@example.com" size="60"><br />(E-Mail Adresse des Administrators)<br /><hr /><hr />';
+	echo "\r\n\t\t\t\t".'<h2>Administrator einrichten</h2>';
+	echo "\r\n\t\t\t\t".'<input type="text" name="user" value="admin" size="60"><br />(Username des Administrators)<br /><br />';
+	echo "\r\n\t\t\t\t".'<input type="text" name="name" value="Max Muster" size="60"><br />(Name des Administrators [Nur Kleinbuchstaben von A-Z])<br /><br />';
+	echo "\r\n\t\t\t\t".'<input type="password" name="passhash" placeholder="Passwort" id="passw" size="60"><br />';
+	echo "\r\n\t\t\t\t".'<input type="hidden" name="salt" value="'.$output.'">';
+	echo "\r\n\t\t\t\t".'<input type="password" name="passhash_two" placeholder="Passwort wiederholen" id="passw_two" size="60"><br />(Passwort des Administrators)<br /><hr /><hr />';
 
-	echo '<input type="submit" value="Weiter"> <b>Alle Felder m&uuml;ssen gef&uuml;llt sein !!</b><br />';
-	echo '</form>';
+	echo "\r\n\t\t\t\t".'<input type="submit" value="Weiter"> <b>Alle Felder m&uuml;ssen gef&uuml;llt sein !!</b><br />';
+	echo "\r\n\t\t\t".'</form>';
 }
 
 elseif($_GET['step'] == '3'){
 
-	//
-	//
-	//todo
-	//
-	//
-
 	//Alle Felder richtig gefüllt
-	if( $_POST['sitename'] == '' || $_POST['metades'] == '' || $_POST['sysadminmail'] == '' || $_POST['passhash'] == '' || $_POST['name'] == '' || $_POST['usermail'] == '' ){
+	if( empty( $_POST['sitename'] ) || empty( $_POST['adminmail'] ) || empty( $_POST['urlrew'] ) || empty( $_POST['user'] ) || empty( $_POST['name'] ) || empty( $_POST['passhash'] ) || empty( $_POST['salt'] ) ){
 
-		echo( '<h1 style="color:red;">Alle Felder m&uuml;ssen gef&uuml;llt sein !!</h1><br /><br />' );
-		echo( '<a href="configurator.php?step=2" >Zur&uuml;ck</a>' );
+		echo( "\r\n\t\t\t".'<h1 style="color:red;">Alle Felder m&uuml;ssen gef&uuml;llt sein !!</h1>
+			<br />
+			<br />' );
+		echo( "\r\n\t\t\t".'<a href="configurator.php?step=2" >Zur&uuml;ck</a>' );
+		echo( "\r\n\t\t".'</div>' );
+		echo( "\r\n\t".'</body>' );
+		echo( "\r\n".'</html>');
 		die;
 	}
 
@@ -217,29 +224,15 @@ elseif($_GET['step'] == '3'){
 		$i++;
 	}
 
-	//Zufallsgenerator Cronkey
-	$alles = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-	$laenge = '30';
-	$anzahl = strlen($alles);
-	$i = '1';
-	$cronkey = '';
-	while($i <= $laenge){
-		$stelle = mt_rand('0', $anzahl); 
-		$cronkey .= $alles{$stelle};
-		$i++;
-	}
-
 	//Konfigurationsteile
 	//erster
 	$addconf = '<[001-sitename]>'.$_POST['sitename'].'<[001-sitename]>
-<[001-sitefavi]>'.$url.'/load/system/KIMB.ico<[001-sitefavi]>
+<[001-sitefavi]>'.$url.'/load/KIMB.ico<[001-sitefavi]>
 <[001-loginokay]>'.$output.'<[001-loginokay]>
 <[001-siteurl]>'.$url.'<[001-siteurl]>
-<[001-description]>'.$_POST['metades'].'<[001-description]>
-<[001-adminmail]>'.$_POST['sysadminmail'].'<[001-adminmail]>
-<[001-mailvon]>cms@'.$_SERVER['HTTP_HOST'].'<[001-mailvon]>
-<[001-urlrewrite]>'.$_POST['urlrew'].'<[001-urlrewrite]>
-<[001-cronkey]>'.$cronkey.'<[001-cronkey]>';
+<[001-adminmail]>'.$_POST['adminmail'].'<[001-adminmail]>
+<[001-mailvon]>downloader@'.$_SERVER['HTTP_HOST'].'<[001-mailvon]>
+<[001-urlrewrite]>'.$_POST['urlrew'].'<[001-urlrewrite]>';
 
 	//Schreibe in Konfigurationsdatei
 	$handle = fopen(__DIR__.'/core/oop/kimb-data/config.kimb', 'a+');
@@ -252,25 +245,30 @@ elseif($_GET['step'] == '3'){
 	}
 
 	//zweiter
-	$adduser = '<[1-passw]>'.$_POST['passhash'].'<[1-passw]>
-<[1-salt]>'.$_POST['salt'].'<[1-salt]>
-<[1-name]>'.$_POST['name'].'<[1-name]>
-<[1-mail]>'.$_POST['usermail'].'<[1-mail]>';
+	$adduser = '<[name]>'.$_POST['name'].'<[name]>
+<[username]>'.$_POST['user'].'<[username]>
+<[passhash]>'.$_POST['passhash'].'<[passhash]>
+<[systemsalt]>'.$_POST['salt'].'<[systemsalt]>';
 
 	//schreiben in Userdatei
-	$handle = fopen(__DIR__.'/core/oop/kimb-data/backend/users/list.kimb', 'a+');
+	$handle = fopen(__DIR__.'/core/oop/kimb-data/beuser.kimb', 'a+');
 	fwrite($handle, $adduser);
 	fclose($handle);
 
 	//fertig anzeigen
-	echo('Installation erfolgreich!<br /><br /> <a href="'.$url.'/" target="_blank"><button>Zur Seite</button></a><br />');
-	echo('<a href="'.$url.'/kimb-cms-backend/" target="_blank"><button>Zum Backend</button></a><br />');
+	echo( "\r\n\t\t\t".'Installation erfolgreich!
+			<br />
+			<br />
+			<a href="'.$url.'/" target="_blank"><button>Zur Seite</button></a>
+			<br />');
+	echo( "\r\n\t\t\t".'<a href="'.$url.'/backend.php" target="_blank"><button>Zum Backend</button></a>
+			<br />');
 	
-	echo( '<hr />' );
-	echo( '<h2>KIMB-technologies Register</h2>' );
-	echo( 'Registrieren Sie sich im KIMB-technologies Register und bleiben Sie auf dem Laufenden.<br />' );
-	echo( '<a href="https://register.kimb-technologies.eu/" target="_blank">Zum Register</a>' );
-	echo( '<hr />' );
+	echo( "\r\n\t\t\t".'<hr />' );
+	echo( "\r\n\t\t\t".'<h2>KIMB-technologies Register</h2>' );
+	echo( "\r\n\t\t\t".'Registrieren Sie sich im KIMB-technologies Register und bleiben Sie auf dem Laufenden.<br />' );
+	echo( "\r\n\t\t\t".'<a href="https://register.kimb-technologies.eu/" target="_blank">Zum Register</a>' );
+	echo( "\r\n\t\t\t".'<hr />' );
 
 	//Konfigurator sperren
 	unlink('conf-enable');
@@ -278,37 +276,37 @@ elseif($_GET['step'] == '3'){
 }
 else{
 	
-	echo "\r\n\t\t".'<h2>Serverprüfung</h2>';
-	echo "\r\n\t\t".'<ul>';
+	echo "\r\n\t\t\t".'<h2>Serverprüfung</h2>';
+	echo "\r\n\t\t\t".'<ul>';
 	
 	//PHP - Version OK?
 	if (version_compare(PHP_VERSION, '5.5.0' ) >= 0 ) {
-    		echo "\r\n\t\t\t".'<li class="okay">Sie verwenden PHP 5.5.0 oder neuer!</li>';
+    		echo "\r\n\t\t\t\t".'<li class="okay">Sie verwenden PHP 5.5.0 oder neuer!</li>';
 		$okay[] = 'okay';
 	}
 	else{
-		echo "\r\n\t\t\t".'<li class="err">Dieses System wurde f&uuml;r PHP 5.5.0 und h&ouml;her entwickelt, bitte f&uuml;hren Sie ein PHP-Update durch!</li>';
+		echo "\r\n\t\t\t\t".'<li class="err">Dieses System wurde f&uuml;r PHP 5.5.0 und h&ouml;her entwickelt, bitte f&uuml;hren Sie ein PHP-Update durch!</li>';
 		$okay[] = 'err';
 	}
 	
 	//url fopen okay?
 	if( ini_get( 'allow_url_fopen' ) ){
 		$okay[] = 'okay';
-		echo "\r\n\t\t\t".'<li class="okay">Ihr Server erlaubt PHP Requests per HTTP zu anderen Servern!</li>';
+		echo "\r\n\t\t\t\t".'<li class="okay">Ihr Server erlaubt PHP Requests per HTTP zu anderen Servern!</li>';
 	}
 	else{
 		$okay[] = 'war';
-		echo "\r\n\t\t\t".'<li class="war">Ihr Server erlaubt PHP keine Requests per HTTP zu anderen Servern!</li>';
+		echo "\r\n\t\t\t\t".'<li class="war">Ihr Server erlaubt PHP keine Requests per HTTP zu anderen Servern!</li>';
 	}
 	
 	//PHP GD
 	if (defined('GD_VERSION')) {   
 		$okay[] = 'okay';
-		echo "\r\n\t\t\t".'<li class="okay">Ihr Server hat PHP_GD!</li>';
+		echo "\r\n\t\t\t\t".'<li class="okay">Ihr Server hat PHP_GD!</li>';
 	}
 	else{
 		$okay[] = 'war';
-		echo "\r\n\t\t\t".'<li class="war">Ihrem Server fehlt PHP_GD!</li>';
+		echo "\r\n\t\t\t\t".'<li class="war">Ihrem Server fehlt PHP_GD!</li>';
 	}
 	//nötige schreibbare Verzeichnisse und Dateien
 	$checkfolders = array(
@@ -341,65 +339,65 @@ else{
 			$count++;
 		}
 		else{
-			echo "\r\n\t\t\t".'<li class="err">"'.$folder.'" ist nicht schreibbar!</li>';
+			echo "\r\n\t\t\t\t".'<li class="err">"'.$folder.'" ist nicht schreibbar!</li>';
 		}
 	}
 	
 	//Hat count den richtigen Wert, dann alles okay
 	if($count == count( $checkfolders ) ){
-		echo "\r\n\t\t\t".'<li class="okay">Alle benötigten Verzeichnisse sind schreibbar!</li>';
+		echo "\r\n\t\t\t\t".'<li class="okay">Alle benötigten Verzeichnisse sind schreibbar!</li>';
 		$okay[] = 'okay';
 	}
 	else{
 		$okay[] = 'err';
 	}
 
-	echo "\r\n\t\t".'</ul>';
+	echo "\r\n\t\t\t".'</ul>';
 
 	//okay auswerten
 	//wiederholen oder weiter zu Schritt 2
 	if( array_search ('err' , $okay ) === false && array_search ('war' , $okay ) === false ){
-		echo( "\r\n\t\t".'<ul>
-			<li class="okay">
-				Alle Bedingungen für das KIMB-CMS sind erfüllt!
-				<br />
-				<br />');
+		echo( "\r\n\t\t\t".'<ul>
+				<li class="okay">
+					Alle Bedingungen für das KIMB-CMS sind erfüllt!
+					<br />
+					<br />');
 		
-		echo( "\r\n\t\t\t\t".'<a href="configurator.php?step=2">
-					<button>Weiter</button>
-				</a>
-			</li>
-		</ul>');
+		echo( "\r\n\t\t\t\t\t".'<a href="configurator.php?step=2">
+						<button>Weiter</button>
+					</a>
+				</li>
+			</ul>');
 	}
 	elseif( array_search ('err' , $okay ) === false ){
-		echo( "\r\n\t\t".'<ul>
-				<li class="war">
-					Die grundlegenden Bedingungen für das KIMB-CMS sind erfüllt, es könnte aber zu Problemen kommen!
-				<br />
-				<br />');
+		echo( "\r\n\t\t\t".'<ul>
+					<li class="war">
+						Die grundlegenden Bedingungen für das KIMB-CMS sind erfüllt, es könnte aber zu Problemen kommen!
+					<br />
+					<br />');
 		
-		echo( "\r\n\t\t\t\t".'<a href="configurator.php?step=2">
-					<button>Weiter</button>
-				</a>
-				</br />');
-		echo( "\r\n\t\t\t\t".'<a href="configurator.php">
-					<button>Neue Systemprüfung</button>
-				</a>
-			</li>
-		</ul>');
+		echo( "\r\n\t\t\t\t\t".'<a href="configurator.php?step=2">
+						<button>Weiter</button>
+					</a>
+					</br />');
+		echo( "\r\n\t\t\t\t\t".'<a href="configurator.php">
+						<button>Neue Systemprüfung</button>
+					</a>
+				</li>
+			</ul>');
 	}
 	else{
-		echo( "\r\n\t\t".'<ul>
-			<li class="err">
-				Die grundlegenden Bedingungen für das KIMB-CMS sind nicht erfüllt!
-				<br />
-				<br />');
+		echo( "\r\n\t\t\t".'<ul>
+				<li class="err">
+					Die grundlegenden Bedingungen für das KIMB-CMS sind nicht erfüllt!
+					<br />
+					<br />');
 		
-		echo( "\r\n\t\t\t\t".'<a href="configurator.php">
-					<button>Neue Systemprüfung</button>
-				</a>
-			</li>
-		</ul>');
+		echo( "\r\n\t\t\t\t\t".'<a href="configurator.php">
+						<button>Neue Systemprüfung</button>
+					</a>
+				</li>
+			</ul>');
 	}
 
 }
