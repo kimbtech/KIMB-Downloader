@@ -96,8 +96,8 @@ foreach( $files as $file ){
 		}
 		
 		if( is_dir( $folder.'/'.$file ) ){
-			$list_element .= '<a href="'.$grundurl.'explorer'.$urlfraghier.'"><span class="name" title="Ordner öffnen">'.$file.'</span></a>'."\r\n";
-			$list_element .= '<a href="'.$grundurl.'info'.$urlfraghier.'"><span class="icon"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'explorer'.$urlfraghier.'" class="name_file_outer"><span class="name" title="Ordner öffnen">'.$file.'</span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'info'.$urlfraghier.'" class="info_icon_outer" ><span class="info"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>'."\r\n";
 			$list_element .= '<span class="dummy"></span>'."\r\n";
 			if( !empty( $titel ) ){
 				$list_element .= '<span class="titel">'.$titel.'</span>'."\r\n";
@@ -106,9 +106,9 @@ foreach( $files as $file ){
 			$is_dir = true;
 		}
 		elseif( is_file( $folder.'/'.$file ) ){
-			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'"><span class="name" title="Datei ansehen">'.$file.'</span></a>'."\r\n";
-			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'"><span class="icon"><span class="view_icon" title="Datei ansehen" ></span></span></a>'."\r\n";
-			$list_element .= '<a href="'.$grundurl.'download'.$urlfraghier.'"><span class="icon"><span class="download_icon" title="Datei herunterladen"></span></span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'" class="name_file_outer"><span class="name" title="Datei ansehen">'.$file.'</span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'" class="view_icon_outer"><span class="icon"><span class="view_icon" title="Datei ansehen" ></span></span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'download'.$urlfraghier.'" class="download_icon_outer"><span class="icon"><span class="download_icon" title="Datei herunterladen"></span></span></a>'."\r\n";
 			if( !empty( $titel ) ){
 				$list_element .= '<span class="titel">'.$titel.'</span>'."\r\n";
 			}

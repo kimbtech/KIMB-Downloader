@@ -30,6 +30,11 @@ defined('KIMB_Downloader') or die('No clean Request');
 $jsonfile = file_get_contents( __DIR__.'/modules_list.json' );
 $downloader_modules = json_decode( $jsonfile , true);
 
+//wenn keine Module aktiviert, leeres Array
+if( $downloader_modules == null ){
+	$downloader_modules = array();
+}
+
 //nur die ToDos in Array
 $modules_todos_list = array_column($downloader_modules, 'todo');
 ?>

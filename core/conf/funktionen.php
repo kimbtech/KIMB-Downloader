@@ -651,8 +651,8 @@ function make_breadcrumb( $explorer = false, $info = false, $viewfile = false ){
 
 		$html .= '<div class="downloader_hoch">'."\r\n";
 		$html .= '<a href="'.$hochurl.'" title="&lArr; Zurück">'."\r\n";
-		$html .= '<span class="hochpfeil">&lArr;</span>'."\r\n";
-		$html .= KIMBtechnologies_Fileicons\make_html( NULL, true);
+		$html .= '<span class="foldericon"><span class="hochpfeil">&larr;</span></span>'."\r\n";
+		//$html .= KIMBtechnologies_Fileicons\make_html( NULL, true);
 		$html .= '</a>'."\r\n";
 		$html .= '</div>'."\r\n";
 	}

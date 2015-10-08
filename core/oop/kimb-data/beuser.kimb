@@ -4,8 +4,7 @@
 <[api_jsons]>null<[api_jsons]>
 <[waydow]>on<[waydow]>
 <[api_auth]>jSp7LgICWJnl4n8HHHjpMk2NFrcAYDruzrxbuIDjp1p2HXuvHAkw9t34A6qyT0G7c8meAdwm8pLp8vNQsz8lGzk1Tbx5DXnu1vTA<[api_auth]>
-
 <[name]>Rootie<[name]>
-<[username]>root<[username]>
-<[passhash]>d1f12c8d374e84ff6d4a2e9834c96bc977febbf4<[passhash]>
-<[systemsalt]>R2I6DvAIN3Std80<[systemsalt]>
+<[username]>admin<[username]>
+<[passhash]>cc284496d11742609ad3f4e468ea3bf6daa63d32<[passhash]>
+<[systemsalt]>48eNU7tRijjI17z<[systemsalt]>
