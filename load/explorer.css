@@ -73,6 +73,12 @@
 	background-position: -103px 3px;
 }
 
+@media (max-width:833px){
+	.view_icon, .view_icon_outer{
+		display:none;
+	}
+}
+
 .explorer_hoch {
 	display:inline;
 	font-size:48px;

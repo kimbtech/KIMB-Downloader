@@ -296,7 +296,7 @@ if( is_dir( $openpath ) ){
 				
 				//Link zur Datei erstellen
 				if( $allgsysconf['urlrewrite'] == 'on' ){
-					$fileviewdurl = $allgsysconf['siteurl'].'/view'.$pathnow.'/'.$file;
+					$fileviewurl = $allgsysconf['siteurl'].'/view'.$pathnow.'/'.$file;
 				}
 				else{
 					$fileviewurl = $allgsysconf['siteurl'].'/?pfad='.urlencode( 'view'.$pathnow.'/'.$file  );
