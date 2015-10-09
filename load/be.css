@@ -37,18 +37,6 @@ h2 {
 	position: relative;
 }
 
-#userinfo{
-	position: absolute;
-	right:0px;
-	top:-57px;
-	height:34px;
-	width:230px;
-	padding:10px;
-	border-radius: 15px;
-	background-color:#ffffff;
-	border:solid 2px #EEC900;
-}
-
 #menue{
 	float:left;
 	padding:10px;
@@ -56,6 +44,7 @@ h2 {
 	border-radius:15px;
 	background-color:#ffffff;
 	width:200px;
+	box-shadow: 10px 10px 5px black;
 }
 
 #version{
@@ -67,6 +56,7 @@ h2 {
 	border-radius:15px;
 	background-color:#ffffff;
 	width:200px;
+	box-shadow: 10px 10px 5px black;
 }
 
 #content{
@@ -77,6 +67,7 @@ h2 {
 	border-radius: 15px;
 	background-color:#ffffff;
 	border:solid 2px #EEC900;
+	box-shadow: 10px 10px 5px black;
 }
 
 #errorbox{
