@@ -177,10 +177,12 @@ if( is_dir( $openpath ) ){
 	$sitecontent->add_site_content('<div style="display:none;"><div id="filemanagerdel" title="Löschen?">Löschen?</div></div>');
 
 	//Zurück/ Hoch Button
-	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($hochpath).'"><button title="<= In den darunter liegenden Ordner wechseln." ><span class="ui-icon ui-icon-arrowthick-1-w" style="display:inline-block;" ></span></button></a>');
+	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($hochpath).'"><button style="padding:2px; border:2px solid red; border-radius:5px; background-color:#ff4c4c;" title="&lArr; In den darunter liegenden Ordner wechseln." ><span class="ui-icon ui-icon-arrowthick-1-w" style="display:inline-block;" ></span></button></a>');
 	
 	//Edit Readme
-	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=infos&amp;readme&amp;path='.urlencode( $pathnow ).'"><button title="Infoseite des aktuellen Ordners bearbeiten." ><span style="display:inline-block;" class="ui-icon ui-icon-pencil"></span> Infoseite</button></a><br />');
+	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=infos&amp;readme&amp;path='.urlencode( $pathnow ).'"><button style="padding:2px; border:2px solid #b2b200; border-radius:5px; background-color:#ff0;" title="Infoseite des aktuellen Ordners bearbeiten." ><span style="display:inline-block;" class="ui-icon ui-icon-pencil"></span> Infoseite</button></a><br />');
+	
+	$sitecontent->add_site_content ('<hr />');
 
 	//Erstellung der Leiste oben
 	//	erstmal noch alles da
@@ -222,7 +224,7 @@ if( is_dir( $openpath ) ){
 	}
 
 	//Die Leiste in rot ausgeben
-	$sitecontent->add_site_content ('<div style="margin: 5px 0; padding: 5px; border-radius:5px; background-color:red;" title="Aktueller Pfad: Klicken Sie auf einen Ordner um dorthin zu gehen!" >'.$vorneprot.$seepath.'</div>');
+	$sitecontent->add_site_content ('<div style="margin: 5px 0; padding: 5px;  border:2px solid red; border-radius:5px; background-color:#ff4c4c;" title="Aktueller Pfad: Klicken Sie auf einen Ordner um dorthin zu gehen!" >'.$vorneprot.$seepath.'</div>');
 
 	//eine Tabelle mit für die Ordner und Dateien des Verzeichnissen beginnen
 	$sitecontent->add_site_content('<table width="100%">');
@@ -276,7 +278,7 @@ if( is_dir( $openpath ) ){
 			if(is_dir($openpath.$file)){
 				//Tabellenzeile für Ordnern erstellen
 				//	Icon und Orange
-				$table_dirs .= '<tr style="padding:10px; background-color: orange; height: 40px;"><td width="38px"><span class="ui-icon ui-icon-folder-collapsed"></span></td>'."\r\n";
+				$table_dirs .= '<tr style="padding:10px; background-color:lightgreen; height: 40px;"><td width="38px"><span class="ui-icon ui-icon-folder-collapsed"></span></td>'."\r\n";
 				//	Löschen Button
 				$table_dirs .= '<td width="93px"><span onclick="delfile( \'folder\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\', \''.$file.'\' );" class="ui-icon ui-icon-trash" title="Diesen Ordner löschen. (Achtung, es werden alle Dateien im Ordner gelöscht!)" style="display:inline-block;" ></span></td>'."\r\n";
 				
@@ -325,7 +327,7 @@ if( is_dir( $openpath ) ){
 	$sitecontent->add_site_content('</table>');
 
 	//Formular für neuen Ordner
-	$sitecontent->add_site_content ('<form style="padding:10px; background-color: orange;" action="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($pathnow).'" method="post">');
+	$sitecontent->add_site_content ('<form style="padding:10px; background-color:#ffc966; border:2px solid orange;  border-radius:5px; margin-top:5px;" action="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($pathnow).'" method="post">');
 	$sitecontent->add_site_content ('<input type="text" name="newfolder" placeholder="Neuer Ordner">');
 	$sitecontent->add_site_content ('<input type="submit" value="Erstellen" title="Erstellen Sie einen neuen Ordner."></form>');
 	
@@ -345,14 +347,16 @@ if( is_dir( $openpath ) ){
 					 uploadblock = "done";
 				}
 			});
-			ExplorerDropzone.on( "totaluploadprogress", function(file){
+			ExplorerDropzone.on( "queuecomplete", function(file){
 				window.open( "'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&path='.urlencode($pathnow).'", "_self" );
 			});
 		});
 	</script>' );
 	
 	$sitecontent->add_site_content( '<br /><br /><h2>Dateien hochladen</h2>' );
-	$sitecontent->add_site_content( '<br /><form action="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($pathnow).'" class="dropzone" id="dropzone"></form><br />');
+	$sitecontent->add_site_content( '<br /><form action="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($pathnow).'" class="dropzone" id="dropzone">');
+	$sitecontent->add_site_content( '<img src="'.$allgsysconf['siteurl'].'/load/dropzone/upload.png" style="margin-left:  230px;" title="Ziehen Sie zum Hochladen Dateien über dieses Feld oder klicken Sie!" class="dz-message">');
+	$sitecontent->add_site_content( '</form><br />');
 
 }
 else{
