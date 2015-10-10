@@ -1,6 +1,7 @@
 <[about:doc]>KIMB Datei V.0.1 KIMB CMS<[about:doc]>
 <[folder]>readme<[folder]>
 <[folder]>title<[folder]>
+<[folder]>module<[folder]>
 <[file]>config.kimb<[file]>
 <[file]>index.kimb<[file]>
 <[file]>sonder.kimb<[file]>

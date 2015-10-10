@@ -151,7 +151,7 @@ else{
 	$sitecontent->add_site_content( '<tr><td colspan="4"><b>Deaktivierte Module:</b></td><tr>' );
 	
 	//noch keine deaktivierten Module vorhaden
-	$deakmod = true;
+	$deakmod = false;
 	
 	//Module Ordner lesen
 	$other_modules = scandir( __DIR__.'/../module/' );
@@ -178,7 +178,7 @@ else{
 		}
 	}
 	
-	if( $deakmod ){
+	if( !$deakmod ){
 		$sitecontent->add_site_content( '<tr><td></td><td colspan="3"><i>Keine deaktivierten Module</i></td><tr>' );
 	}
 
