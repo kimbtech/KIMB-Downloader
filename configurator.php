@@ -33,7 +33,7 @@ if( !file_exists ('conf-enable') ){
 	echo('<!DOCTYPE html>
 <html>
 	<head>
-		<title>KIMB Downloader - Installation</title>
+		<title>KIMB-Downloader - Installation</title>
 		<link rel="shortcut icon" href="load/KIMB.ico" type="image/x-icon; charset=binary">
 	</head>
 	<body>
@@ -52,7 +52,7 @@ echo('
 <!DOCTYPE HTML >
 <html>
 	<head>
-		<title>KIMB CMS - Installation</title>
+		<title>KIMB-Downloader - Installation</title>
 		<link rel="shortcut icon" href="load/KIMB.ico" type="image/x-icon; charset=binary">
 		<link rel="icon" href="load/KIMB.ico" type="image/x-icon; charset=binary">
 		<style>
@@ -121,7 +121,7 @@ echo('
 	<body>
 
 		<div id="main">
-			<h1 style="border-bottom:5px solid #55dd77;" >KIMB CMS - Installation</h1>
+			<h1 style="border-bottom:5px solid #55dd77;">KIMB-Downloader - Installation</h1>
 			<div style="display:none;" id="wichtig" >
 				<b>Achtung:</b>
 				<br />
@@ -359,7 +359,7 @@ else{
 	if( array_search ('err' , $okay ) === false && array_search ('war' , $okay ) === false ){
 		echo( "\r\n\t\t\t".'<ul>
 				<li class="okay">
-					Alle Bedingungen für das KIMB-CMS sind erfüllt!
+					Alle Bedingungen für den KIMB-Downloader sind erfüllt!
 					<br />
 					<br />');
 		
@@ -372,7 +372,7 @@ else{
 	elseif( array_search ('err' , $okay ) === false ){
 		echo( "\r\n\t\t\t".'<ul>
 					<li class="war">
-						Die grundlegenden Bedingungen für das KIMB-CMS sind erfüllt, es könnte aber zu Problemen kommen!
+						Die grundlegenden Bedingungen für den KIMB-Downloader sind erfüllt, es könnte aber zu Problemen kommen!
 					<br />
 					<br />');
 		
@@ -389,7 +389,7 @@ else{
 	else{
 		echo( "\r\n\t\t\t".'<ul>
 				<li class="err">
-					Die grundlegenden Bedingungen für das KIMB-CMS sind nicht erfüllt!
+					Die grundlegenden Bedingungen für den KIMB-Downloader sind nicht erfüllt!
 					<br />
 					<br />');
 		
