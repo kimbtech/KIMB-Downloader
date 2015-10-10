@@ -79,8 +79,48 @@ function api_check_for_updates( $time = true ){
 
 //immer wenn User im Backend nach Updates gucken (Mail wird dann an Admin gesendet!)
 if( get_req_url() == '/backend.php' ){
-	$module_autoupdate_infofile = new KIMBdbf( 'module_autoupdate_infofile.kimb' );
+	$module_autoupdate_infofile = new KIMBdbf( 'module/module_autoupdate_infofile.kimb' );
 	api_check_for_updates();
+}
+
+//Modul herunterladen und installieren
+//	$modtodo = ToDo des Moduls (muss in der KIMB-API verfügbar sein)
+//	Rückgabe => true/ false (+Ausgaben in $sitecontent)
+function get_and_install_module( $modtodo ){
+	global $sitecontent, $allgsysconf;
+	
+	//Link zum Pack bekommen
+	//	KIMB-API
+	$addwert = json_decode( file_get_contents( 'https://api.kimb-technologies.eu/downloader/module/getcurrentversion.php?module='.$modtodo ) , true );
+	
+	//Fehler?
+	if( $addwert[0]['err'] == 'no' ){
+		//URL aus Array
+		 $url = $addwert[0]['link'];
+		 
+		 //Installdatei herunterladen
+		//	Name der Installdatei
+		$file = __DIR__.'/temp/'.time().'.kimbadd';
+		 //	die Update-Datei auf dem Server öffnen
+		$src = fopen( $url , 'r');
+		//	den Ort für die Update-Datei im Downloader öffnen
+		$dest = fopen( $file , 'w+');
+		//	Datei herunterladen
+		if( !stream_copy_to_stream( $src, $dest ) ){
+			//wenn Fehler -> Fehlermeldung
+			$sitecontent->echo_error( 'Download des Add-ons nicht möglich!' );
+			return false;
+		}
+		else{ 
+			 //Add-on Installieren
+			 return install_module( $file );
+		}
+	}
+	else{
+		//Fehlermedung, wenn API Fehler ausgibt
+		$sitecontent->echo_error( 'Fehler beim Holen der Infos über das Modul!' );
+		return false;
+	}
 }
 
 ?>

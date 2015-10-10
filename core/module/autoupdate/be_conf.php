@@ -31,7 +31,7 @@ $addonurl = $allgsysconf['siteurl'].'/backend.php?todo=module&amp;module=autoupd
 
 //eigentlich schon von funcclass geladen
 if( !is_object( $module_autoupdate_infofile ) ){
-	$module_autoupdate_infofile = new KIMBdbf( 'module_autoupdate_infofile.kimb' );
+	$module_autoupdate_infofile = new KIMBdbf( 'module/module_autoupdate_infofile.kimb' );
 }
 
 //Auf der Seite Konfiguration wird oben eine Liste mit den verschiedenen Möglichkeiten anzeigt
@@ -97,10 +97,102 @@ if( isset( $_GET['sys'] ) ){
 		else{
 			$sitecontent->add_site_content('<button disabled="disabled">Kein Update</button>');
 		}
+		
+		//alte Update Dateien aus dem Temp-Ordner löschen
+		foreach( scandir( __DIR__.'/temp/' ) as $zip ){
+			if( $zip != '.' && $zip != '..'){
+				unlink( __DIR__.'/temp/'.$zip );
+			}
+		}
 	}
 	
 }
 elseif( isset( $_GET['modup'] ) ){
+	
+	$sitecontent->add_site_content('<h2>Module aktualisieren</h2>');
+	$sitecontent->add_site_content('Führen Sie hier Updates Ihrer Module mit einem Klick durch.<br />');
+	
+	if( !empty( $_GET['install'] ) ){
+		$_GET['install'] = preg_replace( "/[^a-z]/" , "" , $_GET['install'] );
+		
+		if( get_and_install_module( $_GET['install'] ) ){
+			$sitecontent->echo_message( 'Modul wurde installiert!' );
+			$sitecontent->add_site_content('<br /><br /><a href="'.$addonurl.'&amp;modup"><span class="ui-icon ui-icon-arrowreturn-1-w"></span> Zurück</a>');
+		}
+		else{
+			$sitecontent->add_site_content('<br /><br /><a href="'.$addonurl.'&amp;modup&amp;install='.$_GET['install'].'"><span class="ui-icon ui-icon-arrowrefresh-1-e"></span> Erneut versuchen</a>');
+			$sitecontent->add_site_content('<br /><br /><a href="'.$addonurl.'&amp;modup"><span class="ui-icon ui-icon-arrowreturn-1-w"></span> Zurück</a>');
+		}
+	}
+	else{
+		//CSS für Tabelle
+		$sitecontent->add_html_header('<style>td { border:1px solid #000000; padding:2px;} td a { text-decoration:none; }</style>');
+		
+		$sitecontent->add_site_content( '<table width="100%">' );
+		$sitecontent->add_site_content( '<tr> <th>Name</th> <th>Installierte Version</th> <th>Aktuelle Version</th> </tr>' );
+		
+		//Module auf System lesen
+		$mods = scandir( __DIR__.'/../' );
+		$modstable = false;
+		
+		//API Daten laden
+		$addonsarray = json_decode( $module_autoupdate_infofile->read_kimb_one( 'module_json' ), true );
+		//wenn keine Module in API, dann Array leer
+		if( !is_array( $addonsarray ) ){
+			$addonsarray = array();
+		}
+		//nur die ToDos in Array
+		$api_todos = array_column($addonsarray, 'modul');
+		
+		//alle durchgehen
+		foreach( $mods as $mod ){
+			//keine Dateisystemzeichen
+			if( $mod != '.' && $mod != '..' ){
+				//nur Module nehmen
+				if( is_file( __DIR__.'/../'.$mod.'/info_about.php' ) ){
+					
+					//Modul Infos laden
+					require_once( __DIR__.'/../'.$mod.'/info_about.php' );
+					
+					//Infos aus API suchen
+					$api_i = array_search( $mod, $api_todos );
+					
+					//beide Versionen da und Array Key nicht false?
+					if( !empty( $module_info_version ) && !empty( $addonsarray[$api_i]['version'] ) && $api_i !== false ){
+						
+						//Version des installierten älter als Version in der API?
+						if( compare_cms_vers( $module_info_version, $addonsarray[$api_i]['version'] ) == 'older'  ){
+					
+							//Tabellenzeile mit Button für Update
+							$sitecontent->add_site_content( '<tr>
+								<td>'.$addonsarray[$api_i]['name'].'</td>
+								<td>'.$module_info_version.'</td>
+								<td>'.$addonsarray[$api_i]['version'].'</td>
+								<td><a href="'.$addonurl.'&amp;modup&amp;install='.$addonsarray[$api_i]['modul'].'">Update</a></td>
+							</tr>' );
+					
+							$modstable = true;
+							
+						}
+					}
+				}
+			}
+		}
+		
+		//Tabelle beenden
+		$sitecontent->add_site_content( '</table>' );
+		
+		if( !$modstable ){
+			$sitecontent->echo_message( 'Alle Module sind aktuell!', 'Glückwunsch' );
+		}
+		
+		//alte Update Dateien aus dem Temp-Ordner löschen
+		foreach( scandir( __DIR__.'/temp/' ) as $zip ){
+			if( $zip != '.' && $zip != '..'){
+				unlink( __DIR__.'/temp/'.$zip );
+			}
+		}
+	}
 	
 }
 elseif( isset( $_GET['moddown'] ) ){
@@ -108,44 +200,72 @@ elseif( isset( $_GET['moddown'] ) ){
 	$sitecontent->add_site_content('<h2>Module installieren</h2>');
 	$sitecontent->add_site_content('Installieren Sie hier mit einem Klick Module auf dem System.<br />');
 	
-	//CSS für Tabelle
-	$sitecontent->add_html_header('<style>td { border:1px solid #000000; padding:2px;} td a { text-decoration:none; }</style>');
-	
-	$addonsarray = json_decode( $module_autoupdate_infofile->read_kimb_one( 'module_json' ), true );
-	
-	if( !is_array( $addonsarray ) ){
-		$addonsarray = array();
-	}
-	
-	$sitecontent->add_site_content( '<table>' );
-	$sitecontent->add_site_content( '<tr> <th>Name</th> </tr>' );
-	
-	$modstable = false;
-	
-	foreach( $addonsarray as $ad ){
-
-		if( strpos( $ad['todo'] , ".." ) !== false ){
-			
+	if( !empty( $_GET['install'] ) ){
+		$_GET['install'] = preg_replace( "/[^a-z]/" , "" , $_GET['install'] );
+		
+		if( get_and_install_module( $_GET['install'] ) ){
+			$sitecontent->echo_message( 'Modul wurde installiert!' );
+			$sitecontent->add_site_content('<br /><br /><a href="'.$addonurl.'&amp;moddown"><span class="ui-icon ui-icon-arrowreturn-1-w"></span> Zurück</a>');
 		}
 		else{
-			if( !is_dir( __DIR__.'/../'.$ad['todo'] ) ){
-				$sitecontent->add_site_content( '<tr> <td><a href="https://downloaderwiki.kimb-technologies.eu/module/'.$ad['todo'].'" title="Seite des Add-ons im WIKI" target="_blank">'.$ad['name'].'</a></td> <td><a href="'.$addonurl.'&amp;moddown&amp;install='.$ad['todo'].'">Modul installieren</a></td> </tr>' );
-				
-				$modstable = true;
-			}
+			$sitecontent->add_site_content('<br /><br /><a href="'.$addonurl.'&amp;moddown&amp;install='.$_GET['install'].'"><span class="ui-icon ui-icon-arrowrefresh-1-e"></span> Erneut versuchen</a>');
+			$sitecontent->add_site_content('<br /><br /><a href="'.$addonurl.'&amp;moddown"><span class="ui-icon ui-icon-arrowreturn-1-w"></span> Zurück</a>');
 		}
 	}
+	else{
+		
+		//CSS für Tabelle
+		$sitecontent->add_html_header('<style>td { border:1px solid #000000; padding:2px;} td a { text-decoration:none; }</style>');
+		
+		$addonsarray = json_decode( $module_autoupdate_infofile->read_kimb_one( 'module_json' ), true );
+		
+		if( !is_array( $addonsarray ) ){
+			$addonsarray = array();
+		}
+		
+		$sitecontent->add_site_content( '<table width="100%">' );
+		$sitecontent->add_site_content( '<tr> <th>Name</th> </tr>' );
+		
+		$modstable = false;
+		
+		foreach( $addonsarray as $ad ){
 	
-	$sitecontent->add_site_content( '</table>' );
-	
-	if( !$modstable ){
-		$sitecontent->echo_message( 'Keine Module zur Installation gefunden!' );
+			if( strpos( $ad['modul'] , ".." ) !== false ){
+			}
+			else{
+				if( !is_dir( __DIR__.'/../'.$ad['modul'] ) ){
+					$sitecontent->add_site_content( '<tr> <td><a href="https://downloaderwiki.kimb-technologies.eu/module/'.$ad['modul'].'" title="Seite des Add-ons im WIKI" target="_blank">'.$ad['name'].'</a></td> <td><a href="'.$addonurl.'&amp;moddown&amp;install='.$ad['modul'].'">Modul installieren</a></td> </tr>' );
+					
+					$modstable = true;
+				}
+			}
+		}
+		
+		$sitecontent->add_site_content( '</table>' );
+		
+		if( !$modstable ){
+			$sitecontent->echo_message( 'Keine Module zur Installation gefunden!' );
+		}
+		
+		//alte Update Dateien aus dem Temp-Ordner löschen
+		foreach( scandir( __DIR__.'/temp/' ) as $zip ){
+			if( $zip != '.' && $zip != '..'){
+				unlink( __DIR__.'/temp/'.$zip );
+			}
+		}
 	}
 	
 }
 else{
 	//nichts gewünscht
 	$sitecontent->add_site_content('Bitte wählen Sie oben einen Bereich aus, den Sie angezeigt bekommen wollen.');
+	
+	//alte Update Dateien aus dem Temp-Ordner löschen
+	foreach( scandir( __DIR__.'/temp/' ) as $zip ){
+		if( $zip != '.' && $zip != '..'){
+			unlink( __DIR__.'/temp/'.$zip );
+		}
+	}
 }
 
 $sitecontent->add_site_content('<hr /><a href="'.$addonurl.'&amp;reload_api"><span class="ui-icon ui-icon-refresh"  style="display:inline-block;" title="Daten von der API neu laden?"></span></a>');
