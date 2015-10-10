@@ -98,14 +98,7 @@ function send_mail($to, $inhalt, $mime = 'plain'){
 	$header .= 'MIME-Version: 1.0' ."\r\n";
 	$header .= 'Content-Type: text/'.$mime.'; charset=uft-8' . "\r\n";
 
-	//sende Mail und gebe zurück
-	$f = fopen( __DIR__.'/mail.txt', 'a+' );
-	fwrite( $f, $to.'-------------------'.$inhalt."\r\n\r\n" );
-	fclose( $f );
-
-	return true;
-
-	//return mail($to, 'Nachricht von: '.$allgsysconf['sitename'], $inhalt, $header);
+	return mail($to, 'Nachricht von: '.$allgsysconf['sitename'], $inhalt, $header);
 
 }
 

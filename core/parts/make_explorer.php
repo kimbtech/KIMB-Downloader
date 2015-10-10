@@ -97,7 +97,7 @@ foreach( $files as $file ){
 		
 		if( is_dir( $folder.'/'.$file ) ){
 			$list_element .= '<a href="'.$grundurl.'explorer'.$urlfraghier.'" class="name_file_outer"><span class="name" title="Ordner öffnen">'.$file.'</span></a>'."\r\n";
-			$list_element .= '<a href="'.$grundurl.'info'.$urlfraghier.'" class="info_icon_outer" ><span class="info"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'info'.$urlfraghier.'" class="info_icon_outer" ><span class="info icon"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>'."\r\n";
 			$list_element .= '<span class="dummy"></span>'."\r\n";
 			if( !empty( $titel ) ){
 				$list_element .= '<span class="titel">'.$titel.'</span>'."\r\n";
