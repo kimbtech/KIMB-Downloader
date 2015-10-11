@@ -25,10 +25,16 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
-$module_info_name = 'Auto_Update';
-$module_info_todo = 'autoupdate';
-$module_info_icon = 'circle-arrow-s';
-$module_info_parts = array( 'fccl' );
-$module_info_version = 'V1.0A-p1';
+//Backend Konfiguration & Infos
+
+$sitecontent->add_site_content('<h1>KIMB Software Dateiicons</h1>');
+$sitecontent->add_site_content('Dieses Modul fügt folgenden Dateien eigene Icons zu:');
+
+$sitecontent->add_site_content('<ul>');
+$sitecontent->add_site_content('<li>*.kimbex (Exporte)</li>');
+$sitecontent->add_site_content('<li>*.kimbadd (Add-ons)</li>');
+$sitecontent->add_site_content('<li>*.kimbthe (Themes)</li>');
+$sitecontent->add_site_content('<li>*.kimbmod (Module)</li>');
+$sitecontent->add_site_content('</ul>');
 
 ?>

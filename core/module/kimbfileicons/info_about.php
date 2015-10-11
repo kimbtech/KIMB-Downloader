@@ -25,10 +25,10 @@
 
 defined('KIMB_Downloader') or die('No clean Request');
 
-$module_info_name = 'Auto_Update';
-$module_info_todo = 'autoupdate';
-$module_info_icon = 'circle-arrow-s';
+$module_info_name = 'KIMB Software Dateiicons';
+$module_info_todo = 'kimbfileicons';
+$module_info_icon = 'image';
 $module_info_parts = array( 'fccl' );
-$module_info_version = 'V1.0A-p1';
+$module_info_version = 'V1.0A';
 
 ?>

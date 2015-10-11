@@ -896,25 +896,39 @@ function install_module( $file ){
 	return true;
 }
 
-//Funktionen die von Modulen ersetzt werden sollen, um bestimmte Zusatzfunktionen hinzuzufügen.
+//Funktionen die von Modulen gesetzt werden sollen, um bestimmte Zusatzfunktionen hinzuzufügen.
 
 //Diese Funktion prüft ob ein User eine bestimmte Datei sehen darf.
 //	Da der Downloader ohne Module kein Rechtemanagement erlaubt, gibt diese Funktion immer true zurück.
 //	Zur richtigen Nutzung muss diese Funktion von einem Modul in funcclass überschrieben werden.
 //		$path => Pfad zur Datei
 //		Return => true/false
+// 	Bei Modulen "check_rights_by_module" in funcclass nutzen!
 function check_rights( $path ){
-
-	return true;
+	global $allgsysconf;
+	
+	if( function_exists( 'check_rights_by_module' ) ){
+		return check_rights_by_module( $path );
+	}
+	else{
+		return true;
+	}
 }
 
 //Diese Funktion wird aufgerufen, bevor eine Datei das Icon für blank (unbenkannt) bekommt.
 //	Module müssen die Funktion überschreiben und entweder false (für das blank Icon) oder HTML-Code zurückgeben.
 //		$endung => Endung der Datei für die der Downloader kein Icon kennt
-//		Return => false/ HTML Code 
+//		Return => false/ HTML Code
+// 	Bei Modulen "custom_filetypes_check_by_module" in funcclass nutzen!
 function custom_filetypes_check( $endung ){
+	global $allgsysconf;
 	
-	return false;
+	if( function_exists( 'custom_filetypes_check_by_module' ) ){
+		return custom_filetypes_check_by_module( $endung );
+	}
+	else{
+		return false;
+	}
 }
 
 // Funktionen von Modulen hinzufügen

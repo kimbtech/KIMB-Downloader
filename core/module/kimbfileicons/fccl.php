@@ -1,0 +1,66 @@
+<?php
+
+/*************************************************/
+//KIMB Downloader
+//Copyright (c) 2015 by KIMB-technologies
+/*************************************************/
+//This program is free software: you can redistribute it and/or modify
+//it under the terms of the GNU General Public License version 3
+//published by the Free Software Foundation.
+//
+//This program is distributed in the hope that it will be useful,
+//but WITHOUT ANY WARRANTY; without even the implied warranty of
+//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//GNU General Public License for more details.
+//
+//You should have received a copy of the GNU General Public License
+//along with this program.
+/*************************************************/
+//https://www.KIMB-technologies.eu
+//https://www.bitbucket.org/kimbtech
+//https://www.github.com/kimbtech
+//https://www.gnu.org/licenses/gpl-3.0
+//https://www.gnu.org/licenses/gpl-3.0.txt
+/*************************************************/
+
+defined('KIMB_Downloader') or die('No clean Request');
+
+//Funcclass
+
+//damit css nur einmal ausgegeben wird!
+$dones = array();
+
+//HTML-Code für KIMB Dateiendungen erstellen
+//	$endung => Dateiendung
+//	Rückgabe => false/ HTML-Code
+function custom_filetypes_check_by_module( $endung ){
+	global $dones;
+	
+	$kimbex = 'background-image: url("data:image/png;base64,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");';
+	
+	$kimbadd = 'background-image: url("data:image/png;base64,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");';
+	
+	$kimbthe = 'background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAzCAYAAAAQEcGFAAAIXElEQVRYw82ZvW8bRxqHn5mdXYqkRdmURAn6tCRbkmXZMHByeUUA1/cnJG2KswtXKdKmvBQurryDXaW7LghwRRoDwSGAc44vgD8iUWdKJilSlChS/FjuzlxBckVKsrwKLOQGeAkC3MU883vf+c0HxcNHT74CWnz8JoDHXz/4dOPcL97/+u/mT3/8A76vPyrRfzYyvCvuAcx9/eDTzfO8q1qex721Wx9dpr3KIa2Wx87+QfrhoyfnApNcYBtPDrF6dRJjTPrhoydz/xdQsegAs+OjXbCNsGAXChWNOFxOxM8NdqFQAxGbRDx2brALhXKUxaXYQB/YrRBgFwplWYqo4/SBzfSDzf8OUALHsc8CWz8N7EKhpJAoS54BNnUqmOp+Mcac2YExhnQ6TS6Xw3XdDwING59qPsO6aDG3sIDj2O999sXm1vrDR08WuktSaKVevXrFzs4O4+PjzM7OYlkWSils2+4LpRRKKWZmppm/epVarca/nz07Q7ERbs31K6Y+pA6AEIKtrS2Wl5dRSvHFF1/w4sWLMwdx5coVvvnmG5RSvHr1CksIbMcmYisGIjYDjk3EbodtWyhL8nwjs/7w0ZNr6iyYUqlELpejWCxijMEYg2VZvH37FinPFrlcLqOUCgb19OlT3hbLpIsV/rtbAQGi/YEQAikElpREI86vRzXVgdFak81myWQyRAcGGBkZYWZmhmfPnpHNZpmenubLL7/k+++/RwiBEOLEgIwxLC8v02g02N/fx7Zt7ty5w7VKhd3dXfb395mcnGRqagrHcQJwgD//5W8oEBhjqNXrbGcy5PN5kskki9evY9s2xhh832dpaYmffvqJZDLJzZs3uXXrFlJKLMvC9308zyMSiaC1DqLRaJDL5bh58ya+7xOLxYjH40xNTVEsFvnxxx8ZGhpicnqaRCKBkhKEaNfUzz//zOHhIalUitXVVaSUwYiDdSwaZXJyku3tbZaWltBaB7+vr6/TbDa5ceNG8J7Wmu3tbUZGRojFYsGzxhiEEIyOjpJKpSiXy6y/eYPWmrW1tbaVRJSkUqmwurrK8PAwQohT7cEYw+zsLK7rksvlAqhiscj6+jrPnz8nk8kEKh0cHNBsNpmbm3uv3RhjSCQSXL9+nWg0yu7ubhuq6Wksy6JWq33QFrq1ks/ncV2XRqNBOp3mu+++4+nTp2QyGSqVCp7nkclkzgTqbVprCoUCqVTqyNEXFhbIZrMniva0NjQ0RDKZZGtri3fv3vHtt9+SzWYplUo8fvyYbDZLPp9ncHCQK1euhPLAg4MDRjtAAVQ3t77vhxrVwsIC1WqVer1OLpfjxo0bXL58mWq1ysHBAfv7+1y7dg2tw+37Nzc3WV5e7oHqiDM9M0M+nw+15EgpWVtb4+7duzQaDYaGhrh79y6pVIpPPvmE27dv902W3jhuHfV6nYFoFDpZEl1HNxgmJif51w8/MDQ0RKlUYmJi4kyDtCwLy7JoNBq8fv2aWCyG67porbFtG8/z2Nvb61NLCEEymcSyLLa3t7l06RKFQoHFxcU+YCk6zimlZH5hgZ1CAdd1KZfLoVIZjUZZXV0lHo+zv7+P53kIIdjY2MAYg23bRCKRwCRfvnyJ53mUSiWqh4cMJhLEL13ixC7BmHakxsZJjY2zmU6HqgWtNbu7uxSLRcbHx2k2m/i+j23bwTIzNjaGUgrP8yiXy1SrVYQQ2LbN9cUluv2/FyrsNqYXynEc9vb2Apuo1+sopUgkEgwODpLuDNAYw+joKPF4vF1Pp8D0QWkM7cfO1zzPIxaLsbKyQrlc5uXLl1SrVQYHBzHGEIvFmJ+fDwzZGMPOzs7R4I/1aXotQXSlCiQLB+i6Lnt7e7x58waAyclJ6vV6/72AEFiWdboHHu+3I11bKWPotZSQ2cN1XcbHx4nFYmxublKr1Wg2m+2DaCxGtVpFKYWUEq01rVYLx3Ha5WHguI0Z3aNUO8e6J0zo9Hmex9jYGKurqySTSQ4PD4N1UkqJ53m4rovneViWxcrKSk/y9InoU6pPnZBKtVotarUav/zyC8lkkkQiweHhYVDYqZ6lo3dyHO3fjv3Wmz5jDKZHy7Czr9lsMj8/TzKZJJ/PUyqVgvSFOowcy5/Wpid9ujNFw4sUpK9QKCClZHFxkatXr54o9DOhjsfxQvd/g1Ldwk2n00Sj0aC4wxL5x5Uypr/Qf0tzXZeJiQlWVlYYHBykUCicS6lTDywClAB8o/uo9TkgX79+zdzcHKOjo4FphhPKnFDKN93ZJwRa93tGWKTZ2VkikQjVapVisYgQggcPHoQe0HGf0r0+pY/5VFis4eFhPvvsM8bGxhgeHubOnTvcvn37HEV+zKd6a0obgzYEETZ7vu9z79694Bh2//79UPcMXSp9IszRJk9rjfb1uZeZbrF//vnnZDKZPo8Klb5j1+TdGuuYp0Yb3ee6p51+39fi8TgTExOhn+/uGnr7PDJTgTLG0Gp51BtNtO/jd062zWaEWq0WajY1m00ajUawxHwIqNVq4fk+lUoFKSRWZ9FWne23EsZQrzeo1eu4rovrNnHdFlvvsuitbYxu24XpHD7bI2wXXq91CAG/bqQRnY77QkqkEEgpEVK2tzO2Q6lUwnHaW2XHcbBt1YGSEttxiApJZCCK7hyzlG3jdUbktVrBfYHve3iejzEa3/fbC6w5+jdGStkJC6UsLKt9X2VZFsq2UZaF7ThorfG8FpalgndE52ilEO3KRwikZSEt62hb6jjtootGP+q1owHaYkT6DNvXfWufPpeLX1Q7cnQEvq9DnY4vumkpepTSJtjL/K5Q2iBEB8qyBOZib69D3rtLjAEVsRV//cc/g8r/PZvB4CjF/wAGkPYMpu1zWAAAAABJRU5ErkJggg==");';
+	
+	$kimbmod = $kimbadd;
+	
+	$alls = array( 'kimbex', 'kimbadd', 'kimbthe', 'kimbmod' );
+	
+	if( in_array( $endung, $alls ) ){
+		if( !in_array( $endung, $dones ) ){
+			$echo = '<style>.kimbcustom_'.$endung.'{ '.$$endung.' }</style>';
+		}
+		else{
+			$echo = '';
+		}
+		$dones[] = $endung;
+		return $echo.'<span class="fileicon kimbcustom_'.$endung.'"></span>';
+	}
+	else{
+		return false;
+	}
+
+}
+
+
+?>
