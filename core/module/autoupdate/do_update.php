@@ -52,6 +52,8 @@ if( !empty( $_GET['los'] ) && is_file( __DIR__.'/temp/'.$_GET['los'].'.zip' ) ){
 		//Meldungen
 		$sitecontent->echo_message( 'Das Update wurde erfolgreich beendet!' );
 
+		//neue Konfiguration einlesen
+		$allgsysconf = $conffile->read_kimb_id('001');
 		//Die letzte Überprüfung ist vielleicht noch jung, aber nach dem Update ungültig. 
 		api_check_for_updates( false );
 
