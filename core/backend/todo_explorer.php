@@ -73,6 +73,9 @@ if( !empty( $_GET['del'] ) ){
 		//löschen
 		unlink( $grpath.$_GET['del'] );
 		
+		//Titel
+		delete_title( dirname( $_GET['del'] ), 'file', basename($_GET['del'] ) );
+		
 		//Meldung
 		$sitecontent->echo_message( 'Datei gelöscht' );
 	}
@@ -134,6 +137,33 @@ if ( !empty( $_FILES['file']['name'] ) ){
 	die;
 }
 
+//Dateien verschieben/ kopieren
+if( isset( $_POST['clipboard_art'] ) && ( $_POST['clipboard_art'] == 'copy' || $_POST['clipboard_art'] == 'rename') ){
+
+	$cp_src = $_POST['clipboard_oldpath'];
+	$cp_dest = $_POST['clipboard_newpath'].'/'.$_POST['clipboard_file'];
+	
+	//Schutz
+	if(  (strpos($cp_src, "..") !== false) || (strpos($cp_dest, "..") !== false) ){
+		echo ('Do not hack me!!');
+		die;
+	}
+	
+	$cp_src = $grpath.$cp_src;
+	$cp_dest = $grpath.$cp_dest;
+	
+	if( $_POST['clipboard_art'] == 'copy' ){
+		copy( $cp_src, $cp_dest );
+	}
+	else{
+		rename( $cp_src, $cp_dest );
+	}
+	
+	if( $_POST['clipboard_art'] == 'rename' ){
+		delete_title( dirname( $_POST['clipboard_oldpath'] ), 'file', basename($_POST['clipboard_oldpath'] ) );
+	}
+}
+
 //Variablen zum Lesen des Verzeichnisses feststellen
 //	absoluter Pfad 
 $openpath=$grpath.$_GET['path']."/";
@@ -141,6 +171,7 @@ $openpath=$grpath.$_GET['path']."/";
 $pathnow=$_GET['path'];
 //	einen Ordner zurück
 $hochpath = substr($_GET['path'], '0', strlen($_GET['path']) - strlen(strrchr($_GET['path'], '/')));
+
 
 //JavaScript Code für den Löschen Dialog
 $sitecontent->add_html_header('<script>
@@ -169,7 +200,126 @@ function delfile( art , del , path, name ) {
 	}
 	});
 }
+
+//Daten für Clipboard aus Storage laden
+if( typeof localStorage.getItem( "clipboard" ) === "string" ){
+	var clipboard = JSON.parse( localStorage.getItem( "clipboard" ) );
+}
+else{
+	var clipboard = [];
+}
+//beim Verlassen in Storage speichern
+$( window ).unload(function() {
+	localStorage.setItem("clipboard", JSON.stringify( clipboard ) );	
+});
+
+//Funktionen fürs Clipboard
+
+//Datei hinzuzfügen
+function add_file_clipboard( file, path ){
+	var add = {};
+	var doit = true;
+	
+	$.each( clipboard, function( id, obj ) {
+		if( path == obj.path ){
+			doit = false;
+		}
+	});
+	
+	if( doit ){
+		add.file = file;
+		add.path = path;
+		
+		clipboard.push(add);
+	}
+	
+	show_clipboard();
+	
+	return true;
+}
+
+//anzeigen
+function show_clipboard(){
+
+	var html = "<ul>";
+	var done = false;
+
+	$.each( clipboard, function( id, obj ) {
+		html += "<li><span title=\'" + decodeURIComponent( obj.path ) + "\'>" + obj.file + "</span>";
+		html += "<span class=\'ui-icon ui-icon-trash\' title=\'Datei aus Zwischenablage löschen\' style=\'display:inline-block;\' onclick=\'del_clipboard( id );\'></span>";
+		html += "<span class=\'ui-icon ui-icon-pin-s\' title=\'Datei in den aktuellen Ordner setzen (kopieren oder verschieben)\' style=\'display:inline-block;\' onclick=\'rename_copy_clipboard( \"" + obj.path + "\", \"" + obj.file + "\" , " + id + " );\'></span></li>";
+		done = true;
+	});
+	
+	if( !done ){
+		html += "<li><i>Keine Elemente</i></li>";
+	}
+	
+	html += "</ul>";
+
+	$( "div#clipboard" ).html( html );
+
+	$( "div#clipboard" ).css( "display", "block" );
+	$( "div#clipboard" ).dialog({
+	resizable: true,
+	modal: true,
+	buttons: {
+		"Schließen": function() {
+			$( this ).dialog( "close" );
+		}
+	}
+	});
+}
+
+//Datei löschen
+function del_clipboard( id ){
+
+	clipboard.splice( id, 1);
+
+	$( "div#clipboard" ).dialog( "close" );
+	show_clipboard();
+}
+
+//Datei verscheiben
+//	datei => Pfad zu Datei (relativ zu /files/)
+//	name => aktueller Name der Datei
+function rename_copy_clipboard( datei, name, id ){
+	var nach = "'.urlencode($pathnow).'";
+	
+	var html = \'<h3>Verschieben &amp; kopieren</h3>\';
+	html += \'<form action="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path=\' + nach + \'" method="post" id="clipboard_form">\';
+	html += \'<input type="text" readonly="readonly" name="clipboard_oldpath"> (Dateiquelle)<br />\';
+	html += \'<input type="text" readonly="readonly" name="clipboard_newpath"> (Dateiziel)<br />\';
+	html += \'<input type="text" name="clipboard_file"> (Dateiname)<br />\';
+	html += \'<input type="radio" name="clipboard_art" value="rename" checked="checked">  (verschieben)<br />\';
+	html += \'<input type="radio" name="clipboard_art" value="copy"> (kopieren) \';
+	html += \'</form>\';
+	
+	$( "div#clipboard" ).html( html );
+	
+	$( "div#clipboard" ).dialog( "option", "buttons", [
+		{
+			text: "Los", click: function() {
+				clipboard.splice( id, 1);
+				$( "form#clipboard_form" ).submit();
+			}
+		 },
+		 {
+			text: "Abbrechen", click: function() {
+				$( this ).dialog( "close" ); 
+			}
+		}
+	] );
+	
+	$( "input[name=clipboard_file]" ).val( decodeURIComponent( name ) );
+	$( "input[name=clipboard_oldpath]" ).val( decodeURIComponent( datei ) );
+	$( "input[name=clipboard_newpath]" ).val( decodeURIComponent( nach ) );
+ 
+}
+
 </script>');
+
+$sitecontent->add_site_content('<div style="display:none;"><div id="clipboard" title="Zwischenablage">Leer</div></div>');
 
 //Der zu öffnenden Pfad sollte vorhanden sein!
 if( is_dir( $openpath ) ){
@@ -180,7 +330,10 @@ if( is_dir( $openpath ) ){
 	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=explorer&amp;path='.urlencode($hochpath).'"><button style="padding:2px; border:2px solid red; border-radius:5px; background-color:#ff4c4c;" title="&lArr; In den darunter liegenden Ordner wechseln." ><span class="ui-icon ui-icon-arrowthick-1-w" style="display:inline-block;" ></span></button></a>');
 	
 	//Edit Readme
-	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=infos&amp;readme&amp;path='.urlencode( $pathnow ).'"><button style="padding:2px; border:2px solid #b2b200; border-radius:5px; background-color:#ff0;" title="Infoseite des aktuellen Ordners bearbeiten." ><span style="display:inline-block;" class="ui-icon ui-icon-pencil"></span> Infoseite</button></a><br />');
+	$sitecontent->add_site_content ('<a href="'.$allgsysconf['siteurl'].'/backend.php?todo=infos&amp;readme&amp;path='.urlencode( $pathnow ).'"><button style="padding:2px; border:2px solid #b2b200; border-radius:5px; background-color:#ff0;" title="Infoseite des aktuellen Ordners bearbeiten." ><span style="display:inline-block;" class="ui-icon ui-icon-pencil"></span> Infoseite</button></a>');
+	
+	//Zwischenablage anzeigen
+	$sitecontent->add_site_content ('<button style="padding:2px; border:2px solid #b2b200; border-radius:5px; background-color:#ff0;" onclick="show_clipboard();" title="Zwischenablage anzeigen"><span style="display:inline-block;" class="ui-icon ui-icon-clipboard"></span></button><br />');
 	
 	$sitecontent->add_site_content ('<hr />');
 
@@ -306,7 +459,7 @@ if( is_dir( $openpath ) ){
 				
 				//	Löschen Button
 				//	Link zur Datei anzeigen
-				$table_dats .= '<td width="93px"><span onclick="delfile( \'\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\', \''.$file.'\' ); " class="ui-icon ui-icon-trash" title="Diese Datei löschen." style="display:inline-block;" ></span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.$fileviewurl.'" target="_blank"><span class="ui-icon ui-icon-extlink" title="Öffnet die Datei im Frontend des Downloaders." style="display:inline-block;" ></span></a></td>'."\r\n";
+				$table_dats .= '<td width="93px"><span onclick="delfile( \'\' , \''.urlencode($pathnow.'/'.$file).'\' , \''.urlencode($pathnow).'\', \''.$file.'\' ); " class="ui-icon ui-icon-trash" title="Diese Datei löschen." style="display:inline-block;" ></span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.$fileviewurl.'" target="_blank"><span class="ui-icon ui-icon-extlink" title="Öffnet die Datei im Frontend des Downloaders." style="display:inline-block;" ></span></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="ui-icon ui-icon-clipboard" title="Datei in der Zwischenablage speichern!" style="display:inline-block;" onclick="add_file_clipboard( \''.$file.'\', \''.urlencode($pathnow.'/'.$file).'\' )" ></td>'."\r\n";
 				
 				//Dateiname
 				$table_dats .= '<td width="150px">'.$file.'</td>'."\r\n";
