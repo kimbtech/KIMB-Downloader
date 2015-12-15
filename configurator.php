@@ -46,6 +46,45 @@ if( !file_exists ('conf-enable') ){
 	die;
 }
 
+//sichere Zufallszahlen, neu seit PHP 7
+//	$a => Anfang
+//	$e => Ende
+//	Rückgabe: Nummer
+function gen_zufallszahl( $a, $e ){
+	
+	//neue Funktion von PHP 7 verfügbar?
+	if( function_exists( 'random_int') ){
+		//nutzen
+		return random_int( $a, $e );
+	}
+	else{
+		//alte Zufallszahl nutzen
+		return mt_rand( $a, $e );
+	}
+	
+}
+//Zufallsstrings erzeugen
+//	$laenge => Länge des zu erzeugenden Stings
+// 	$chars => Charakter des Stings
+function makepassw( $laenge , $chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'){	
+	//Anzahl der möglichen Charakter bestimmen
+	$anzahl = strlen($chars);
+	//mit dem ersten Charakter geht es los
+	$i = '1';
+	//noch keine Ausgabe
+	$output = '';
+	//solange weniger oder genausoviele Charakter wie gwünscht im Sting weiteren erstellen 
+	while($i <= $laenge){
+		//Charakter zufällig wählen (Zufallszahl als Stelle für $chars nutzen)
+		$stelle = gen_zufallszahl('0', $anzahl);
+		//Ausgabe erweitern 
+		$output .= $chars{$stelle};
+		$i++;
+	}
+	//Ausgeben
+	return $output;
+}
+
 //HTML des Konfigurators 
 //inkl. Warnung per JS wenn /core/ aufrufbar!
 echo('
@@ -144,16 +183,7 @@ echo('
 if($_GET['step'] == '2'){
 
 	//Zufallsgenerator Passwortsalt
-	$alles = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-	$laenge = '15';
-	$anzahl = strlen($alles);
-	$i = '1';
-	$output = '';
-	while($i <= $laenge){
-		$stelle = mt_rand('0', $anzahl); 
-		$output .= $alles{$stelle};
-		$i++;
-	}
+	$output = makepassw( 10 );
 
 	//Formular für die Konfiguration
 	echo "\r\n\t\t\t".'<h2>Allgemeine Systemeinstellungen</h2>';
@@ -213,16 +243,7 @@ elseif($_GET['step'] == '3'){
 	$url = substr($urlg, '0', '-'.strlen(strrchr($urlg, '/')));
 
 	//Zufallsgenerator Loginokay
-	$alles = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-	$laenge = '50';
-	$anzahl = strlen($alles);
-	$i = '1';
-	$output = '';
-	while($i <= $laenge){
-		$stelle = mt_rand('0', $anzahl); 
-		$output .= $alles{$stelle};
-		$i++;
-	}
+	$output = makepassw( 50 );
 
 	//Konfigurationsteile
 	//erster
@@ -280,9 +301,13 @@ else{
 	echo "\r\n\t\t\t".'<ul>';
 	
 	//PHP - Version OK?
-	if (version_compare(PHP_VERSION, '5.5.0' ) >= 0 ) {
-    		echo "\r\n\t\t\t\t".'<li class="okay">Sie verwenden PHP 5.5.0 oder neuer!</li>';
+	if (version_compare(PHP_VERSION, '7.0.0' ) >= 0 ) {
+    		echo "\r\n\t\t\t\t".'<li class="okay">Sie verwenden PHP 7</li>';
 		$okay[] = 'okay';
+	}
+	elseif (version_compare(PHP_VERSION, '5.5.0' ) >= 0 ) {
+    		echo "\r\n\t\t\t\t".'<li class="war">Sie verwenden PHP 5.5.0, aber noch nicht das neue PHP 7</li>';
+		$okay[] = 'war';
 	}
 	else{
 		echo "\r\n\t\t\t\t".'<li class="err">Dieses System wurde f&uuml;r PHP 5.5.0 und h&ouml;her entwickelt, bitte f&uuml;hren Sie ein PHP-Update durch!</li>';
