@@ -1,0 +1,12 @@
+<[about:doc]>KIMB dbf V3.50 - KIMB-technologies<[about:doc]>
+<[allidslist1]>002<[allidslist1]>
+<[002-art]>path<[002-art]>
+<[002]>art==path==url==siteid<[002]>
+<[002-path]>../../../../EA/stracker/track.php<[002-path]>
+<[002-url]>http://ea.example.com/tracker/track.php<[002-url]>
+<[002-siteid]>1<[002-siteid]>
+<[allidslist2]>001<[allidslist2]>
+<[001-infobann]>on<[001-infobann]>
+<[001]>infobann==ibcss==ibtext<[001]>
+<[001-ibcss]>div#analysehinweis{position:fixed; left:0; top:0; width:100%; background-color:orange; text-align:center; z-index:2;}<[001-ibcss]>
+<[001-ibtext]><p>Diese Seite nutzt Cookies und einen Webanalysedienst. Mit der Nutzung dieser Seite erklären Sie sich damit einverstanden.</p><p><i>Weitere Informationen: <a href="http://www.example.com/" target="_blank" style="color:#ffffff; text-decoration:underline;">Impressum & Datenschutz</a>!</i></p><[001-ibtext]>
