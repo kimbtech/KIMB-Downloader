@@ -54,7 +54,7 @@ if( !empty( $readme ) ){
                //Infoseite eines höheren Ordners??
                if( $urlfraghier != $urlfrag ){
                               //Canonical anpassen (evtl. )
-                              $sitecontent->add_canonical_header( 'info/'.$urlfraghier );
+                              $sitecontent->add_canonical_header( 'info'.$urlfraghier );
                }
 }
 else{
