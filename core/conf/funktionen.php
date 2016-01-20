@@ -79,6 +79,24 @@ function SYS_INIT( $robots, $cont = 'text/html' ){
 	header('Content-Type: '.$cont.'; charset=utf-8');
 }
 
+//sichere Zufallszahlen, neu seit PHP 7
+//	$a => Anfang
+//	$e => Ende
+//	Rückgabe: Nummer
+function gen_zufallszahl( $a, $e ){
+	
+	//neue Funktion von PHP 7 verfügbar?
+	if( function_exists( 'random_int') ){
+		//nutzen
+		return random_int( $a, $e );
+	}
+	else{
+		//alte Zufallszahl nutzen
+		return mt_rand( $a, $e );
+	}
+	
+}
+
 //email versenden
 // $to => Empfänger
 // $inhalt => Inhalt
@@ -98,14 +116,7 @@ function send_mail($to, $inhalt, $mime = 'plain'){
 	$header .= 'MIME-Version: 1.0' ."\r\n";
 	$header .= 'Content-Type: text/'.$mime.'; charset=uft-8' . "\r\n";
 
-	//sende Mail und gebe zurück
-	$f = fopen( __DIR__.'/mail.txt', 'a+' );
-	fwrite( $f, $to.'-------------------'.$inhalt."\r\n\r\n" );
-	fclose( $f );
-
-	return true;
-
-	//return mail($to, 'Nachricht von: '.$allgsysconf['sitename'], $inhalt, $header);
+	return mail($to, 'Nachricht von: '.$allgsysconf['sitename'], $inhalt, $header);
 
 }
 
@@ -414,7 +425,7 @@ function makepassw( $laenge , $chars = '!"#%&()*+,-./:;?[\]_0123456789ABCDEFGHIJ
 	//solange weniger oder genausoviele Charakter wie gwünscht im Sting weiteren erstellen 
 	while($i <= $laenge){
 		//Charakter zufällig wählen (Zufallszahl als Stelle für $chars nutzen)
-		$stelle = mt_rand('0', $anzahl);
+		$stelle = gen_zufallszahl('0', $anzahl);
 		//Ausgabe erweitern 
 		$output .= $chars{$stelle};
 		$i++;
