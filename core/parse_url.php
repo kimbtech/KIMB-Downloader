@@ -119,12 +119,7 @@ if( !empty( $parsed ) ){
 		$folder = $codefolder;
 		$urlfrag = '/';
 		
-		if( $allgsysconf['urlrewrite'] == 'on' ){
-			$sitecontent->add_html_header(  '<link rel="canonical" href="'.$allgsysconf['siteurl'].'/info/">' );
-		}
-		else{
-			$sitecontent->add_html_header(  '<link rel="canonical" href="'.$allgsysconf['siteurl'].'/?path=info/">' );
-		}
+                              $sitecontent->add_canonical_header( 'info/' );
 	}
 	else{
 		$folder = $codefolder;
@@ -136,12 +131,7 @@ if( !empty( $parsed ) ){
 			$i++;
 		}
 		
-		if( $allgsysconf['urlrewrite'] == 'on' ){
-			$sitecontent->add_html_header(  '<link rel="canonical" href="'.$allgsysconf['siteurl'].'/'.$parsed.$urlfrag.'">' );
-		}
-		else{		
-			$sitecontent->add_html_header(  '<link rel="canonical" href="'.$allgsysconf['siteurl'].'/?path='.urlencode( $parsed.$urlfrag).'">' );
-		}
+		$sitecontent->add_canonical_header( $parsed.$urlfrag );
 	}
 	
 	if( $parsed == 'info' || $parsed == 'explorer'){

@@ -27,12 +27,6 @@ defined('KIMB_Downloader') or die('No clean Request');
 
 //Ordnerstruktur anzeigen
 
-/**********************/
-//ToDo
-//	Titel aus KIMBdbf
-/**********************/
-
-
 $sitecontent->add_site_content( make_breadcrumb( true ) );
 
 //Ordner [öffnen,(Beschreibung aus readme)] & Dateien [view, download, (Beschreibung)]
@@ -94,11 +88,17 @@ foreach( $files as $file ){
 			$grundurl = $allgsysconf['siteurl'].'/?pfad=';
 			$urlfraghier = urlencode( $urlfraghier );
 		}
+                              
+                //Umbrüche im Explorer bei langen Dateinamen ermöglichen
+                $filename = str_split ( $file, 10 );
+		$filename = implode( '&shy;', $filename );
 		
 		if( is_dir( $folder.'/'.$file ) ){
-			$list_element .= '<a href="'.$grundurl.'explorer'.$urlfraghier.'" class="name_file_outer"><span class="name" title="Ordner öffnen">'.$file.'</span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'explorer'.$urlfraghier.'" class="name_file_outer"><span class="name" title="Ordner öffnen">'.$filename.'</span></a>'."\r\n";
+                        $list_element .= '<span class="iconbox">';
 			$list_element .= '<a href="'.$grundurl.'info'.$urlfraghier.'" class="info_icon_outer" ><span class="info icon"><span title="Informationen zum Ordner" class="info_icon"></span></span></a>'."\r\n";
-			$list_element .= '<span class="dummy"></span>'."\r\n";
+			$list_element .= '<span class="dummy_outer"><span class="dummy"></span></span>'."\r\n";
+                        $list_element .= '</span>';
 			if( !empty( $titel ) ){
 				$list_element .= '<span class="titel">'.$titel.'</span>'."\r\n";
 			}
@@ -106,9 +106,11 @@ foreach( $files as $file ){
 			$is_dir = true;
 		}
 		elseif( is_file( $folder.'/'.$file ) ){
-			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'" class="name_file_outer"><span class="name" title="Datei ansehen">'.$file.'</span></a>'."\r\n";
-			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'" class="view_icon_outer"><span class="icon"><span class="view_icon" title="Datei ansehen" ></span></span></a>'."\r\n";
+			$list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'" class="name_file_outer"><span class="name" title="Datei ansehen">'.$filename.'</span></a>'."\r\n";
+                        $list_element .= '<span class="iconbox">';
 			$list_element .= '<a href="'.$grundurl.'download'.$urlfraghier.'" class="download_icon_outer"><span class="icon"><span class="download_icon" title="Datei herunterladen"></span></span></a>'."\r\n";
+                        $list_element .= '<a href="'.$grundurl.'view'.$urlfraghier.'" class="view_icon_outer"><span class="icon"><span class="view_icon" title="Datei ansehen" ></span></span></a>'."\r\n";
+                        $list_element .= '</span>';
 			if( !empty( $titel ) ){
 				$list_element .= '<span class="titel">'.$titel.'</span>'."\r\n";
 			}

@@ -37,6 +37,6 @@ $downloadurl = $allgsysconf['siteurl'].'/getfile.php?file='.urlencode($urlfrag);
 $sitecontent->add_site_content( '<iframe style="width:0; height:0;"  frameborder="0" scrolling="no" src="'.$downloadurl.'"></iframe>');
 
 $sitecontent->add_site_content( '<div class="download"><center><i><b>Der Download startet in Kürze!!</b></i><br /><br />');
-$sitecontent->add_site_content( '<small>Sollte der Download nicht starten klicken Sie <a href="'.$downloadurl.'">hier</a>.</small></center></div>');
+$sitecontent->add_site_content( '<small>Sollte der Download nicht starten klicken Sie <a href="'.$downloadurl.'" rel="nofollow">hier</a>.</small></center></div>');
 
 ?>
