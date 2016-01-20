@@ -43,7 +43,7 @@ class system_output{
 	//Systemvars
 	protected $sonderfile, $allgsysconf, $sitecontent;
 	//Inhaltvars
-	protected $title, $footer, $description, $keywords, $hidden_menu, $header, $addon, $htmlheader;
+	protected $title, $footer, $description, $keywords, $hidden_menu, $header, $addon, $htmlheader, $canonical_meta;
 
 	public function __construct($allgsysconf){
 		$this->allgsysconf = $allgsysconf;
@@ -136,6 +136,19 @@ class system_output{
 	public function add_html_header($inhalt){
 		$this->header .= $inhalt."\r\n";
 	}
+               
+               //Canonical Meta hinzufügen
+               public function add_canonical_header( $url ){
+                              
+                              if( $this->allgsysconf['urlrewrite'] == 'on' ){
+                                             $url = $this->allgsysconf['siteurl'].'/'.$url;
+		}
+		else{
+                                             $url = $this->allgsysconf['siteurl'].'/?path='.$url;
+		}
+                              
+                              $this->canonical_meta = '<link rel="canonical" href="'.$url.'">'."\r\n";
+               }
 
 	//Seitentitel setzen
 	public function set_title($title){
@@ -166,8 +179,8 @@ class system_output{
 	//abschließende Ausgabe der Seite
 	public function output_complete_site( $allgsys_trans ){
 		
-		//allgemeinen Header hinzufügen
-		$this->header = $this->htmlheader.$this->header;
+		//Allgemeinen Header & Canonical hinzufügen
+		$this->header = $this->htmlheader.$this->canonical_meta.$this->header;
 
 		//einfügen von JavaScript Code für Platzhalter
 		$jsapicodes = array(

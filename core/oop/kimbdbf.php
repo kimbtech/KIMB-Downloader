@@ -1,8 +1,9 @@
 <?php
 
 /*************************************************/
-//KIMB Downloader
-//Copyright (c) 2015 by KIMB-technologies
+//KIMB dbf
+//KIMB database file
+//Copyright (c) 2014 by KIMB-technologies
 /*************************************************/
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License version 3
@@ -16,25 +17,23 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.
 /*************************************************/
-//https://www.KIMB-technologies.eu
-//https://www.bitbucket.org/kimbtech
-//https://www.github.com/kimbtech
-//https://www.gnu.org/licenses/gpl-3.0
-//https://www.gnu.org/licenses/gpl-3.0.txt
+//www.KIMB-technologies.eu
+//www.bitbucket.org/kimbtech
+//www.github.com/kimbtech
+//http://www.gnu.org/licenses/gpl-3.0
+//http://www.gnu.org/licenses/gpl-3.0.txt
 /*************************************************/
+
+
+//namespace KIMBdbf;
 
 defined('KIMB_Downloader') or die('No clean Request');
 
-//Die KIMBdbf ist die zentrale Klasse für alle Datenbankaufgaben.
-//Alle Daten werden hiermit gespeichert.
-//==> Weitere Infos zu KIMBdbf
-//	https://download.kimb-technologies.eu/explorer.php?action=rein&path=%2FKIMBdbf
+//Für Informationen zu dieser Klasse
+//siehe https://download.kimb-technologies.eu/info/Other/KIMBdbf
 
-//Die Möglichkeit der Verschlüsselung der Dateien wird vom KIMB-Downloader nicht verwendet!
-
-//objektorientiert
-//objektorientiert
-//objektorientiert
+//Version vom KIMB-Downloader 20.01.2016
+//             Version 4.10
 
 class KIMBdbf {
 
@@ -46,12 +45,11 @@ class KIMBdbf {
 	protected $dateicontanfang;
 	protected $dateidel = 'no';
 	
-	const DATEIVERSION = '3.50';
+	const DATEIVERSION = '4.10';
 	
 	public function __construct($datei, $encryptkey = 'off', $path = __DIR__){
-		$datei = preg_replace('/[\r\n]+/', '', $datei);
 		$datei = str_replace(array('ä','ö','ü','ß','Ä','Ö','Ü', ' ', '..'),array('ae','oe','ue','ss','Ae','Oe','Ue', '', '.'), $datei);
-		$datei = preg_replace( '/[^A-Za-z0-9]_.-/' , '' , $datei );
+		$datei = preg_replace( '/([^A-Za-z0-9\_\.\-\/])/' , '' , $datei );
 		if(strpos($datei, "..") !== false){
 			echo ('Do not hack me!!');
 			die;

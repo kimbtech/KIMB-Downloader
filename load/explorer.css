@@ -54,13 +54,16 @@
 	display:block;
 }
 
-.view_icon, .download_icon, .info_icon{
-	background-image: url( "icons/explorer.png" );
+.view_icon, .download_icon, .info_icon, .dummy{
 	height: 45px;
 	width: 45px;
 	display: inline-block;
 	overflow: hidden;
 	background-repeat: no-repeat;
+}
+
+.view_icon, .download_icon, .info_icon{
+               background-image: url( "icons/explorer.png" );
 }
 
 .view_icon{
@@ -74,9 +77,12 @@
 }
 
 @media (max-width:833px){
-	.view_icon, .view_icon_outer{
+	.view_icon, .view_icon_outer, .dummy_outer, .dummy{
 		display:none;
 	}
+               .explorer_list ul li span.name{
+		width: calc( 100% - 155px);
+               }
 }
 
 .explorer_hoch {
@@ -87,4 +93,16 @@
 
 .explorer_hoch:hover {
 	background-color:orange;
+}
+
+.explorer_list ul li{
+               position: relative;
+}
+
+.explorer_list ul li span.iconbox{
+               position: absolute;
+               right:5px;
+               top:10px;
+               margin-left: 0px;
+               display: inline-block;
 }

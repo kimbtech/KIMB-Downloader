@@ -36,7 +36,8 @@ $allgsysconf = $conffile->read_kimb_id('001');
 require_once(__DIR__.'/core/conf/funktionen.php');
 
 //session, Fehleranzeige, Robots-Header, Content, Codierung
-SYS_INIT( $allgsysconf['robots'] );
+//            none => soll nie in Suchergebnisse von Suchmaschinen
+SYS_INIT( 'none' );
 
 //Pfad zum Datei-/Codeverzeichnis
 $codefolder = __DIR__.'/files';

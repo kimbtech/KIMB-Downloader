@@ -50,6 +50,12 @@ $readme = $readmefile->read_kimb_one('markdown' );
 
 if( !empty( $readme ) ){
 	$sitecontent->add_site_content( MarkdownExtra::defaultTransform($readme) );
+               
+               //Infoseite eines höheren Ordners??
+               if( $urlfraghier != $urlfrag ){
+                              //Canonical anpassen (evtl. )
+                              $sitecontent->add_canonical_header( 'info/'.$urlfraghier );
+               }
 }
 else{
 	$sitecontent->echo_error( 'Es konnten keine Infos gefunden werden!', true );
