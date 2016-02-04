@@ -114,7 +114,7 @@ function send_mail($to, $inhalt, $mime = 'plain'){
 	$header = 'From: '.$allgsysconf['sitename'].' <'.$allgsysconf['mailvon'].'>'."\r\n";
 	//	MIME & Charset
 	$header .= 'MIME-Version: 1.0' ."\r\n";
-	$header .= 'Content-Type: text/'.$mime.'; charset=uft-8' . "\r\n";
+	$header .= 'Content-Type: text/'.$mime.'; charset=utf-8' . "\r\n";
 
 	return mail($to, 'Nachricht von: '.$allgsysconf['sitename'], $inhalt, $header);
 
