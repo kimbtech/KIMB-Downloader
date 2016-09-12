@@ -67,6 +67,12 @@ foreach( $files as $file ){
 		else{
 			$urlfraghier = $urlfrag.$file;
 		}
+
+		//"core" Apache Problem umgehen
+		if( substr( $urlfraghier, -4 ) == 'core' ){
+			$urlfraghier .= '/'; 
+		}
+		
 		
 		if( isset( $titlefile) ){
 			$search = $titlefile->search_kimb_xxxid( $file, 'name' );

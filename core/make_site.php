@@ -135,6 +135,15 @@ if( $errormenue ){
 	$download = false;
 }
 
+//"core" Apache Problem umgehen
+foreach( $urlfrags as $val ){
+	if( $$val != false ){
+		if( substr( $$val['link'], -4 ) == 'core' ){
+			$$val['link'] .= '/'; 
+		}
+	}
+}
+
 //Menue Methode ausfrufen (mit vars von oben)
 $sitecontent->menue( $info, $explorer, $vorschau, $download );
 

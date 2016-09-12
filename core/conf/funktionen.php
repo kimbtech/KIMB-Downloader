@@ -647,6 +647,10 @@ function make_breadcrumb( $explorer = false, $info = false, $viewfile = false ){
 		
 		if( $allgsysconf['urlrewrite'] == 'on' ){
 			$hochurl = $allgsysconf['siteurl'].'/explorer'.substr($urlfrag, '0', strlen($urlfrag) - strlen(strrchr($urlfrag, '/')));
+			//"core" Apache Problem umgehen
+			if( substr( $hochurl, -4 ) == 'core' ){
+				$hochurl .= '/'; 
+			}
 		}
 		else{
 			$hochurl = $allgsysconf['siteurl'].'/?pfad=explorer'.urlencode( substr($urlfrag, '0', strlen($urlfrag) - strlen(strrchr($urlfrag, '/'))) );
@@ -699,6 +703,10 @@ function make_breadcrumb( $explorer = false, $info = false, $viewfile = false ){
 		elseif( !empty( $frag ) ){
 			if( $allgsysconf['urlrewrite'] == 'on' ){
 				$fragstr .= '/'.$frag;
+				//"core" Apache Problem umgehen
+				if( substr( $fragstr, -4 ) == 'core' ){
+					$fragstr .= '/'; 
+				}
 			}
 			else{
 				$fragstr .= urlencode( '/'.$frag );
