@@ -7,15 +7,16 @@
 >Schauen Sie sich den Downloader doch einfach mal an!
 
 ##Installation
-1. Laden Sie das Installpack unter "KIMB Software Download" herunter.
+1. Laden Sie das Installpack unter "KIMB-technologies.eu Download" herunter.
 2. Entpacken Sie die Datei auf Ihrem Webserver.
 3. Öffnen Sie die "configurator.php" im Browser.
   
 ##Links
-[Homepage](https://www.kimb-technologies.eu/software/downloader/)  
-[Demo](http://demo.kimb-technologies.eu/downloader/)  
-[KIMB Software Download](https://download.kimb-technologies.eu/explorer/Downloader)  
+[KIMB-technologies.eu Homepage](https://www.kimb-technologies.eu/projekte/downloader/)  
+[KIMB-technologies.eu Download](https://download.kimb-technologies.eu/explorer/Downloader)  
 
-[Wiki & Dokumentation ](https://downloaderwiki.kimb-technologies.eu/)    
-[GIT Bitbucket](https://bitbucket.org/kimbtech/kimb-downloader/)  
+[KIMB-Downloader Demo](http://demo.kimb-technologies.eu/downloader/)  
+[KIMB-Downloader Dokumentation ](https://downloaderwiki.kimb-technologies.eu/)
 
+[KIMB-Downloader Bitbucket](https://bitbucket.org/kimbtech/kimb-downloader/)
+[KIMB-Downloader GitHub](https://github.com/kimbtech/kimb-downloader/)  
