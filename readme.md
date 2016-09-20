@@ -18,5 +18,5 @@
 [KIMB-Downloader Demo](http://demo.kimb-technologies.eu/downloader/)  
 [KIMB-Downloader Dokumentation ](https://downloaderwiki.kimb-technologies.eu/)
 
-[KIMB-Downloader Bitbucket](https://bitbucket.org/kimbtech/kimb-downloader/)
+[KIMB-Downloader Bitbucket](https://bitbucket.org/kimbtech/kimb-downloader/)  
 [KIMB-Downloader GitHub](https://github.com/kimbtech/kimb-downloader/)  
