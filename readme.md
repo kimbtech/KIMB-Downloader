@@ -12,11 +12,7 @@
 3. Öffnen Sie die "configurator.php" im Browser.
   
 ##Links
-[KIMB-technologies.eu Homepage](https://www.kimb-technologies.eu/projekte/downloader/)  
-[KIMB-technologies.eu Download](https://download.kimb-technologies.eu/explorer/Downloader)  
+[Bitbucket](https://bitbucket.org/kimbtech/kimb-downloader/)  
+[GitHub](https://github.com/kimbtech/kimb-downloader/)  
 
-[KIMB-Downloader Demo](http://demo.kimb-technologies.eu/downloader/)  
-[KIMB-Downloader Dokumentation ](https://downloaderwiki.kimb-technologies.eu/)
-
-[KIMB-Downloader Bitbucket](https://bitbucket.org/kimbtech/kimb-downloader/)  
-[KIMB-Downloader GitHub](https://github.com/kimbtech/kimb-downloader/)  
+[Download](https://github.com/kimbtech/KIMB-Downloader/releases)
