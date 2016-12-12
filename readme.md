@@ -7,7 +7,7 @@
 >Schauen Sie sich den Downloader doch einfach mal an!
 
 ##Installation
-1. Laden Sie das Installpack unter "KIMB-technologies.eu Download" herunter.
+1. Laden Sie das Installpack unter "Download" herunter.
 2. Entpacken Sie die Datei auf Ihrem Webserver.
 3. Öffnen Sie die "configurator.php" im Browser.
   
